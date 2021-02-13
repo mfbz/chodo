@@ -1,36 +1,39 @@
 {
-  "name": "chodo",
-  "version": "0.0.1",
-  "description": "A to-do list app that rewards upon completing tasks.",
-  "main": "index.js",
-  "author": "mfbz",
-  "testnetDefaultChannel": "v1.3.12",
-  "scripts": {
-    "start": "node src/client/index.js",
-    "build": "./src/program/do.sh build",
-    "deploy": "node ./lib/deployer.js",
-    "clean": "./src/program/do.sh clean && rm -rf ./dist && npm run clean:store",
-    "clean:store": "rm -rf store",
-    "test": "./src/program/do.sh test",
-    "cluster:localnet": "npm run clean:store && rm -f .env",
-    "cluster:devnet": "npm run clean:store && cp cluster-devnet.env .env",
-    "cluster:testnet": "npm run clean:store && cp cluster-testnet.env .env",
-    "cluster:mainnet-beta": "npm run clean:store && cp cluster-mainnet-beta.env .env",
-    "localnet:update": "solana-localnet update",
-    "localnet:up": "npm run clean:store && set -x; solana-localnet down; set -e; solana-localnet up",
-    "localnet:down": "solana-localnet down",
-    "localnet:logs": "solana-localnet logs -f",
-    "postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=src/program/Cargo.toml",
-    "bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean",
-    "soprox-help": "soprox --help"
-  },
-  "dependencies": {
-    "@solana/web3.js": "^0.78.4",
-    "dotenv": "^8.2.0",
-    "fs": "0.0.1-security",
-    "path": "^0.12.7",
-    "soprox": "^0.0.16",
-    "soprox-abi": "0.0.3"
-  },
-  "devDependencies": {}
+	"name": "chodo",
+	"version": "0.0.1",
+	"description": "A to-do list app that rewards upon completing tasks.",
+	"main": "index.js",
+	"author": "mfbz",
+	"testnetDefaultChannel": "v1.3.12",
+	"scripts": {
+		"start": "node src/client/index.js",
+		"build": "./src/program/do.sh build",
+		"deploy": "node ./lib/deployer.js",
+		"clean": "./src/program/do.sh clean && rm -rf ./dist && npm run clean:store",
+		"clean:store": "rm -rf store",
+		"test": "./src/program/do.sh test",
+		"cluster:localnet": "npm run clean:store && rm -f .env",
+		"cluster:devnet": "npm run clean:store && cp cluster-devnet.env .env",
+		"cluster:testnet": "npm run clean:store && cp cluster-testnet.env .env",
+		"cluster:mainnet-beta": "npm run clean:store && cp cluster-mainnet-beta.env .env",
+		"localnet:update": "solana-localnet update",
+		"localnet:up": "npm run clean:store && set -x; solana-localnet down; set -e; solana-localnet up",
+		"localnet:down": "solana-localnet down",
+		"localnet:logs": "solana-localnet logs -f",
+		"postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=src/program/Cargo.toml",
+		"bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean",
+		"soprox-help": "soprox --help",
+		"balance": "node src/client/balance.js"
+	},
+	"dependencies": {
+		"@solana/web3.js": "^0.78.4",
+		"dotenv": "^8.2.0",
+		"fs": "0.0.1-security",
+		"path": "^0.12.7",
+		"soprox": "^0.0.16",
+		"soprox-abi": "0.0.3"
+	},
+	"devDependencies": {
+		"prettier": "^2.2.1"
+	}
 }
