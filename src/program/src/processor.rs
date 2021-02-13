@@ -34,15 +34,25 @@ impl Processor {
 		match instruction {
 			AppInstruction::SayHello { amount, toggle } => {
 				info!("Calling SayHello function");
+
+				// Get the iterator over accounts passed
 				let accounts_iter = &mut accounts.iter();
+
+				// Get owner account
 				let account = next_account_info(accounts_iter)?;
 				if account.owner != program_id {
 					return Err(AppError::IncorrectProgramId.into());
 				}
+
+				// Get the data from the account as mutable reference
 				let mut data = Dummy::unpack(&account.data.borrow())?;
+				// Modify it
 				data.amount = data.amount.checked_add(amount).ok_or(AppError::Overflow)?;
 				data.toggle = toggle;
+				// Pack it back again to save it
 				Dummy::pack(data, &mut account.data.borrow_mut())?;
+
+				// Everything went good, return ok
 				Ok(())
 			}
 		}

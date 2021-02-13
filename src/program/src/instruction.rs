@@ -36,6 +36,7 @@ impl AppInstruction {
 					[1] => true,
 					_ => return Err(ProgramError::InvalidAccountData),
 				};
+				// Return sayHello instruction with data
 				Self::SayHello { amount, toggle }
 			}
 			_ => return Err(AppError::InvalidInstruction.into()),
