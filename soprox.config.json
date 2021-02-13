@@ -1,13 +1,13 @@
 {
-  "network": {
-    "devnet": "http://localhost:8899",
-    "testnet": "",
-    "mainnet": ""
-  },
-  "payers": [
-    {
-      "address": "GokUbXwBnKNZC4STxr2VfrPpyY9TzfFqh5kXnEru19R1",
-      "secretKey": "2fbe66103dec925f40ef41ae51ef129a5c12a6cd3facff0b5e172264113ba030ead92de908ca1c49296e57527c349ffb7036981b1bd14a54aee47fa7c97eaf30"
-    }
-  ]
+	"network": {
+		"devnet": "http://localhost:8899",
+		"testnet": "",
+		"mainnet": ""
+	},
+	"payers": [
+		{
+			"address": "97C9ASuH2UaYPxdDLLMcjupnEa11cqR8yAb7aya8FCQE",
+			"secretKey": "f1279a7132af82316c070cf35092bb78877c94cbfe88b7c75b47438d8c3b6519787393bf653226f6885f26b9d831713374b3828f6998e593b06772868174af8f"
+		}
+	]
 }

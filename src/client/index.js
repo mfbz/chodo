@@ -2,9 +2,7 @@ const { sendAndConfirmTransaction, TransactionInstruction, Transaction } = requi
 const soproxABI = require('soprox-abi');
 const init = require('./utils/init');
 
-/**
- * Say hello
- */
+// Say hello
 const sayHello = async (amount, toggle, register, programId, payer, connection) => {
 	console.log('Saying hello to', register.publicKey.toBase58());
 	const layout = new soproxABI.struct(register.schema, {
@@ -26,9 +24,7 @@ const sayHello = async (amount, toggle, register, programId, payer, connection) 
 	});
 };
 
-/**
- * Report the number of times the greeted account has been said hello to
- */
+// Report the number of times the greeted account has been said hello to
 const reportHello = async (register, connection) => {
 	const { data } = await connection.getAccountInfo(register.publicKey);
 	if (!data) throw new Error('Cannot find data of', register.address);

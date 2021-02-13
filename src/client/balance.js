@@ -1,13 +1,35 @@
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+const { LAMPORTS_PER_SOL } = require('@solana/web3.js');
 
-import { getOurAccount } from './ourAccount';
-import { getNodeConnection } from './nodeConnection';
+const { getOurAccount } = require('./ourAccount');
+const { getNodeConnection } = require('./nodeConnection');
 
 // TODO
 
+const main = async () => {
+	console.log("Let's say hello to a Solana account...");
+	const {
+		connection,
+		payer,
+		programId,
+		registers: [register],
+	} = await init();
+
+	let data = await reportHello(register, connection);
+	console.log('Current data:', data);
+	await sayHello(1, !data.toggleState, register, programId, payer, connection);
+	data = await reportHello(register, connection);
+	console.log('New data:', data);
+	console.log('Success');
+};
+
+try {
+	main();
+} catch (er) {
+	console.error(er);
+}
+
 async function main() {
 	const ourAccount = await getOurAccount();
-
 	const connection = await getNodeConnection();
 
 	console.log('-----');

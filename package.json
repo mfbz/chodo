@@ -2,11 +2,11 @@
 	"name": "chodo",
 	"version": "0.0.1",
 	"description": "A to-do list app that rewards upon completing tasks.",
-	"main": "index.js",
 	"author": "mfbz",
 	"testnetDefaultChannel": "v1.3.12",
 	"scripts": {
 		"start": "node src/client/index.js",
+		"balance": "node src/client/balance.js",
 		"build": "./src/program/do.sh build",
 		"deploy": "node ./lib/deployer.js",
 		"clean": "./src/program/do.sh clean && rm -rf ./dist && npm run clean:store",
@@ -23,7 +23,7 @@
 		"postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=src/program/Cargo.toml",
 		"bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean",
 		"soprox-help": "soprox --help",
-		"balance": "node src/client/balance.js"
+		"soprox-payer": "soprox --payer"
 	},
 	"dependencies": {
 		"@solana/web3.js": "^0.78.4",
