@@ -1,0 +1,20 @@
+{
+  "programAddress": "3fEiMWvwjFuGgbyLFCCzUs7dLtR7m1saQEMqmWRaFsA8",
+  "schema": [
+    {
+      "key": "dummy",
+      "schema": [
+        {
+          "key": "numGreets",
+          "type": "u32"
+        },
+        {
+          "key": "toggleState",
+          "type": "bool"
+        }
+      ],
+      "address": "2X9pBNS2RxnXDuyJ13eX6b43RmWigBBWzdbzgPZtDzfe",
+      "secretKey": "8a7c8476de6adb232656f5838f2f4e5b0cb4ae4c18134d353c089b788d998dc91695139a43d0b41219b4657ef8f39b44d6968caf9a8ac8b1e74fb340777a35d5"
+    }
+  ]
+}
