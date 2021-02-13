@@ -6,8 +6,8 @@
   },
   "payers": [
     {
-      "address": "",
-      "secretKey": ""
+      "address": "GokUbXwBnKNZC4STxr2VfrPpyY9TzfFqh5kXnEru19R1",
+      "secretKey": "2fbe66103dec925f40ef41ae51ef129a5c12a6cd3facff0b5e172264113ba030ead92de908ca1c49296e57527c349ffb7036981b1bd14a54aee47fa7c97eaf30"
     }
   ]
 }

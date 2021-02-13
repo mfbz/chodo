@@ -21,13 +21,15 @@
     "localnet:down": "solana-localnet down",
     "localnet:logs": "solana-localnet logs -f",
     "postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=src/program/Cargo.toml",
-    "bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean"
+    "bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean",
+    "soprox-help": "soprox --help"
   },
   "dependencies": {
     "@solana/web3.js": "^0.78.4",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
+    "soprox": "^0.0.16",
     "soprox-abi": "0.0.3"
   },
   "devDependencies": {}
