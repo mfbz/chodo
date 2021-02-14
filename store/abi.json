@@ -1,5 +1,5 @@
 {
-  "programAddress": "GpRiK6R5BdUoke1yGgGFqVjaftokBZff4XStugWcD3F",
+  "programAddress": "5f6irnTDUMzeLxrrQ7U1J4Zs5apbKgv57Jy7KS7xDz3n",
   "schema": [
     {
       "key": "dummy",
@@ -13,8 +13,8 @@
           "type": "bool"
         }
       ],
-      "address": "DucyAX3n4xZ2CwGWXfE7d3QfYiEnXw2Se3q7agkxHVye",
-      "secretKey": "94da9a521c0f7ae962f89e4c774a31d3c14b8074a70eff03de07631ba78d57c9bfc71d5ec5143b1315f9233d36afc797f3f8744a16cb9c271f43b4ddd16a83d5"
+      "address": "GdNyPoFzduxeAjjqpnkCT7iKcs81WKM8YnG5rTMsJGZ",
+      "secretKey": "27503c72e6216bd277da62d2ddb364b0b56caa9f12d36847aa553a2642ef0a200400d887393d65204031736b9015e069cc9ca38ce5e762c578b4bc197e49477a"
     }
   ]
 }

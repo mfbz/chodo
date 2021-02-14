@@ -19,6 +19,15 @@ A todo-list app _that rewards upon completing tasks_.
 
 todo
 
+## Networks
+
+There are several networks that can be used:
+
+- localnet: http://localhost:8899
+- devnet: http://devnet.solana.com
+- testnet: http://testnet.solana.com:8899
+- mainnet: https://api.mainnet-beta.solana.com
+
 ## Problems
 
 - if npm run start gives error => check that the program has been build and deployed with npm run build and npm run deploy

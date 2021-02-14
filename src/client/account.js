@@ -11,7 +11,8 @@ var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
  */
 
 // Airdrop SOL to selected address
-const airdrop = async (address, lamports = 100 * LAMPORTS_PER_SOL) => {
+// current max on devnet is 10 Sol, might change in the future, adjust accordingly
+const airdrop = async (address, lamports = 10000000000) => {
 	if (!address) throw new Error('Invalid address');
 
 	const connection = await establishConnection();
@@ -100,5 +101,6 @@ try {
 		console.log('Payer data saved into config file');
 	})();
 } catch (er) {
+	console.log('!"£!"£"£!"£"£!"££!"£!"');
 	console.error(er);
 }
