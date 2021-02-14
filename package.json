@@ -9,6 +9,8 @@
 		"account": "node src/client/account.js",
 		"account:add": "node src/client/account.js --add",
 		"balance": "node src/client/balance.js",
+		"dump": "node src/client/dump.js",
+		"dump:pubkey": "node src/client/dump.js --pubkey=",
 		"build": "./src/program/do.sh build",
 		"deploy": "node ./lib/deployer.js",
 		"launch": "npm run localnet:update && npm run localnet:up && npm run account && npm run build && npm run deploy",
