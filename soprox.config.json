@@ -6,12 +6,8 @@
   },
   "payers": [
     {
-      "address": "6B3mM5Yqzq99QNEbagEUrWq5qztuV2VMjHHCZrMYkTGC",
-      "secretKey": "68bbda0795a278eeb983c2410c96bdc3a65fc2171c69c3a0b54baff0216638a14cdd5e6015379833d9581ae9cb2d952cf9076cb1d023939c10f26d15f2f58081"
-    },
-    {
-      "address": "SQ5jB8eteJmmX53njBqPH3BFofuPgcf5zeddjfCnume",
-      "secretKey": "73c991b8cc0e317df8e41d09fc1525fe21ddcdb96dcb3b55d7371293fc2157e206819e5a477176edd80cd97026ddbd6b76c203cbaefbd37bb234651e6cd4be65"
+      "address": "9eV9Y8iaoRU8QBbGTPb4A1WkueEzRHrauGUUZzSJTPVU",
+      "secretKey": "9dd589e60fe720efab6ffa0f9b133639827a1c96204c0cfe3cf852c3f8bd837f8077cfbc911344f74d67dd3c9682a8821004173a6699a426d6628cd9eb9c638b"
     }
   ]
 }
