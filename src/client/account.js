@@ -6,6 +6,10 @@ const fs = require('fs');
 const sleep = require('./utils/sleep');
 var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 
+/*
+ * Create or add a new payer account to the network and soprox config file
+ */
+
 // Airdrop SOL to selected address
 const airdrop = async (address, lamports = 100 * LAMPORTS_PER_SOL) => {
 	if (!address) throw new Error('Invalid address');

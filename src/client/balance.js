@@ -1,26 +1,19 @@
 const { LAMPORTS_PER_SOL } = require('@solana/web3.js');
+const { establishConnection, loadPayer } = require('../../lib/network');
 
-// TODO REFRACTOR AND TAKE THESE FILES FROM https://github.com/mcf-rocks/simple-vote-tutorial/tree/master/src/client
-const { getOurAccount } = require('./ourAccount');
-const { getNodeConnection } = require('./nodeConnection');
+/*
+ * Log the balance of the payer account
+ */
 
-// TODO
+try {
+	(async () => {
+		const connection = await establishConnection();
+		const payer = await loadPayer(connection);
 
-async function main() {
-	const ourAccount = await getOurAccount();
-	const connection = await getNodeConnection();
+		let bal = await connection.getBalance(payer.publicKey);
 
-	console.log('-----');
-
-	let bal = await connection.getBalance(ourAccount.publicKey);
-
-	console.log('Balance of', ourAccount.publicKey.toString(), 'is', bal, '(', bal / LAMPORTS_PER_SOL, ')');
-
-	console.log('-----');
+		console.log('Payer balance of', payer.publicKey.toString(), 'is', bal, '(', bal / LAMPORTS_PER_SOL, 'SOL)');
+	})();
+} catch (er) {
+	console.error(er);
 }
-
-main()
-	.catch((err) => {
-		console.error(err);
-	})
-	.then(() => process.exit());
