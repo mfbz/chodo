@@ -6,6 +6,8 @@
 	"testnetDefaultChannel": "v1.3.12",
 	"scripts": {
 		"start": "node src/client/index.js",
+		"account": "node src/client/account.js",
+		"account:add": "node src/client/account.js --add",
 		"balance": "node src/client/balance.js",
 		"build": "./src/program/do.sh build",
 		"deploy": "node ./lib/deployer.js",
@@ -21,17 +23,15 @@
 		"localnet:down": "solana-localnet down",
 		"localnet:logs": "solana-localnet logs -f",
 		"postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=src/program/Cargo.toml",
-		"bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean",
-		"soprox-help": "soprox --help",
-		"soprox-payer": "soprox --payer"
+		"bpf-sdk:update": "solana-bpf-sdk-install node_modules/@solana/web3.js && npm run clean"
 	},
 	"dependencies": {
 		"@solana/web3.js": "^0.78.4",
 		"dotenv": "^8.2.0",
 		"fs": "0.0.1-security",
 		"path": "^0.12.7",
-		"soprox": "^0.0.16",
-		"soprox-abi": "0.0.3"
+		"soprox-abi": "0.0.3",
+		"yargs": "^16.2.0"
 	},
 	"devDependencies": {
 		"prettier": "^2.2.1"

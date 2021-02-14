@@ -33,25 +33,23 @@ const reportHello = async (register, connection) => {
 	return layout.value;
 };
 
-const main = async () => {
-	console.log("Let's say hello to a Solana account...");
-	const {
-		connection,
-		payer,
-		programId,
-		registers: [register],
-	} = await init();
-
-	let data = await reportHello(register, connection);
-	console.log('Current data:', data);
-	await sayHello(1, !data.toggleState, register, programId, payer, connection);
-	data = await reportHello(register, connection);
-	console.log('New data:', data);
-	console.log('Success');
-};
-
 try {
-	main();
+	(async () => {
+		console.log("Let's say hello to a Solana account...");
+		const {
+			connection,
+			payer,
+			programId,
+			registers: [register],
+		} = await init();
+
+		let data = await reportHello(register, connection);
+		console.log('Current data:', data);
+		await sayHello(1, !data.toggleState, register, programId, payer, connection);
+		data = await reportHello(register, connection);
+		console.log('New data:', data);
+		console.log('Success');
+	})();
 } catch (er) {
 	console.error(er);
 }
