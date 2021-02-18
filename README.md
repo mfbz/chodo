@@ -62,3 +62,8 @@ Less config file taken from
 https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 
 Vapor is the name of the theme
+
+The flux of the build would be to deploy the program and then just connect through the frontend with the generated solana.config.file that point to the correct program address of the dapp and the correct network.
+If further data is needed it should be added there.
+
+So everytime i deploy a new program i must change this config file so that i can correctly connect to it with the frontend.

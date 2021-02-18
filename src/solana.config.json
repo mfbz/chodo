@@ -1,0 +1,7 @@
+{
+	"programAddress": "TODO",
+	"network": {
+		"name": "devnet",
+		"url": "http://devnet.solana.com"
+	}
+}

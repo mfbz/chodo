@@ -3,7 +3,6 @@ const { establishConnection } = require('./lib/network');
 const soproxConf = require('../soprox.config.json');
 const path = require('path');
 const fs = require('fs');
-const sleep = require('./utils/sleep');
 var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 
 /*
@@ -22,7 +21,8 @@ const airdrop = async (address, lamports = 10000000000) => {
 	await connection.requestAirdrop(publicKey, lamports);
 
 	while (retries > 0) {
-		await sleep(500);
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
 		const balance = await connection.getBalance(publicKey);
 		if (lamports <= balance) return console.log(`Current balance of ${address} is ${balance / LAMPORTS_PER_SOL} SOL`);
 		console.warn('⚠️ Airdrop retry ' + retries);

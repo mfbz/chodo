@@ -10,20 +10,23 @@ const {
 	PublicKey,
 } = require('@solana/web3.js');
 const soproxABI = require('soprox-abi');
-const store = require('./store');
+const temp = require('./temp');
 const soproxConf = require('../../soprox.config.json');
 
 /**
  * List of common and useful methods to be used to handle network stuff
  */
 
+// The network i'll use for my scripts
+const NETWORK = soproxConf.network.active;
+
 // Establish a connection to the cluster
-const establishConnection = async (network = soproxConf.network.devnet) => {
+const establishConnection = async () => {
 	// Connect to devnet network
-	const connection = new Connection(network, 'recent');
+	const connection = new Connection(NETWORK, 'recent');
 	const version = await connection.getVersion();
 
-	console.log('Connection to cluster established:', network, version);
+	console.log('Connection to cluster established:', NETWORK, version);
 	// Return just opened connection
 	return connection;
 };
@@ -94,9 +97,9 @@ const loadProgram = async (data, payer, connection) => {
 	const filename = 'program';
 
 	// Check if the program has already been loaded
-	const config = store.load(filename);
+	const config = temp.load(filename);
 
-	// Try to get the program from store config
+	// Try to get the program from temp file
 	// If it has the same data just return it, it's the same
 	if (config && Buffer.from(data).toString('hex') == config.data) {
 		console.log('The program has been loaded at:', config.address);
@@ -118,7 +121,7 @@ const loadProgram = async (data, payer, connection) => {
 		secretKey: Buffer.from(_program.secretKey).toString('hex'),
 		data: Buffer.from(data).toString('hex'),
 	};
-	store.save(filename, program);
+	temp.save(filename, program);
 	program.publicKey = _program.publicKey;
 
 	// Return the newly created program
@@ -129,7 +132,7 @@ const loadProgram = async (data, payer, connection) => {
 const loadRegisters = async (schema, payer, program, connection) => {
 	// This is the name of the register file to load with data accounts inside
 	const filename = 'abi';
-	const data = store.load(filename);
+	const data = temp.load(filename);
 
 	// Return a list of data accounts called registers from schema if present
 	const { programAddress, schema: storedSchema } = data || {};
@@ -149,7 +152,7 @@ const loadRegisters = async (schema, payer, program, connection) => {
 			return each;
 		}),
 	);
-	store.save(filename, {
+	temp.save(filename, {
 		programAddress: program.address,
 		schema: layout,
 	});

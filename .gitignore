@@ -7,6 +7,9 @@
 # The build
 /build
 
+# Temp data created on deploy
+/temp
+
 # Logs
 logs
 *.log
