@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+  <g id="icon" transform="translate(-302 -338.589)">
+    <rect id="aligner" width="75" height="75" transform="translate(302 338.589)" fill="none"/>
+    <path id="fuchsia-v" d="M.015,41.47H0v-31.1H.015a10.944,10.944,0,0,1,21.857,0h.015v31.1h-.015a10.944,10.944,0,0,1-21.857,0Z" transform="translate(355.244 349.589) rotate(45)" fill="#ff006c"/>
+    <path id="green-v" d="M25.919,21.887H10.367v-.015a10.944,10.944,0,0,1,0-21.857V0H26.5V.015a10.944,10.944,0,0,1,0,21.857v.015Z" transform="translate(323.476 360.178) rotate(45)" fill="#00ffb9"/>
+  </g>
+</svg>
