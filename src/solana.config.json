@@ -3,5 +3,11 @@
 	"network": {
 		"name": "devnet",
 		"url": "http://devnet.solana.com"
-	}
+	},
+	"walletProviders": [
+		{
+			"name": "sollet",
+			"url": "https://www.sollet.io"
+		}
+	]
 }

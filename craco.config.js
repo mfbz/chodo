@@ -8,13 +8,22 @@ module.exports = {
 				lessLoaderOptions: {
 					lessOptions: {
 						modifyVars: {
-							'@ant-prefix': 'chodo',
-
 							'@primary-color': '#00FFB9',
-							'@info-color': '#FF006C',
 							'@normal-color': '#F2F2FA',
 							'@white': '#FFFFFF',
 							'@black': '#141033',
+
+							'@text-color': '#141033',
+							'@text-color-secondary': 'fade(@black, 85%)',
+							'@heading-color': '#141033',
+							'@text-color-dark': '#FFFFFF',
+							'@text-color-secondary-dark': 'fade(@white, 85%)',
+
+							'@btn-primary-color': '#141033',
+							'@btn-primary-bg': '#00FFB9',
+							'@btn-danger-color': '#141033',
+							'@btn-danger-bg': '#FF006C',
+							'@btn-danger-border': '#FF006C',
 
 							'@body-background': '#FFFFFF',
 
