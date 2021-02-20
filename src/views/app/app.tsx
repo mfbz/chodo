@@ -1,10 +1,17 @@
 import React from 'react';
-import { VaporHeader } from '../../components/vapor-header';
+import { useProjects } from './hooks/use-projects';
+import { AppMenu } from './components/app-menu';
+import { useOnAddProject } from './hooks/use-on-add-project';
+import { useOnChangeProject } from './hooks/use-on-change-project';
 
 export const App = React.memo(function App() {
+	const projects = useProjects();
+	const onAddProject = useOnAddProject();
+	const onChangeProject = useOnChangeProject();
+
 	return (
-		<div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-			<VaporHeader />
+		<div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
+			<AppMenu projects={projects} onAdd={onAddProject} onChange={onChangeProject} />
 
 			<div
 				style={{
@@ -13,7 +20,7 @@ export const App = React.memo(function App() {
 					flexDirection: 'column',
 					justifyContent: 'center',
 					alignItems: 'flex-start',
-					paddingLeft: 48,
+					paddingLeft: 24,
 					paddingRight: 48,
 				}}
 			>
