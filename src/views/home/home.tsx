@@ -5,6 +5,7 @@ import SolanaLogoImage from '../../assets/solana-logo.png';
 import ChodoHeroSVG from '../../assets/hero.svg';
 import { VaporButton } from '../../components/vapor-button';
 import { Typography } from 'antd';
+import { VaporHeader } from '../../components/vapor-header';
 
 export const Home = React.memo(function Home() {
 	return (
@@ -36,32 +37,15 @@ export const Home = React.memo(function Home() {
 					zIndex: 10,
 				}}
 			>
-				<div
-					style={{
-						width: '100%',
-						height: 80,
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-						paddingLeft: 48,
-						paddingRight: 48,
-					}}
-				>
-					<div style={{}}>
-						<Link to="/">
-							<img src={ChodoLogoSVG} style={{ width: 120 }} alt="chodo logo" />
-						</Link>
-					</div>
-
-					<div style={{}}>
+				<VaporHeader
+					extra={
 						<Link to="/app">
 							<VaporButton danger={true} size={'large'}>
 								App
 							</VaporButton>
 						</Link>
-					</div>
-				</div>
+					}
+				/>
 
 				<div
 					style={{
