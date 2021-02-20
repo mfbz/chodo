@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import ChodoLogoSVG from '../../../../assets/logo.svg';
 import { List, Typography } from 'antd';
@@ -7,20 +7,16 @@ import { VaporButton } from '../../../../components/vapor-button';
 import { PlusOutlined } from '@ant-design/icons';
 
 export const AppMenu = React.memo(function AppMenu({
+	selectedProject,
 	projects,
 	onAdd,
-	onChange,
+	onSelect,
 }: {
+	selectedProject?: Project;
 	projects: Project[];
 	onAdd: () => void;
-	onChange: (project: Project) => void;
+	onSelect: (project: Project) => void;
 }) {
-	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
-
-	useEffect(() => {
-		onChange(selectedProject);
-	}, [selectedProject, onChange]);
-
 	return (
 		<div
 			style={{
@@ -67,7 +63,7 @@ export const AppMenu = React.memo(function AppMenu({
 					dataSource={projects}
 					split={false}
 					renderItem={(item, index) => {
-						const isSelected = item.id === selectedProject.id;
+						const isSelected = item.id === selectedProject?.id;
 						const isLast = index === projects.length - 1;
 
 						return (
@@ -75,7 +71,7 @@ export const AppMenu = React.memo(function AppMenu({
 								style={{ cursor: 'pointer', padding: 0, marginBottom: isLast ? 0 : 8 }}
 								onClick={() => {
 									if (!isSelected) {
-										setSelectedProject(item);
+										onSelect(item);
 									}
 								}}
 							>
