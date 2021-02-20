@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ChodoLogoSVG from '../../../../assets/logo.svg';
 import { List, Typography } from 'antd';
 import { Project } from '../../interfaces/project';
+import { VaporButton } from '../../../../components/vapor-button';
+import { PlusOutlined } from '@ant-design/icons';
 
 export const AppMenu = React.memo(function AppMenu({
 	projects,
@@ -14,6 +16,10 @@ export const AppMenu = React.memo(function AppMenu({
 	onChange: (project: Project) => void;
 }) {
 	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
+
+	useEffect(() => {
+		onChange(selectedProject);
+	}, [selectedProject, onChange]);
 
 	return (
 		<div
@@ -43,6 +49,21 @@ export const AppMenu = React.memo(function AppMenu({
 			<div style={{ flex: 1, marginTop: 24 }}>
 				<List
 					header={<Typography.Text strong={true}>Projects</Typography.Text>}
+					footer={
+						<div
+							style={{
+								width: '100%',
+								background: undefined,
+								display: 'flex',
+								flexDirection: 'row',
+								alignItems: 'center',
+							}}
+						>
+							<VaporButton icon={<PlusOutlined />} type={'text'} onClick={onAdd}>
+								Add project
+							</VaporButton>
+						</div>
+					}
 					dataSource={projects}
 					split={false}
 					renderItem={(item, index) => {

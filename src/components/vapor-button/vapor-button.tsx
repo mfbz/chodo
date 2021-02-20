@@ -10,6 +10,7 @@ export const VaporButton = React.memo(function VaporButton({
 	size,
 	children,
 	style,
+	onClick,
 }: {
 	enlarge?: boolean;
 	danger?: boolean;
@@ -18,6 +19,7 @@ export const VaporButton = React.memo(function VaporButton({
 	size?: SizeType;
 	children?: React.ReactNode;
 	style?: React.CSSProperties;
+	onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }) {
 	return (
 		<Button
@@ -26,6 +28,7 @@ export const VaporButton = React.memo(function VaporButton({
 			shape="round"
 			icon={icon}
 			size={size}
+			onClick={onClick}
 			style={{
 				height: enlarge ? 60 : undefined,
 				...style,
