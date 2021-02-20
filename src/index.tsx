@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Application } from './application';
+import { Main } from './main';
 import './style.less';
 
-render(<Application />, document.getElementById('root'));
+render(<Main />, document.getElementById('root'));

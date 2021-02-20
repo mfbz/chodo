@@ -6,7 +6,7 @@ import ChodoHeroSVG from '../../assets/hero.svg';
 import { VaporButton } from '../../components/vapor-button';
 import { Typography } from 'antd';
 
-export const Hero = React.memo(function Hero() {
+export const Home = React.memo(function Home() {
 	return (
 		<div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
 			<div
@@ -44,8 +44,8 @@ export const Hero = React.memo(function Hero() {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						paddingLeft: 24,
-						paddingRight: 24,
+						paddingLeft: 48,
+						paddingRight: 48,
 					}}
 				>
 					<div style={{}}>
@@ -55,9 +55,11 @@ export const Hero = React.memo(function Hero() {
 					</div>
 
 					<div style={{}}>
-						<VaporButton danger={true} size={'large'}>
-							App
-						</VaporButton>
+						<Link to="/app">
+							<VaporButton danger={true} size={'large'}>
+								App
+							</VaporButton>
+						</Link>
 					</div>
 				</div>
 
@@ -68,8 +70,8 @@ export const Hero = React.memo(function Hero() {
 						flexDirection: 'column',
 						justifyContent: 'center',
 						alignItems: 'flex-start',
-						paddingLeft: 24,
-						paddingRight: 24,
+						paddingLeft: 48,
+						paddingRight: 48,
 					}}
 				>
 					<div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -85,7 +87,11 @@ export const Hero = React.memo(function Hero() {
 						</div>
 
 						<div style={{ marginTop: 32 }}>
-							<VaporButton size={'large'}>Create account</VaporButton>
+							<Link to="/app">
+								<VaporButton size={'large'} enlarge={true}>
+									Create now
+								</VaporButton>
+							</Link>
 						</div>
 					</div>
 				</div>
@@ -98,8 +104,8 @@ export const Hero = React.memo(function Hero() {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						paddingLeft: 24,
-						paddingRight: 24,
+						paddingLeft: 48,
+						paddingRight: 48,
 					}}
 				>
 					<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', alignItems: 'center' }}>

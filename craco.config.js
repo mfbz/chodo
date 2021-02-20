@@ -24,6 +24,7 @@ module.exports = {
 							'@btn-danger-color': '#141033',
 							'@btn-danger-bg': '#FF006C',
 							'@btn-danger-border': '#FF006C',
+							'@btn-font-weight': 'bold',
 
 							'@body-background': '#FFFFFF',
 
