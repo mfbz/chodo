@@ -15,8 +15,8 @@ export const App = React.memo(function App() {
 	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
 	const tasks = useTasks(selectedProject?.id);
 
+	// Project
 	const [projectForm] = Form.useForm();
-
 	const [projectModalVisible, setProjectModalVisible] = useState(false);
 	const [confirmProjectModalLoading, setConfirmProjectModalLoading] = useState(false);
 
@@ -39,7 +39,7 @@ export const App = React.memo(function App() {
 
 	const onSubmitProjectForm = useCallback(
 		(values) => {
-			console.log('Form submitted value', values.projectName);
+			console.log('Project form submitted values', values);
 
 			// TODO here i need to implement the async call
 			setTimeout(() => {
@@ -52,9 +52,39 @@ export const App = React.memo(function App() {
 		[projectForm],
 	);
 
+	// Task
+	const [taskForm] = Form.useForm();
+	const [taskModalVisible, setTaskModalVisible] = useState(false);
+	const [confirmTaskModalLoading, setConfirmTaskModalLoading] = useState(false);
+
 	const onCreateTask = useCallback(() => {
-		// TODO
+		setTaskModalVisible(true);
 	}, []);
+
+	const handleTaskModalOk = useCallback(() => {
+		setConfirmTaskModalLoading(true);
+
+		console.log('Pressed task form create');
+		taskForm.submit();
+	}, [taskForm]);
+	const handleTaskModalCancel = useCallback(() => {
+		setTaskModalVisible(false);
+	}, []);
+
+	const onSubmitTaskForm = useCallback(
+		(values) => {
+			console.log('Task form submitted values', values);
+
+			// TODO here i need to implement the async call
+			setTimeout(() => {
+				setTaskModalVisible(false);
+				setConfirmTaskModalLoading(false);
+
+				taskForm.resetFields();
+			}, 2000);
+		},
+		[taskForm],
+	);
 
 	return (
 		<>
@@ -179,8 +209,34 @@ export const App = React.memo(function App() {
 			>
 				<Form form={projectForm} layout="vertical" onFinish={onSubmitProjectForm}>
 					<Form.Item
-						name={'projectName'}
+						name={'name'}
 						label={<Typography.Text strong={true}>Name</Typography.Text>}
+						rules={[{ required: true, message: '' }]}
+						style={{ marginBottom: 0 }}
+					>
+						<Input size={'large'} style={{ borderRadius: 8 }} />
+					</Form.Item>
+				</Form>
+			</Modal>
+
+			<Modal
+				title={
+					<Typography.Title level={5} style={{ padding: 0, margin: 0 }}>
+						{'Create task'}
+					</Typography.Title>
+				}
+				okText={'Create'}
+				cancelText={'Cancel'}
+				centered={true}
+				visible={taskModalVisible}
+				confirmLoading={confirmTaskModalLoading}
+				onOk={handleTaskModalOk}
+				onCancel={handleTaskModalCancel}
+			>
+				<Form form={taskForm} layout="vertical" onFinish={onSubmitTaskForm}>
+					<Form.Item
+						name={'message'}
+						label={<Typography.Text strong={true}>Message</Typography.Text>}
 						rules={[{ required: true, message: '' }]}
 						style={{ marginBottom: 0 }}
 					>
