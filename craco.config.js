@@ -19,6 +19,9 @@ module.exports = {
 							'@text-color-dark': '#FFFFFF',
 							'@text-color-secondary-dark': 'fade(@white, 85%)',
 
+							'@avatar-bg': '#F2F2FA',
+							'@avatar-color': '#141033',
+
 							'@btn-primary-color': '#141033',
 							'@btn-primary-bg': '#00FFB9',
 							'@btn-danger-color': '#141033',
