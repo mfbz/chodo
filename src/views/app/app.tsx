@@ -51,7 +51,11 @@ export const App = React.memo(function App() {
 						}}
 					>
 						<div style={{ flex: 1 }}>
-							<div style={{}}>{selectedProject?.name || 'No project selected'}</div>
+							<div style={{}}>
+								<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
+									{selectedProject?.name || 'No project selected'}
+								</Typography.Title>
+							</div>
 						</div>
 
 						<div
