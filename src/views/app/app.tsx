@@ -13,14 +13,14 @@ export const App = React.memo(function App() {
 	// Wallet
 	const { wallet, walletConnected, onConnectWallet } = useWallet();
 
-	// Data
-	const user = useUser();
-	const projects = useProjects(user.id);
-
-	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
-	const tasks = useTasks(selectedProject?.id);
+	// User
+	// TODO: If cannot find a user from a wallet i need to show a modal or expand the drawer to create an account
+	const user = useUser(wallet);
 
 	// Project
+	const projects = useProjects(user.id);
+	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
+
 	const [projectForm] = Form.useForm();
 	const [projectModalVisible, setProjectModalVisible] = useState(false);
 	const [confirmProjectModalLoading, setConfirmProjectModalLoading] = useState(false);
@@ -58,6 +58,8 @@ export const App = React.memo(function App() {
 	);
 
 	// Task
+	const tasks = useTasks(selectedProject?.id);
+
 	const [taskForm] = Form.useForm();
 	const [taskModalVisible, setTaskModalVisible] = useState(false);
 	const [confirmTaskModalLoading, setConfirmTaskModalLoading] = useState(false);
