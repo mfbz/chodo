@@ -2,23 +2,15 @@
 
 use crate::error::AppError;
 use crate::instruction::AppInstruction;
-use crate::schema::dummy::Dummy;
+use crate::state::user::User;
 use solana_sdk::{
 	account_info::{next_account_info, AccountInfo},
 	entrypoint::ProgramResult,
 	info,
+	program_error::ProgramError,
 	program_pack::Pack,
 	pubkey::Pubkey,
 };
-
-/*
- * After taking serialized data from Entrypoint.rs, all computation will be executed in Processor.rs.
- * You may remember that all the data is serialized. Therefore, to work on and then store the data,
- * we have to define methods to "unpack" and "pack" them, which is the main purpose of Instruction.rs.
- * First, Processor.rs passes instruction_data to Instruction.rs to unpack it and then get parameters from the return.
- * Next, depend on the instruction type, Processor.rs will decide which function would be called to handle the data.
- * Finally, return Ok or Error as results.
-*/
 
 pub struct Processor {}
 
@@ -28,33 +20,47 @@ impl Processor {
 		accounts: &[AccountInfo],
 		instruction_data: &[u8],
 	) -> ProgramResult {
-		// Unpack the data passed in the transaction deserializing it.
-		let instruction = AppInstruction::unpack(instruction_data)?;
+		// Unpack the data passed in the transaction deserializing it via implemented Serdes traits
+		let instruction = AppInstruction::try_from_slice(&instruction_data)
+			.map_err(|_| ProgramError::InvalidInstructionData)?;
+
+		// Create an iterator over input accounts array
+		let accounts_iter = &mut accounts.iter();
+
 		// Do different program actions depending on the passed instruction
 		match instruction {
-			AppInstruction::SayHello { amount, toggle } => {
-				info!("Calling SayHello function");
-
-				// Get the iterator over accounts passed
-				let accounts_iter = &mut accounts.iter();
-
-				// Get owner account
-				let account = next_account_info(accounts_iter)?;
-				if account.owner != program_id {
-					return Err(AppError::IncorrectProgramId.into());
+			AppInstruction::CreateUser { name } => {
+				// Get signer account from iterator and do checks
+				let signer_account = next_account_info(accounts_iter)?;
+				if !signer_account.is_signer {
+					return Err(ProgramError::MissingRequiredSignature);
 				}
 
-				// Get the data from the account as mutable reference
-				let mut data = Dummy::unpack(&account.data.borrow())?;
-				// Modify it
-				data.amount = data.amount.checked_add(amount).ok_or(AppError::Overflow)?;
-				data.toggle = toggle;
-				// Pack it back again to save it
-				Dummy::pack(data, &mut account.data.borrow_mut())?;
+				// Get user account created deterministically from signer account
+				let user_account = next_account_info(accounts_iter)?;
 
-				// Everything went good, return ok
+				// Get expected account knowning how to create from seed to verify the one i got as data is the correct one and do checks
+				let expected_user_account_pk = User::create_with_seed(signer_account.key, &program_id)?;
+				if expected_user_account_pk != *user_account.key {
+					return Err(AppError::AccountNotDeterministic.into());
+				}
+				if user_account.owner != program_id {
+					return Err(AppError::IncorrectProgramId.into());
+				}
+				if user_account.try_data_len().unwrap() < User::MIN_SPACE {
+					return Err(ProgramError::AccountDataTooSmall);
+				}
+
+				// Create a new object from User constructor to initialize a new user
+				let out_user_account_data = User { name };
+				// Get a mutable reference of current user_account data
+				let mut user_account_data = user_account.try_borrow_mut_data()?;
+				// Pack current modified user data to user account borrowed data to save it
+				out_user_account_data.pack(&mut user_account_data);
+
 				Ok(())
 			}
+			_ => Err(ProgramError::InvalidInstructionData),
 		}
 	}
 }
