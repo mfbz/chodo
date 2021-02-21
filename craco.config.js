@@ -31,6 +31,12 @@ module.exports = {
 
 							'@body-background': '#FFFFFF',
 
+							'@modal-header-border-color-split': '#FFFFFF',
+							'@modal-close-color': '#141033',
+							'@modal-footer-border-color-split': '#FFFFFF',
+							'@modal-footer-padding-vertical': '24px',
+							'@modal-footer-padding-horizontal': '24px',
+
 							'@font-family': 'Helvetica, Arial, sans-serif',
 							'@font-size-base': '16px',
 							'@font-size-sm': '14px',
