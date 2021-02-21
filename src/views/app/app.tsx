@@ -3,17 +3,31 @@ import { useProjects } from './hooks/use-projects';
 import { AppMenu } from './components/app-menu';
 import { Project } from './interfaces/project';
 import { VaporButton } from '../../components/vapor-button';
-import { PlusOutlined } from '@ant-design/icons';
-import { Avatar, Checkbox, Form, Input, List, Modal, Typography } from 'antd';
+import { PlusOutlined, WalletOutlined } from '@ant-design/icons';
+import { Avatar, Checkbox, Drawer, Form, Input, List, Modal, Typography } from 'antd';
 import { useUser } from './hooks/use-user';
 import { useTasks } from './hooks/use-tasks';
 
 export const App = React.memo(function App() {
+	// Data
 	const user = useUser();
 	const projects = useProjects(user.id);
 
 	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
 	const tasks = useTasks(selectedProject?.id);
+
+	// Wallet
+	const [walletDrawerVisible, setWalletDrawerVisible] = useState(true);
+
+	// TODO: Add effect to close drawer if wallet already connected
+
+	const onClickConnectWallet = useCallback(() => {
+		// TODO
+	}, []);
+
+	const handleWalletDrawerClose = useCallback(() => {
+		setWalletDrawerVisible(false);
+	}, []);
 
 	// Project
 	const [projectForm] = Form.useForm();
@@ -192,6 +206,40 @@ export const App = React.memo(function App() {
 					</div>
 				</div>
 			</div>
+
+			<Drawer placement={'top'} closable={false} maskClosable={false} visible={walletDrawerVisible} height={200}>
+				<div
+					style={{
+						width: '100%',
+						height: '100%',
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
+						padding: 24,
+					}}
+				>
+					<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+						<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
+							{'Connect a wallet to handle your projects on chodo'}
+						</Typography.Title>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: 24,
+						}}
+					>
+						<VaporButton icon={<WalletOutlined />} size={'large'} enlarge={true} onClick={onClickConnectWallet}>
+							Connect wallet
+						</VaporButton>
+					</div>
+				</div>
+			</Drawer>
 
 			<Modal
 				title={
