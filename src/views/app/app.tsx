@@ -5,9 +5,9 @@ import { useOnAddProject } from './hooks/use-on-add-project';
 import { Project } from './interfaces/project';
 import { VaporButton } from '../../components/vapor-button';
 import { PlusOutlined } from '@ant-design/icons';
-import { Avatar } from 'antd';
+import { Avatar, Checkbox, List, Typography } from 'antd';
 import { useUser } from './hooks/use-user';
-import { useTasks } from './hooks/use-projects copy';
+import { useTasks } from './hooks/use-tasks';
 
 export const App = React.memo(function App() {
 	const user = useUser();
@@ -73,7 +73,52 @@ export const App = React.memo(function App() {
 						</div>
 					</div>
 
-					<div style={{ flex: 1, marginTop: 24 }}></div>
+					<div style={{ flex: 1, marginTop: 24 }}>
+						<div
+							style={{
+								width: '100%',
+								display: 'flex',
+								flexDirection: 'row',
+								alignItems: 'center',
+								paddingTop: 12,
+								paddingBottom: 8,
+								paddingLeft: 16,
+								paddingRight: 16,
+							}}
+						>
+							<Typography.Text strong={true}>Tasks</Typography.Text>
+						</div>
+
+						<List
+							dataSource={tasks}
+							renderItem={(item, index) => {
+								const isFirst = index === 0;
+
+								return (
+									<List.Item style={{ cursor: 'pointer', padding: 0, marginTop: isFirst ? -2 : 0 }}>
+										<div
+											style={{
+												width: '100%',
+												display: 'flex',
+												flexDirection: 'row',
+												alignItems: 'center',
+												paddingTop: 14,
+												paddingBottom: 12,
+												paddingLeft: 16,
+												paddingRight: 16,
+											}}
+										>
+											<Checkbox checked={item.completed} onChange={(event) => console.log(event.target.checked)} />
+
+											<div style={{ marginLeft: 16 }}>
+												<Typography.Text delete={item.completed}>{item.message}</Typography.Text>
+											</div>
+										</div>
+									</List.Item>
+								);
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -14,13 +14,13 @@ export function useTasks(projectId?: string) {
 			},
 			{
 				id: '2',
-				projectId: '2',
+				projectId: '1',
 				message: 'This is the second task',
 				completed: false,
 			},
 			{
 				id: '3',
-				projectId: '3',
+				projectId: '1',
 				message: 'This is the third completed task',
 				completed: true,
 			},
