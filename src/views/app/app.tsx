@@ -4,7 +4,7 @@ import { AppMenu } from './components/app-menu';
 import { Project } from './interfaces/project';
 import { VaporButton } from '../../components/vapor-button';
 import { PlusOutlined } from '@ant-design/icons';
-import { Avatar, Checkbox, List, Modal, Typography } from 'antd';
+import { Avatar, Checkbox, Form, Input, List, Modal, Typography } from 'antd';
 import { useUser } from './hooks/use-user';
 import { useTasks } from './hooks/use-tasks';
 
@@ -15,30 +15,42 @@ export const App = React.memo(function App() {
 	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
 	const tasks = useTasks(selectedProject?.id);
 
+	const [projectForm] = Form.useForm();
+
 	const [projectModalVisible, setProjectModalVisible] = useState(false);
 	const [confirmProjectModalLoading, setConfirmProjectModalLoading] = useState(false);
-
-	const handleProjectModalOk = useCallback(() => {
-		setConfirmProjectModalLoading(true);
-		console.log('pressed ok');
-
-		// TODO here i need to implement the async call
-		setTimeout(() => {
-			setProjectModalVisible(false);
-			setConfirmProjectModalLoading(false);
-		}, 2000);
-	}, []);
-	const handleProjectModalCancel = useCallback(() => {
-		setProjectModalVisible(false);
-	}, []);
 
 	const onAddProject = useCallback(() => {
 		setProjectModalVisible(true);
 	}, []);
-
 	const onSelectProject = useCallback((project: Project) => {
 		setSelectedProject(project);
 	}, []);
+
+	const handleProjectModalOk = useCallback(() => {
+		setConfirmProjectModalLoading(true);
+
+		console.log('Pressed project form add');
+		projectForm.submit();
+	}, [projectForm]);
+	const handleProjectModalCancel = useCallback(() => {
+		setProjectModalVisible(false);
+	}, []);
+
+	const onSubmitProjectForm = useCallback(
+		(values) => {
+			console.log('Form submitted value', values.projectName);
+
+			// TODO here i need to implement the async call
+			setTimeout(() => {
+				setProjectModalVisible(false);
+				setConfirmProjectModalLoading(false);
+
+				projectForm.resetFields();
+			}, 2000);
+		},
+		[projectForm],
+	);
 
 	const onCreateTask = useCallback(() => {
 		// TODO
@@ -165,7 +177,16 @@ export const App = React.memo(function App() {
 				onOk={handleProjectModalOk}
 				onCancel={handleProjectModalCancel}
 			>
-				<p>{'Project modal'}</p>
+				<Form form={projectForm} layout="vertical" onFinish={onSubmitProjectForm}>
+					<Form.Item
+						name={'projectName'}
+						label={<Typography.Text strong={true}>Name</Typography.Text>}
+						rules={[{ required: true, message: '' }]}
+						style={{ marginBottom: 0 }}
+					>
+						<Input size={'large'} style={{ borderRadius: 8 }} />
+					</Form.Item>
+				</Form>
 			</Modal>
 		</>
 	);
