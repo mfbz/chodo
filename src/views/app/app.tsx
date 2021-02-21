@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useProjects } from './hooks/use-projects';
 import { AppMenu } from './components/app-menu';
 import { Project } from './interfaces/project';
@@ -7,57 +7,18 @@ import { PlusOutlined, WalletOutlined } from '@ant-design/icons';
 import { Avatar, Checkbox, Drawer, Form, Input, List, Modal, Typography } from 'antd';
 import { useUser } from './hooks/use-user';
 import { useTasks } from './hooks/use-tasks';
-import WalletAdapter from '@project-serum/sol-wallet-adapter';
-import { Connection, clusterApiUrl } from '@solana/web3.js';
-import { useEffect } from 'react';
+import { useWallet } from './hooks/use-wallet';
 
 export const App = React.memo(function App() {
+	// Wallet
+	const { wallet, walletConnected, onConnectWallet } = useWallet();
+
 	// Data
 	const user = useUser();
 	const projects = useProjects(user.id);
 
 	const [selectedProject, setSelectedProject] = useState<Project>(projects?.[0]);
 	const tasks = useTasks(selectedProject?.id);
-
-	// Wallet
-	const [walletDrawerVisible, setWalletDrawerVisible] = useState(true);
-
-	// From sol wallet adapter
-	const network = clusterApiUrl('devnet');
-	const [providerUrl, setProviderUrl] = useState('https://www.sollet.io');
-	//const connection = useMemo(() => new Connection(network), [network]);
-	const urlWallet = useMemo(() => new WalletAdapter(providerUrl, network), [providerUrl, network]);
-
-	const [selectedWallet, setSelectedWallet] = useState<any>(undefined);
-	const [, setConnected] = useState(false);
-
-	useEffect(() => {
-		if (selectedWallet) {
-			selectedWallet.on('connect', () => {
-				setConnected(true);
-				setWalletDrawerVisible(false);
-				console.log('Connected to wallet ' + selectedWallet.publicKey.toBase58());
-			});
-			selectedWallet.on('disconnect', () => {
-				setConnected(false);
-				console.log('Disconnected from wallet');
-			});
-			selectedWallet.connect();
-			setWalletDrawerVisible(true);
-
-			return () => {
-				selectedWallet.disconnect();
-			};
-		}
-	}, [selectedWallet]);
-
-	// TODO: Add effect to close drawer if wallet already connected
-
-	// TODO
-	const onClickConnectWallet = useCallback(() => {
-		// TODO
-		setSelectedWallet(urlWallet);
-	}, [urlWallet]);
 
 	// Project
 	const [projectForm] = Form.useForm();
@@ -237,7 +198,7 @@ export const App = React.memo(function App() {
 				</div>
 			</div>
 
-			<Drawer placement={'top'} closable={false} maskClosable={false} visible={walletDrawerVisible} height={200}>
+			<Drawer placement={'top'} closable={false} maskClosable={false} visible={!walletConnected} height={200}>
 				<div
 					style={{
 						width: '100%',
@@ -264,7 +225,7 @@ export const App = React.memo(function App() {
 							marginTop: 24,
 						}}
 					>
-						<VaporButton icon={<WalletOutlined />} size={'large'} enlarge={true} onClick={onClickConnectWallet}>
+						<VaporButton icon={<WalletOutlined />} size={'large'} enlarge={true} onClick={onConnectWallet}>
 							Connect wallet
 						</VaporButton>
 					</div>
