@@ -1,9 +1,9 @@
 #![cfg(feature = "program")]
 
-use crate::utils::serdes::Serdes;
+use crate::state::utils::serdes::Serdes;
 use borsh::{BorshDeserialize, BorshSerialize};
+use solana_sdk::pubkey::{Pubkey, PubkeyError};
 
-/// Use borsh macro for serialization/deserialization purposes
 #[derive(BorshSerialize, BorshDeserialize, PartialEq, Debug)]
 pub struct User {
 	pub name: String,

@@ -73,3 +73,7 @@ So everytime i deploy a new program i must change this config file so that i can
 import { WalletFilled } from '@ant-design/icons';
 
 <WalletFilled />
+
+## RUST
+
+Remember that i have to put all the crates i use and implement in each file where i use them or implement them

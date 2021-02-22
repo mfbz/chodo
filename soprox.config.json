@@ -1,17 +1,17 @@
 {
-	"network": {
-		"active": "http://devnet.solana.com",
-		"map": {
-			"localnet": "http://localhost:8899",
-			"devnet": "http://devnet.solana.com",
-			"testnet": "http://testnet.solana.com:8899",
-			"mainnet": "https://api.mainnet-beta.solana.com"
-		}
-	},
-	"payers": [
-		{
-			"address": "9RqvaF9G27969PJz2aG9BnvJmVr3WWF7YgBL6CNnieaa",
-			"secretKey": "a8fd57d3b19f8769e515bdf787f3dd94a28f4cb71726bb7dde9e787f412115eb7d3ac0c4ea2eb3c1a075b21ca021bc020516cf294421f813df6388c251ca3467"
-		}
-	]
+  "network": {
+    "active": "http://devnet.solana.com",
+    "map": {
+      "localnet": "http://localhost:8899",
+      "devnet": "http://devnet.solana.com",
+      "testnet": "http://testnet.solana.com:8899",
+      "mainnet": "https://api.mainnet-beta.solana.com"
+    }
+  },
+  "payers": [
+    {
+      "address": "2FzMVjZcvpPhh2Wv86PpFsKWGohpGfPybGxyShABgruf",
+      "secretKey": "298b9201c3e819bd23cc0fcf628d3297d6f2737d8ac96ebb79a635f466f94bad12b2aafc7458c2cffb7fd64a8230c17012191ea69a0c4d2ae025ba07df218baa"
+    }
+  ]
 }

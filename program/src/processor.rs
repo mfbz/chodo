@@ -3,12 +3,13 @@
 use crate::error::AppError;
 use crate::instruction::AppInstruction;
 use crate::state::user::User;
+use crate::state::utils::serdes::Serdes;
+
+use borsh::BorshDeserialize;
 use solana_sdk::{
 	account_info::{next_account_info, AccountInfo},
 	entrypoint::ProgramResult,
-	info,
 	program_error::ProgramError,
-	program_pack::Pack,
 	pubkey::Pubkey,
 };
 
@@ -60,7 +61,6 @@ impl Processor {
 
 				Ok(())
 			}
-			_ => Err(ProgramError::InvalidInstructionData),
 		}
 	}
 }

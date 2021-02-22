@@ -1,6 +1,8 @@
 #![cfg(feature = "program")]
 
-#[derive(BorshSerialize, BorshDeserialize, Debug)]
+use borsh::{BorshDeserialize, BorshSerialize};
+
+#[derive(BorshSerialize, BorshDeserialize, PartialEq, Debug)]
 pub enum AppInstruction {
 	/// 0. `[is_signer]`
 	/// 1. `[writable]` Signer's User Account'
