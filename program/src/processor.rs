@@ -9,6 +9,7 @@ use borsh::BorshDeserialize;
 use solana_sdk::{
 	account_info::{next_account_info, AccountInfo},
 	entrypoint::ProgramResult,
+	msg,
 	program_error::ProgramError,
 	pubkey::Pubkey,
 };
@@ -51,6 +52,8 @@ impl Processor {
 				if user_account.try_data_len().unwrap() < User::MIN_SPACE {
 					return Err(ProgramError::AccountDataTooSmall);
 				}
+
+				msg!(name);
 
 				// Create a new object from User constructor to initialize a new user
 				let out_user_account_data = User { name };

@@ -32,8 +32,8 @@ const establishConnection = async () => {
 };
 
 // Establish an account to pay for everything
-const loadPayer = async (connection) => {
-	const _payer = soproxConf.payers[0];
+const loadPayer = async (connection, index = 0) => {
+	const _payer = soproxConf.payers[index];
 	if (!_payer || !_payer.secretKey) throw new Error('Not setup payers yet');
 
 	// Get an account from inserted payer secret key to be able to sign things

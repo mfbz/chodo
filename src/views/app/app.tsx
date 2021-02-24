@@ -214,7 +214,7 @@ export const App = React.memo(function App() {
 				>
 					<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 						<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
-							{'Connect a wallet to handle your projects on chodo'}
+							{'Connect a wallet to manage your projects on chodo'}
 						</Typography.Title>
 					</div>
 
