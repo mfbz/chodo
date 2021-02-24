@@ -1,35 +1,29 @@
 #![cfg(feature = "program")]
 
-use crate::error::AppError;
-use crate::instruction::AppInstruction;
-use crate::state::user::User;
-use crate::state::utils::serdes::Serdes;
-
-use borsh::BorshDeserialize;
-use solana_sdk::{
+use crate::{error::AppError, instruction::AppInstruction, state::User};
+use num_traits::FromPrimitive;
+use solana_program::{
 	account_info::{next_account_info, AccountInfo},
+	decode_error::DecodeError,
 	entrypoint::ProgramResult,
 	msg,
-	program_error::ProgramError,
+	program_error::{PrintProgramError, ProgramError},
+	program_option::COption,
+	program_pack::{IsCreated, Pack},
 	pubkey::Pubkey,
+	sysvar::{rent::Rent, Sysvar},
 };
 
+/// Program state handler.
 pub struct Processor {}
 
 impl Processor {
-	pub fn process(
-		program_id: &Pubkey,
-		accounts: &[AccountInfo],
-		instruction_data: &[u8],
-	) -> ProgramResult {
-		// Unpack the data passed in the transaction deserializing it via implemented Serdes traits
-		let instruction = AppInstruction::try_from_slice(&instruction_data)
-			.map_err(|_| ProgramError::InvalidInstructionData)?;
+	/// Processes an [Instruction](enum.Instruction.html).
+	pub fn process(program_id: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> ProgramResult {
+		// Extract the instruction by using AppInstruction unpack fn on input byte array
+		let instruction = AppInstruction::unpack(input)?;
 
-		// Create an iterator over input accounts array
-		let accounts_iter = &mut accounts.iter();
-
-		// Do different program actions depending on the passed instruction
+		// Depending on returned enum process the correct instruction
 		match instruction {
 			AppInstruction::CreateUser { name } => {
 				// Get signer account from iterator and do checks
@@ -49,7 +43,7 @@ impl Processor {
 				if user_account.owner != program_id {
 					return Err(AppError::IncorrectProgramId.into());
 				}
-				if user_account.try_data_len().unwrap() < User::MIN_SPACE {
+				if user_account.try_data_len().unwrap() < User::LEN {
 					return Err(ProgramError::AccountDataTooSmall);
 				}
 
@@ -57,12 +51,13 @@ impl Processor {
 
 				// Create a new object from User constructor to initialize a new user
 				let out_user_account_data = User { name };
-				// Get a mutable reference of current user_account data
+
+				// Get a mutable reference of current user_account data to modify it
 				let mut user_account_data = user_account.try_borrow_mut_data()?;
 				// Pack current modified user data to user account borrowed data to save it
 				out_user_account_data.pack(&mut user_account_data);
 
-				Ok(())
+				return Ok(());
 			}
 		}
 	}

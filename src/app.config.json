@@ -1,10 +1,4 @@
 {
 	"programAddress": "TODO",
-	"network": "devnet",
-	"walletProviders": [
-		{
-			"name": "sollet",
-			"url": "https://www.sollet.io"
-		}
-	]
+	"network": "localnet"
 }

@@ -1518,6 +1518,14 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@project-serum/borsh@^0.1.0":
+  version "0.1.0"
+  resolved "http://localhost:4873/@project-serum%2fborsh/-/borsh-0.1.0.tgz#cdbff90d06901f8206afb6e1998e5c45aae0aea7"
+  integrity sha512-AWZ/cjThXmb7o2/fMocc8/VaEsqH29yXEwdHnzTXzglxg1vLPZXpBHqGuPfonSfbd7WszgnGXAIHc+9artwMGg==
+  dependencies:
+    bn.js "^5.1.2"
+    buffer-layout "^1.2.0"
+
 "@project-serum/sol-wallet-adapter@^0.1.5":
   version "0.1.5"
   resolved "http://localhost:4873/@project-serum%2fsol-wallet-adapter/-/sol-wallet-adapter-0.1.5.tgz#b8376addcb5e364f0621be639692d1c3b6d28622"
@@ -3063,7 +3071,7 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
   resolved "http://localhost:4873/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
   integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
 
-bn.js@^5.0.0, bn.js@^5.1.1, bn.js@^5.1.3:
+bn.js@^5.0.0, bn.js@^5.1.1, bn.js@^5.1.2, bn.js@^5.1.3:
   version "5.1.3"
   resolved "http://localhost:4873/bn.js/-/bn.js-5.1.3.tgz#beca005408f642ebebea80b042b4d18d2ac0ee6b"
   integrity sha512-GkTiFpjFtUzU9CbMeJ5iazkCzGL3jrhzerzZIuqLABjbwRaFt33I9tUdSNryIptM+RxDet6OKm2WnLXzW51KsQ==
