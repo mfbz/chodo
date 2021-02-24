@@ -3,7 +3,19 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { App } from './views/app';
 import { Home } from './views/home';
 
-export const Main = React.memo(function Main() {
+export const Main = React.memo(function Main({
+	config,
+}: {
+	config: {
+		programAddress: string;
+		network: string;
+		walletProviders: {
+			name: string;
+			url: string;
+		}[];
+	};
+}) {
+	// TODO
 	return (
 		<BrowserRouter>
 			<div style={{ width: '100%', height: '100%', minHeight: '100vh' }}>
