@@ -1,7 +1,7 @@
 #![cfg(feature = "program")]
 
 use crate::error::AppError;
-use crate::state::User;
+use crate::state::UserData;
 use solana_program::{
 	instruction::{AccountMeta, Instruction},
 	program_error::ProgramError,
@@ -18,7 +18,7 @@ use std::str;
 pub enum AppInstruction {
 	/// 0. `[signer]` The account of the signer of the transaction
 	/// 1. `[writable]` The user account created from signer account with seed to be updated with data
-	CreateUser { name: String },
+	SetUserData { name: String },
 }
 
 impl AppInstruction {
@@ -37,7 +37,7 @@ impl AppInstruction {
 				let name = str::from_utf8(&nameByteArr).unwrap()?;
 
 				// Return Create user enum value
-				return Self::CreateUser { name };
+				return Self::SetUserData { name };
 			}
 			_ => return Err(AppError::InvalidInstruction.into()),
 		})
@@ -50,7 +50,7 @@ impl AppInstruction {
 
 		// Pack the instruction depending on data
 		match self {
-			&Self::CreateUser { name } => {
+			&Self::SetUserData { name } => {
 				// I have to put all the instruction data into the buffer
 				// Push the tag of the instruction as first byte
 				buf.push(0);

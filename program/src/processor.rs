@@ -1,6 +1,6 @@
 #![cfg(feature = "program")]
 
-use crate::{error::AppError, instruction::AppInstruction, state::User};
+use crate::{error::AppError, instruction::AppInstruction, state::UserData};
 use num_traits::FromPrimitive;
 use solana_program::{
 	account_info::{next_account_info, AccountInfo},
@@ -25,7 +25,7 @@ impl Processor {
 
 		// Depending on returned enum process the correct instruction
 		match instruction {
-			AppInstruction::CreateUser { name } => {
+			AppInstruction::SetUserData { name } => {
 				// Get signer account from iterator and do checks
 				let signer_account = next_account_info(accounts_iter)?;
 				if !signer_account.is_signer {
@@ -36,21 +36,22 @@ impl Processor {
 				let user_account = next_account_info(accounts_iter)?;
 
 				// Get expected account knowning how to create from seed to verify the one i got as data is the correct one and do checks
-				let expected_user_account_pk = User::create_with_seed(signer_account.key, &program_id)?;
+				// TODO!!!!! CREATE WITH SEED FROM WHAT?
+				let expected_user_account_pk = UserData::create_with_seed(signer_account.key, &program_id)?;
 				if expected_user_account_pk != *user_account.key {
 					return Err(AppError::AccountNotDeterministic.into());
 				}
 				if user_account.owner != program_id {
 					return Err(AppError::IncorrectProgramId.into());
 				}
-				if user_account.try_data_len().unwrap() < User::LEN {
+				if user_account.try_data_len().unwrap() < UserData::LEN {
 					return Err(ProgramError::AccountDataTooSmall);
 				}
 
 				msg!(name);
 
 				// Create a new object from User constructor to initialize a new user
-				let out_user_account_data = User { name };
+				let out_user_account_data = UserData { name };
 
 				// Get a mutable reference of current user_account data to modify it
 				let mut user_account_data = user_account.try_borrow_mut_data()?;

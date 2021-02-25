@@ -1,12 +1,12 @@
 export type AppInstructionLayoutType = {
-	createUser: CreateUserParams;
+	setUserData: SetUserDataParams;
 };
 
-export interface CreateUserParams {
+export interface SetUserDataParams {
 	name: string;
 }
 
 export type AppInstructionType = {
-	type: 'createUser';
-	params: CreateUserParams
+	type: 'setUserData';
+	params: SetUserDataParams;
 };

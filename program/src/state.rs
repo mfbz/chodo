@@ -9,21 +9,21 @@ use solana_program::{
 };
 use std::str;
 
-/// User data
+/// UserData
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
-pub struct User {
+pub struct UserData {
 	/// The name of the user
 	pub name: String,
 }
 
-impl Pack for User {
+impl Pack for UserData {
 	const LEN: usize = 55;
 
-	// Unpack a user object from passed byte array returning a new instance of User struct
+	// Unpack a user object from passed byte array returning a new instance of UserData struct
 	fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
 		// generate an array reference to a subset of a sliceable bit of data (which could be an array, or a slice, or a Vec)
 		// Read all the data until the LENgth of the user data
-		let src = array_ref![src, 0, User::LEN];
+		let src = array_ref![src, 0, UserData::LEN];
 
 		// break an array into a series of contiguous and non-overlapping arrays, generating sub arrays of bytes
 		// each value destructured on the left is an array of bytes
@@ -34,27 +34,27 @@ impl Pack for User {
 		let name = str::from_utf8(&nameByteArr).unwrap()?;
 
 		// I unpacked correctly, return unpacked struct instance
-		Ok(User { name });
+		Ok(UserData { name });
 	}
 
 	// All applied on dst mutable byte array reference passed and return nothing because it modified dst input
 	fn pack_into_slice(&self, dst: &mut [u8]) {
 		// generate a mutable array reference to a subset of a sliceable bit of data (which could be an array, or a slice, or a Vec)
-		let dst = array_mut_ref![dst, 0, User::LEN];
+		let dst = array_mut_ref![dst, 0, UserData::LEN];
 
 		// generate a series of mutable array references to an input mutable array reference
 		// dst is an array of mutable references that will be filled with byte arrays to be packed
 		let (nameByteArr_dst) = mut_array_refs![dst, 55];
 
 		// Create a mutable user object from itself to get its values data
-		let &User { name } = self;
+		let &UserData { name } = self;
 
 		// Convert data to byte array and save into its dst array
 		*nameByteArr_dst = name.as_bytes();
 	}
 }
 
-impl Sealed for User {}
+impl Sealed for UserData {}
 
 // State pack/unpack helpers
 fn pack_coption_key(src: &COption<Pubkey>, dst: &mut [u8; 36]) {
