@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { VaporLayout } from './components/vapor-layout';
 import { ConnectionProvider } from './solana/connection';
+import { WalletProvider } from './solana/wallet';
 import { App } from './views/app';
 import { Home } from './views/home';
 
@@ -10,22 +12,25 @@ export const Main = React.memo(function Main({
 	config: {
 		programAddress: string;
 		network: string;
+		walletProviderUrl: string;
 	};
 }) {
 	return (
 		<BrowserRouter>
 			<ConnectionProvider network={config.network}>
-				<div style={{ width: '100%', height: '100%', minHeight: '100vh' }}>
-					<Switch>
-						<Route key={'/'} path={'/'} exact={true}>
-							<Home />
-						</Route>
+				<WalletProvider walletProviderUrl={config.walletProviderUrl}>
+					<VaporLayout>
+						<Switch>
+							<Route key={'/'} path={'/'} exact={true}>
+								<Home />
+							</Route>
 
-						<Route key={'/app'} path={'/app'}>
-							<App />
-						</Route>
-					</Switch>
-				</div>
+							<Route key={'/app'} path={'/app'} exact={true}>
+								<App />
+							</Route>
+						</Switch>
+					</VaporLayout>
+				</WalletProvider>
 			</ConnectionProvider>
 		</BrowserRouter>
 	);

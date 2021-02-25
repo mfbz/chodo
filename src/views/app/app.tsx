@@ -1,21 +1,30 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useProjects } from './hooks/use-projects';
 import { AppMenu } from './components/app-menu';
 import { Project } from './interfaces/project';
 import { VaporButton } from '../../components/vapor-button';
-import { PlusOutlined, WalletOutlined } from '@ant-design/icons';
-import { Avatar, Checkbox, Drawer, Form, Input, List, Modal, Typography } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Avatar, Checkbox, Form, Input, List, Modal, Typography } from 'antd';
 import { useUser } from './hooks/use-user';
 import { useTasks } from './hooks/use-tasks';
-import { useWallet } from './hooks/use-wallet';
+import { useWallet } from '../../solana/wallet';
 
 export const App = React.memo(function App() {
 	// Wallet
-	const { wallet, walletConnected, onConnectWallet } = useWallet();
+	const { wallet, connected: walletConnected, showDrawer: showWalletDrawer } = useWallet();
+	// If wallet is not connected open directly the drawer to allow the user to connect
+	useEffect(() => {
+		if (!walletConnected) {
+			showWalletDrawer();
+		}
+	}, [walletConnected, showWalletDrawer]);
+
+	// TODOOOOOOOOOOOOOOOOOOOOOOOO
+	// GO ON FROM THIS CONSIDERING THAT I'M CONNECTED!!!!!! OTHERWISE THE WALLET DRAWER IS COVERING EVERRYTHING PREVENTING SUBMISSIONS
 
 	// User
 	// TODO: If cannot find a user from a wallet i need to show a modal or expand the drawer to create an account
-	const user = useUser(wallet);
+	const user = useUser();
 
 	// Project
 	const projects = useProjects(user.id);
@@ -199,40 +208,6 @@ export const App = React.memo(function App() {
 					</div>
 				</div>
 			</div>
-
-			<Drawer placement={'top'} closable={false} maskClosable={false} visible={!walletConnected} height={200}>
-				<div
-					style={{
-						width: '100%',
-						height: '100%',
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-						padding: 24,
-					}}
-				>
-					<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-						<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
-							{'Connect a wallet to manage your projects on chodo'}
-						</Typography.Title>
-					</div>
-
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'center',
-							alignItems: 'center',
-							marginTop: 24,
-						}}
-					>
-						<VaporButton icon={<WalletOutlined />} size={'large'} enlarge={true} onClick={onConnectWallet}>
-							Connect wallet
-						</VaporButton>
-					</div>
-				</div>
-			</Drawer>
 
 			<Modal
 				title={

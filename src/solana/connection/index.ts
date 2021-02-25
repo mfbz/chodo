@@ -1,5 +1,4 @@
 export * from './connection-provider';
-export * from './context/connection-context';
 export * from './constants/connection-constants';
 export * from './hooks/use-connection';
 export * from './hooks/use-connection-config';

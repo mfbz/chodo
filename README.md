@@ -1,32 +1,6 @@
 # chodo
 
-## MVP 1
-
-A to-do list app.
-
-### Features
-
-- create a profile
-- create a project
-- create a project task
-- complete a project task
-
-## MVP 2
-
-A todo-list app _that rewards upon completing tasks_.
-
-### Features
-
-todo
-
-## Networks
-
-There are several networks that can be used:
-
-- localnet: http://localhost:8899
-- devnet: http://devnet.solana.com
-- testnet: http://testnet.solana.com:8899
-- mainnet: https://api.mainnet-beta.solana.com
+A to-do list with rewards upon completing tasks.
 
 ## Problems
 

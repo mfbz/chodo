@@ -1,5 +1,5 @@
-import WalletAdapter from '@project-serum/sol-wallet-adapter';
 import { Connection, TransactionInstruction, Transaction, Account } from '@solana/web3.js';
+import { WalletAdapter } from '../../wallet';
 import { getErrorForTransaction } from './get-error-for-transaction';
 
 export const sendTransaction = async (
@@ -39,21 +39,7 @@ export const sendTransaction = async (
 		if (status?.err) {
 			const errors = await getErrorForTransaction(connection, txid);
 
-			/*
-			notify({
-				message: 'Transaction failed...',
-				description: (
-					<>
-						{errors.map((err) => (
-							<div>{err}</div>
-						))}
-						<ExplorerLink address={txid} type="transaction" />
-					</>
-				),
-				type: 'error',
-			});
-			*/
-
+			console.error('Transaction failed...', errors);
 			throw new Error(`Raw transaction ${txid} failed (${JSON.stringify(status)})`);
 		}
 	}
