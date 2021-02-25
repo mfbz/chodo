@@ -6,4 +6,4 @@ export interface UserData {
 }
 
 // Size is 55, 1 byte per character FOR NAME
-export const USER_LAYOUT: Layout<UserData> = struct([utf8(55, 'name')]);
+export const USER_DATA_LAYOUT: Layout<UserData> = struct([utf8(55, 'name')]);

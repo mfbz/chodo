@@ -68,10 +68,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
 			const createUser = async (wallet: WalletAdapter) => {
 				if (wallet.publicKey) {
-					// TODO CREATE USER <--- I'M here!
-					// 1 - Do an airdrop to wallet account
+					// Do an airdrop to wallet account
 					await requestAirdrop(endpoint, connection, wallet.publicKey);
 
+					// TODO CREATE USER <--- I'M here!
 					// 2 - Create a user account through SystemProgram transaction
 					// 3 - Set user data to the account using submitted value
 					// 4 - Set user and close everything
