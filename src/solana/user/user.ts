@@ -6,6 +6,7 @@ import { UserData } from '../program/state/store/user-data';
 export const USER_SEED = 'user';
 
 // Holds user account public key, data and useful methods to interact with the program
+// In here i have united all the methods i can use to get data or do instructions on the chain for the user
 export class User {
 	publicKey: PublicKey;
 	data: UserData;

@@ -5,6 +5,7 @@ import { APP_PROGRAM_ID } from '../program/instruction/constants/instruction-con
 import { useWallet, WalletAdapter } from '../wallet';
 import { UserContext } from './context/user-context';
 import { User } from './user';
+import { requestAirdrop } from './utils/request-airdrop';
 
 // must handle:
 // - create user account modal
@@ -29,11 +30,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	const closeModal = useCallback(() => setModalVisible(false), []);
 
 	// The connection used to do transactions
-	const { connection } = useConnection();
+	const { endpoint, connection } = useConnection();
 	// The wallet i need to use for logging the user
 	const { wallet } = useWallet();
 
-	// If I detected a wallet and it's connected try to login with user account automatically
+	// If I detected a wallet and it's connected try to get user data and set user automatically
 	useEffect(() => {
 		const initializeUser = async (wallet: WalletAdapter) => {
 			if (wallet.publicKey) {
@@ -65,21 +66,29 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 		(values) => {
 			console.log('User form submitted values', values);
 
-			const createUser = async () => {
-				// TODO CREATE USER <--- I'M here!
-				// 1 - Do an airdrop to wallet account
-				// 2 - Create a user account through SystemProgram transaction
-				// 3 - Set user data to the account using submitted value
-				// 4 - Set user and close everything
+			const createUser = async (wallet: WalletAdapter) => {
+				if (wallet.publicKey) {
+					// TODO CREATE USER <--- I'M here!
+					// 1 - Do an airdrop to wallet account
+					await requestAirdrop(endpoint, connection, wallet.publicKey);
 
-				setModalVisible(false);
-				setConfirmModalLoading(false);
+					// 2 - Create a user account through SystemProgram transaction
+					// 3 - Set user data to the account using submitted value
+					// 4 - Set user and close everything
 
-				userForm.resetFields();
+					setModalVisible(false);
+					setConfirmModalLoading(false);
+
+					userForm.resetFields();
+				}
 			};
-			createUser();
+
+			if (wallet) {
+				createUser(wallet);
+			}
 		},
-		[userForm],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[wallet, userForm],
 	);
 
 	return (
@@ -94,7 +103,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 				<Modal
 					title={
 						<Typography.Title level={5} style={{ padding: 0, margin: 0 }}>
-							{'Create user'}
+							{'Create account'}
 						</Typography.Title>
 					}
 					okText={'Create'}
