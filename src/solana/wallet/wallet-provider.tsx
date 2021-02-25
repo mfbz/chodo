@@ -1,7 +1,7 @@
 import { Drawer, Typography } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { VaporButton } from '../../components/vapor-button';
-import { useConnectionConfig } from '../connection';
+import { useConnection } from '../connection';
 import { WALLET_ENDPOINTS } from './constants/wallet-constants';
 import { WalletContext } from './context/wallet-context';
 import { WalletAdapter } from './interfaces/wallet-adapter';
@@ -16,7 +16,7 @@ export const WalletProvider = ({
 	children: React.ReactNode;
 }) => {
 	// Use connection context to get the endpoint for connection
-	const { endpoint } = useConnectionConfig();
+	const { endpoint } = useConnection();
 
 	// The provider of the wallet to be used
 	const [providerUrl, setProviderUrl] = useState(walletProviderUrl);

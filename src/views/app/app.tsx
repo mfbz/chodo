@@ -5,7 +5,6 @@ import { Project } from './interfaces/project';
 import { VaporButton } from '../../components/vapor-button';
 import { PlusOutlined } from '@ant-design/icons';
 import { Avatar, Checkbox, Form, Input, List, Modal, Typography } from 'antd';
-import { useUser } from './hooks/use-user';
 import { useTasks } from './hooks/use-tasks';
 import { useWallet } from '../../solana/wallet';
 
@@ -21,7 +20,6 @@ export const App = React.memo(function App() {
 
 	// TODOOOOOOOOOOOOOOOOOOOOOOOO
 	// GO ON FROM THIS CONSIDERING THAT I'M CONNECTED!!!!!! OTHERWISE THE WALLET DRAWER IS COVERING EVERRYTHING PREVENTING SUBMISSIONS
-
 	// User
 	// TODO: If cannot find a user from a wallet i need to show a modal or expand the drawer to create an account
 	const user = useUser();

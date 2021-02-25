@@ -1,7 +1,12 @@
-import { Connection } from '@solana/web3.js';
 import { useContext } from 'react';
 import { ConnectionContext } from '../context/connection-context';
 
 export function useConnection() {
-	return useContext(ConnectionContext).connection as Connection;
+	const context = useContext(ConnectionContext);
+
+	return {
+		endpoint: context.endpoint,
+		connection: context.connection,
+		sendConnection: context.sendConnection,
+	};
 }
