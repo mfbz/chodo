@@ -66,7 +66,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 			console.log('User form submitted values', values);
 
 			const createUser = async () => {
-				// TODO CREATE USER
+				// TODO CREATE USER <--- I'M here!
 				// 1 - Do an airdrop to wallet account
 				// 2 - Create a user account through SystemProgram transaction
 				// 3 - Set user data to the account using submitted value

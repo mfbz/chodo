@@ -21,8 +21,12 @@ export class User {
 		const userInfo = await connection.getAccountInfo(userPk);
 
 		if (userInfo != null) {
-			// Decode user data to use it to create user object
-			const data = ProgramState.decodeUserData(userInfo.data);
+			// Get buffer from info data
+			const buffer = Buffer.from(userInfo.data);
+			// Decode buffer to user data
+			const data = ProgramState.decodeUserData(buffer);
+
+			// Return a new user with data taken from the user account
 			return new User(userPk, data);
 		}
 		return null;
