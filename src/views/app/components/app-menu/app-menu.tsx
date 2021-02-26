@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ChodoLogoSVG from '../../../../assets/logo.svg';
 import { List, Typography } from 'antd';
-import { Project } from '../../interfaces/project';
 import { VaporButton } from '../../../../components/vapor-button';
 import { PlusOutlined } from '@ant-design/icons';
+import { Project } from '../../../../solana/project';
 
 export const AppMenu = React.memo(function AppMenu({
 	selectedProject,
@@ -62,9 +62,9 @@ export const AppMenu = React.memo(function AppMenu({
 					}
 					dataSource={projects}
 					split={false}
-					renderItem={(item, index) => {
-						const isSelected = item.id === selectedProject?.id;
-						const isLast = index === projects.length - 1;
+					renderItem={(item, _index) => {
+						const isSelected = item.data.index === selectedProject?.data.index;
+						const isLast = _index === projects.length - 1;
 
 						return (
 							<List.Item
@@ -89,7 +89,7 @@ export const AppMenu = React.memo(function AppMenu({
 										paddingRight: 16,
 									}}
 								>
-									<Typography.Text strong={isSelected}>{item.name}</Typography.Text>
+									<Typography.Text strong={isSelected}>{item.data.name}</Typography.Text>
 								</div>
 							</List.Item>
 						);
