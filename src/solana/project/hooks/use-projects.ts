@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useConnection } from '../../connection';
 import { APP_PROGRAM_ID } from '../../program/instruction/constants/instruction-constants';
-import { ProjectData } from '../../program/state/schema/project-data';
 import { ProgramTransaction } from '../../program/transaction';
 import { User, useUser } from '../../user';
 import { useWallet } from '../../wallet';
@@ -25,6 +24,7 @@ export function useProjects() {
 		if (user) {
 			fetchProjects(user);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
 	// Due to the fact that the initialization operation is expensive i provide useful methods to updated projects array
@@ -39,12 +39,10 @@ export function useProjects() {
 				throw new Error('User not found');
 			}
 
-			// The index of the new project is the last project index + 1, considering that i start from 0 so it's the length
-			const projectIndex = projects.length;
-
 			// The data to be inserted for creating the project
+			// The index of the new project is the last project index + 1, considering that i start from 0 so it's the length
 			const data = {
-				index: projectIndex,
+				index: projects.length,
 				name,
 			};
 
@@ -54,7 +52,7 @@ export function useProjects() {
 				wallet,
 				APP_PROGRAM_ID,
 				user.publicKey,
-				projectIndex,
+				data.index,
 			);
 			// Set project data to the account using submitted value
 			await ProgramTransaction.setProjectAccountData(
@@ -63,11 +61,11 @@ export function useProjects() {
 				APP_PROGRAM_ID,
 				data,
 				user.publicKey,
-				projectIndex,
+				data.index,
 			);
 
 			// Get the project with filled data
-			const project = await Project.fetch(connection, user.publicKey, APP_PROGRAM_ID, projectIndex);
+			const project = await Project.fetch(connection, user.publicKey, APP_PROGRAM_ID, data.index);
 			if (project) {
 				setProjects((_projects) => [..._projects, project]);
 			} else {

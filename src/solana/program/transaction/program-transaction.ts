@@ -37,7 +37,7 @@ export class ProgramTransaction {
 			newAccountPubkey: userPk,
 		});
 		// Add to the transaction to be executed
-		transaction.add(instruction)
+		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
 		sendSignedTransaction(connection, wallet, transaction);
@@ -62,14 +62,20 @@ export class ProgramTransaction {
 		// Create the instruction
 		const instruction = ProgramInstruction.setUserData(keys, data);
 		// Add to the tx to be executed
-		transaction.add(instruction)
+		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
 		sendSignedTransaction(connection, wallet, transaction);
 		console.log('setUserAccountData transaction completed succesfully');
 	}
 
-	static async createEmptyProjectAccount(connection: Connection, wallet: WalletAdapter, programId: PublicKey, userPk: PublicKey, index: number) {
+	static async createEmptyProjectAccount(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		userPk: PublicKey,
+		index: number,
+	) {
 		if (!wallet.publicKey) {
 			throw new Error('The wallet does not have a public key');
 		}
@@ -93,14 +99,21 @@ export class ProgramTransaction {
 			newAccountPubkey: projectPk,
 		});
 		// Add to the transaction to be executed
-		transaction.add(instruction)
+		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
 		sendSignedTransaction(connection, wallet, transaction);
 		console.log('createEmptyProjectAccount transaction completed succesfully');
 	}
 
-	static async setProjectAccountData(connection: Connection, wallet: WalletAdapter, programId: PublicKey, data: ProjectData, userPk: PublicKey, index: number) {
+	static async setProjectAccountData(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		data: ProjectData,
+		userPk: PublicKey,
+		index: number,
+	) {
 		if (!wallet.publicKey) {
 			throw new Error('The wallet does not have a public key');
 		}
@@ -119,14 +132,20 @@ export class ProgramTransaction {
 		// Create the instruction
 		const instruction = ProgramInstruction.setProjectData(keys, data);
 		// Add to the tx to be executed
-		transaction.add(instruction)
+		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
 		sendSignedTransaction(connection, wallet, transaction);
 		console.log('setProjectAccountData transaction completed succesfully');
 	}
 
-	static async createEmptyTaskAccount(connection: Connection, wallet: WalletAdapter, programId: PublicKey, projectPk: PublicKey, index: number) {
+	static async createEmptyTaskAccount(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		projectPk: PublicKey,
+		index: number,
+	) {
 		if (!wallet.publicKey) {
 			throw new Error('The wallet does not have a public key');
 		}
@@ -150,14 +169,22 @@ export class ProgramTransaction {
 			newAccountPubkey: taskPk,
 		});
 		// Add to the transaction to be executed
-		transaction.add(instruction)
+		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
 		sendSignedTransaction(connection, wallet, transaction);
 		console.log('createEmptyTaskAccount transaction completed succesfully');
 	}
 
-	static async setTaskAccountData(connection: Connection, wallet: WalletAdapter, programId: PublicKey, data: TaskData, userPk: PublicKey, projectPk: PublicKey, index: number) {
+	static async setTaskAccountData(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		data: TaskData,
+		userPk: PublicKey,
+		projectPk: PublicKey,
+		index: number,
+	) {
 		if (!wallet.publicKey) {
 			throw new Error('The wallet does not have a public key');
 		}
@@ -177,7 +204,7 @@ export class ProgramTransaction {
 		// Create the instruction
 		const instruction = ProgramInstruction.setTaskData(keys, data);
 		// Add to the tx to be executed
-		transaction.add(instruction)
+		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
 		sendSignedTransaction(connection, wallet, transaction);
