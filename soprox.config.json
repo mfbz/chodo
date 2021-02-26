@@ -1,6 +1,6 @@
 {
   "network": {
-    "active": "http://localhost:8899",
+    "active": "http://devnet.solana.com",
     "map": {
       "localnet": "http://localhost:8899",
       "devnet": "http://devnet.solana.com",
@@ -10,8 +10,8 @@
   },
   "payers": [
     {
-      "address": "C4wH78srQKJNdK1ccRAxw7TNjP7P5NEHXQWBcGmoNwAv",
-      "secretKey": "8f7f88c40b3d39c9d9a22584692baceeaf28f114ab2e56abac58965b5f4e74d8a472ababf0c063e17505b4374dbde884759fb692ec1b03a64641f2f69d6912bf"
+      "address": "6RmbsvgZYbBBFBduYHjikoh9mehvTSgihJe4KLXWenjS",
+      "secretKey": "277211b1230616ec8185d0bf9e0d20aa83f6d8afdc1455906442016691e736e450a2ce114c7a43b62d5c6648440a0a1e56ecb1963ebd804f35c34eb3e5fe1109"
     }
   ]
 }

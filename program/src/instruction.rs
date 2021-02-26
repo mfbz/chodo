@@ -1,22 +1,14 @@
 #![cfg(feature = "program")]
 
 use crate::error::AppError;
-use crate::state::UserData;
-use solana_program::{
-	instruction::{AccountMeta, Instruction},
-	program_error::ProgramError,
-	program_option::COption,
-	pubkey::Pubkey,
-	sysvar,
-};
-use std::convert::TryInto;
+use solana_sdk::program_error::ProgramError;
 use std::mem::size_of;
 use std::str;
 
 /// Instructions supported by the App program.
 #[derive(Clone, Debug, PartialEq)]
 pub enum AppInstruction {
-	/// 0. `[signer]` The account of the signer of the transaction
+	/// 0. `[signer]` The wallet account that is signer of the transaction
 	/// 1. `[writable]` The user account created from signer account with seed to be updated with data
 	SetUserData { name: String },
 }
@@ -34,12 +26,14 @@ impl AppInstruction {
 				// 55 because it's the length of name data
 				let (nameByteArr, rest) = rest.split_at(55);
 				// Try conversion of input data to string otherwise trigger error
-				let name = str::from_utf8(&nameByteArr).unwrap()?;
+				let name = str::from_utf8(&nameByteArr).unwrap();
 
 				// Return Create user enum value
 				return Self::SetUserData { name };
 			}
-			_ => return Err(AppError::InvalidInstruction.into()),
+			_ => {
+				return Err(AppError::InvalidInstruction.into());
+			}
 		})
 	}
 

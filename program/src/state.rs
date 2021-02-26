@@ -1,7 +1,7 @@
 #![cfg(feature = "program")]
 
 use arrayref::{array_mut_ref, array_ref, array_refs, mut_array_refs};
-use solana_program::{
+use solana_sdk::{
 	program_error::ProgramError,
 	program_option::COption,
 	program_pack::{Pack, Sealed},
@@ -10,10 +10,17 @@ use solana_program::{
 use std::str;
 
 /// UserData
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct UserData {
 	/// The name of the user
 	pub name: String,
+}
+
+impl UserData {
+	pub const SEED: &'static str = "user";
+	pub fn create_with_seed(wallet_pk: &Pubkey, program_id: &Pubkey) -> Result<Pubkey, PubkeyError> {
+		Pubkey::create_with_seed(&wallet_pk, UserData::SEED, &program_id)
+	}
 }
 
 impl Pack for UserData {
@@ -31,7 +38,7 @@ impl Pack for UserData {
 		let (nameByteArr) = array_refs![src, 55];
 
 		// Extract name string from utf8 byte array by unwrapping and sending the error above if invalid data
-		let name = str::from_utf8(&nameByteArr).unwrap()?;
+		let name = str::from_utf8(&nameByteArr).unwrap();
 
 		// I unpacked correctly, return unpacked struct instance
 		Ok(UserData { name });

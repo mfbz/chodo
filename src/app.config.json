@@ -1,5 +1,5 @@
 {
-  "programAddress": "TODO",
-  "network": "localnet",
-  "walletProviderUrl": "https://www.sollet.io"
+	"programAddress": "TODO",
+	"network": "devnet",
+	"walletProviderUrl": "https://www.sollet.io"
 }
