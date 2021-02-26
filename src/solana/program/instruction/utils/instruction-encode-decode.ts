@@ -1,6 +1,6 @@
 import { TransactionInstruction } from '@solana/web3.js';
 import { APP_INSTRUCTION_MAX_SPAN, APP_INSTRUCTION_LAYOUT } from '../constants/instruction-constants';
-import { AppInstructionLayoutType, AppInstructionType, SetUserDataParams } from '../interfaces/instruction-schema';
+import { AppInstructionLayoutType, AppInstructionType, SetProjectDataParams, SetTaskDataParams, SetUserDataParams } from '../interfaces/instruction-schema';
 
 export function encodeAppInstructionData(instruction: AppInstructionLayoutType) {
 	const b = Buffer.alloc(APP_INSTRUCTION_MAX_SPAN);
@@ -19,6 +19,21 @@ export function decodeAppInstruction(instruction: TransactionInstruction): AppIn
 		const type = 'setUserData';
 		const params: SetUserDataParams = {
 			name: data.setUserData.name,
+		};
+		return { type, params };
+	} else if ('setProjectData' in data) {
+		const type = 'setProjectData';
+		const params: SetProjectDataParams = {
+			index: data.setProjectData.index,
+			name: data.setProjectData.name,
+		};
+		return { type, params };
+	} else if ('setTaskData' in data) {
+		const type = 'setTaskData';
+		const params: SetTaskDataParams = {
+			index: data.setTaskData.index,
+			message: data.setTaskData.message,
+			completed: data.setTaskData.completed,
 		};
 		return { type, params };
 	} else {

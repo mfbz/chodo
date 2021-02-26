@@ -1,6 +1,6 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { ProgramState } from '../program/state';
-import { UserData } from '../program/state/store/user-data';
+import { UserData } from '../program/state/schema/user-data';
 
 // The seed used to deterministically get the user account from wallet account
 export const USER_SEED = 'user';
@@ -32,7 +32,12 @@ export class User {
 		return null;
 	}
 
+	static getSeed() {
+		return USER_SEED;
+	}
+
 	static async getPublicKeyFromSeed(walletPk: PublicKey, programId: PublicKey) {
-		return await PublicKey.createWithSeed(walletPk, USER_SEED, programId);
+		const seed = User.getSeed();
+		return await PublicKey.createWithSeed(walletPk, seed, programId);
 	}
 }
