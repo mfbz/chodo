@@ -1,6 +1,12 @@
 import { TransactionInstruction } from '@solana/web3.js';
 import { APP_INSTRUCTION_MAX_SPAN, APP_INSTRUCTION_LAYOUT } from '../constants/instruction-constants';
-import { AppInstructionLayoutType, AppInstructionType, SetProjectDataParams, SetTaskDataParams, SetUserDataParams } from '../interfaces/instruction-schema';
+import {
+	AppInstructionLayoutType,
+	AppInstructionType,
+	SetProjectDataParams,
+	SetTaskDataParams,
+	SetUserDataParams,
+} from '../interfaces/instruction-schema';
 
 export function encodeAppInstructionData(instruction: AppInstructionLayoutType) {
 	const b = Buffer.alloc(APP_INSTRUCTION_MAX_SPAN);

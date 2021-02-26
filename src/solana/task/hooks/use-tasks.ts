@@ -1,3 +1,4 @@
+import { PublicKey } from '@solana/web3.js';
 import { useCallback, useEffect, useState } from 'react';
 import { useConnection } from '../../connection';
 import { APP_PROGRAM_ID } from '../../program/instruction/constants/instruction-constants';
@@ -7,9 +8,8 @@ import { User, useUser } from '../../user';
 import { useWallet } from '../../wallet';
 import { Task } from '../task';
 
-// TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 // Load all the tasks of the user in the context
-export function useTasks() {
+export function useTasks(projectPk: PublicKey) {
 	const { connection } = useConnection();
 	const { wallet } = useWallet();
 	const { user } = useUser();

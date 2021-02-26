@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
-import { useConnection } from "../../connection";
-import { APP_PROGRAM_ID } from "../../program/instruction/constants/instruction-constants";
-import { ProjectData } from "../../program/state/schema/project-data";
-import { ProgramTransaction } from "../../program/transaction";
-import { User, useUser } from "../../user";
-import { useWallet } from "../../wallet";
-import { Project } from "../project";
+import { useCallback, useEffect, useState } from 'react';
+import { useConnection } from '../../connection';
+import { APP_PROGRAM_ID } from '../../program/instruction/constants/instruction-constants';
+import { ProjectData } from '../../program/state/schema/project-data';
+import { ProgramTransaction } from '../../program/transaction';
+import { User, useUser } from '../../user';
+import { useWallet } from '../../wallet';
+import { Project } from '../project';
 
 // Load all the projects of the user in the context
 export function useProjects() {
@@ -31,7 +31,7 @@ export function useProjects() {
 	// Without the need to reload it everytime
 	// It's async so that i can wait for in where i use it and throw if problems so i handle them in UI
 	const createProject = useCallback(
-		async (data: ProjectData) => {
+		async ({ name }: { name: string }) => {
 			if (!wallet || !wallet.publicKey) {
 				throw new Error('Wallet not found or wallet public key not valid');
 			}
@@ -40,26 +40,45 @@ export function useProjects() {
 			}
 
 			// The index of the new project is the last project index + 1, considering that i start from 0 so it's the length
-			const projectIndex = projects.length
+			const projectIndex = projects.length;
+
+			// The data to be inserted for creating the project
+			const data = {
+				index: projectIndex,
+				name,
+			};
 
 			// Create an empty project account through SystemProgram transaction
-			await ProgramTransaction.createEmptyProjectAccount(connection, wallet, APP_PROGRAM_ID, user.publicKey, projectIndex);
+			await ProgramTransaction.createEmptyProjectAccount(
+				connection,
+				wallet,
+				APP_PROGRAM_ID,
+				user.publicKey,
+				projectIndex,
+			);
 			// Set project data to the account using submitted value
-			await ProgramTransaction.setProjectAccountData(connection, wallet, APP_PROGRAM_ID, data, user.publicKey, projectIndex);
+			await ProgramTransaction.setProjectAccountData(
+				connection,
+				wallet,
+				APP_PROGRAM_ID,
+				data,
+				user.publicKey,
+				projectIndex,
+			);
 
 			// Get the project with filled data
 			const project = await Project.fetch(connection, user.publicKey, APP_PROGRAM_ID, projectIndex);
 			if (project) {
-				setProjects(_projects => [..._projects, project]);
+				setProjects((_projects) => [..._projects, project]);
 			} else {
 				throw new Error('An error occurred creating project account');
 			}
 		},
 		[connection, wallet, user, projects],
-	)
+	);
 
 	return {
 		projects,
-		createProject
-	}
+		createProject,
+	};
 }

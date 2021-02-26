@@ -1,8 +1,6 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { ProgramState } from '../program/state';
 import { TaskData } from '../program/state/schema/task-data';
-import { Project } from '../project';
-import { User } from '../user';
 
 // The seed used to deterministically get the task account from wallet account
 export const TASK_SEED = 'task';
