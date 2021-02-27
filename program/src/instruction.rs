@@ -1,13 +1,12 @@
 #![cfg(feature = "program")]
 
 use crate::error::AppError;
-use crate::schema::user_data::vec_to_array_55;
 use solana_sdk::program_error::ProgramError;
 use std::{char, convert::TryInto};
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum AppInstruction {
-	SetUserData { name: [char; 55] },
+	SetUserData { name: String },
 }
 
 impl AppInstruction {
@@ -24,11 +23,10 @@ impl AppInstruction {
 					.unwrap()
 					.chunks(4)
 					.map(|slice| slice.try_into().unwrap())
-					.map(|slice| u32::from_le_bytes(slice))
-					.map(|slice| char::from_u32(slice).unwrap())
+					.map(|slice| u8::from_le_bytes(slice))
 					.collect();
 				Self::SetUserData {
-					name: vec_to_array_55(vec_name),
+					name: String::from_utf8(vec_name).unwrap(),
 				}
 			}
 			_ => return Err(AppError::InvalidInstruction.into()),

@@ -8,9 +8,9 @@ use solana_sdk::{
 use std::convert::TryInto;
 
 // Remember that every utf8 char takes 4 bytes
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct UserData {
-	pub name: [char; 55],
+	pub name: String,
 }
 
 impl Sealed for UserData {}
@@ -34,13 +34,12 @@ impl Pack for UserData {
 		let vec_name: Vec<_> = name
 			.chunks(4)
 			.map(|slice| slice.try_into().unwrap())
-			.map(|slice| u32::from_le_bytes(slice))
-			.map(|slice| char::from_u32(slice).unwrap())
+			.map(|slice| u8::from_le_bytes(slice))
 			.collect();
 
 		// Convert from vector to char array like name type
 		Ok(UserData {
-			name: vec_to_array_55(vec_name),
+			name: String::from_utf8(vec_name).unwrap(),
 		})
 	}
 	// Pack data from the data struct to [u8]
@@ -52,22 +51,14 @@ impl Pack for UserData {
 
 		// Destructure a reference of self to get data to be packed
 		// name is like ['m', 'f', 'b', 'z'] so 1 char 55 times
-		let &UserData { name } = self;
+		let UserData { name } = self;
 
 		// Counter to get the correct char in name
-		let mut index = 0;
-		// dst_name_iter is like [$$$$, $$$$, $$$$,$$$$, ...$$$$] so $$$$ repeated 55 times
-		for dst_name_chunk in dst_name.chunks(4) {
-			// Replace the data in the chunk with name values
-			name[index].encode_utf8(&mut *dst_name_chunk);
-			// Increment counter for next iteration
-			index += 1;
-		}
+		pack_string_220(&name, dst_name);
 	}
 }
 
-// Convert a vector to an array of fixed length of 55 (to be used to decode name property)
-pub fn vec_to_array_55<T>(v: Vec<T>) -> [T; 55] {
-	v.try_into()
-		.unwrap_or_else(|v: Vec<T>| panic!("Expected a Vec of length {} but it was {}", 55, v.len()))
+// 220 is 55 * 4
+fn pack_string_220(src: &String, dst: &mut [u8; 220]) {
+	dst.copy_from_slice(src.as_ref());
 }
