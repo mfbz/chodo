@@ -21,8 +21,6 @@ export class ProgramInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(0);
 		// Object data strings need to be passed as array of chars
-		// The string must be an array of the size of the STRING.LENGTH * bytes * string
-
 		// The first one is my correct utf bytes identifying char
 		const nameCharArr = name.split('');
 		// Concat N elements to make nameCharArr of the size of the SCHEMA so 55 * 4 bytes per char, so 55 elements

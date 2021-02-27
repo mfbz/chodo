@@ -10,3 +10,5 @@ export const USER_DATA_SCHEMA = [
 	{ key: 'name', type: '[char;55]' },
 	{ key: 'premium', type: 'bool' },
 ];
+
+export const USER_DATA_SPAN = 55 * 4 + 1;

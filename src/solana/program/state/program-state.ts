@@ -8,9 +8,6 @@ export class ProgramState {
 		const layout = new soproxABI.struct(USER_DATA_SCHEMA);
 		layout.fromBuffer(data);
 
-		console.log('LAYOUT');
-		console.log(layout);
-
 		return {
 			name: layout.value.name,
 			premium: layout.value.premium,

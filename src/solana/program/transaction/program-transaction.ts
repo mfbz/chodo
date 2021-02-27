@@ -6,10 +6,8 @@ import { WalletAdapter } from '../../wallet';
 import { ProgramInstruction } from '../instruction';
 import { ProjectData } from '../state/schema/project-data';
 import { TaskData } from '../state/schema/task-data';
-import { UserData } from '../state/schema/user-data';
+import { UserData, USER_DATA_SPAN } from '../state/schema/user-data';
 import { sendSignedTransaction } from './utils/send-signed-transaction';
-
-// NB: Set space equal to the one in progra-state.ts
 
 // A list of useful static methods that send transaction to solana
 // It's here for a pratical purpose: have all the transaction i can do in one place near program-like stuff
@@ -24,13 +22,13 @@ export class ProgramTransaction {
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
-		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(221);
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(USER_DATA_SPAN);
 
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey,
 			lamports: rentExemptionLamports,
-			space: 221,
+			space: USER_DATA_SPAN,
 			basePubkey: wallet.publicKey,
 			seed: User.getSeed(),
 			programId,
@@ -57,7 +55,6 @@ export class ProgramTransaction {
 
 		// Create the instruction
 		const instruction = ProgramInstruction.setUserData(keys, data);
-		console.log('INSTRUCTION', instruction);
 
 		// Send the transaction signing it with wallet
 		await sendSignedTransaction(connection, wallet, [instruction], []);
