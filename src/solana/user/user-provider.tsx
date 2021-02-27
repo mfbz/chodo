@@ -2,7 +2,7 @@ import { Form, Input, Modal, Typography } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { VaporMessage } from '../../components/vapor-message';
 import { useConnection } from '../connection';
-import { APP_PROGRAM_ID } from '../program/instruction/constants/instruction-constants';
+import { APP_PROGRAM_ID } from '../program/instruction';
 import { ProgramTransaction } from '../program/transaction';
 import { useWallet, WalletAdapter } from '../wallet';
 import { UserContext } from './context/user-context';
@@ -38,11 +38,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 				// Get automatically the whole user account, if nothing returned it doesn't exists
 				const _user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
 				if (_user) {
-					console.log('User found', _user);
+					console.log('User found');
+					console.log(_user);
 					// If exists get data and set user
 					setUser(_user);
 
 					// If no data open modal to set it
+					console.log('user NAME length:', _user.data.name.length);
 					if (_user.data.name.length === 0) {
 						showModal();
 					}

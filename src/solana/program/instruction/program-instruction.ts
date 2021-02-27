@@ -5,7 +5,7 @@ import { TASK_DATA_SCHEMA } from '../state/schema/task-data';
 import { USER_DATA_SCHEMA } from '../state/schema/user-data';
 
 // TODO GET IT PROGRAMMATICALLY WHEN BUILDING PROGRAM
-export const APP_PROGRAM_ID = new PublicKey('BJT7bwqcnXRiw9B96RiXWL4bKgHwXr4cPW8T8CTkzyNk');
+export const APP_PROGRAM_ID = new PublicKey('C8MYDYst3UDJnAcVswc3ME97JtLJiCdAsXAB9JcLRVwZ');
 
 export class ProgramInstruction {
 	static setUserData(
@@ -18,10 +18,12 @@ export class ProgramInstruction {
 	): TransactionInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(0);
-		// Object data
-		const restData = new soproxABI.struct(USER_DATA_SCHEMA, { name });
+		// Object data strings need to be passed as array of chars
+		const restData = new soproxABI.struct(USER_DATA_SCHEMA, { name: name.split('') });
+		// Tail + 1 for deconstruction purpose
+		const tailData = new soproxABI.u8(0);
 		// Pack passed data toghether
-		const data = soproxABI.pack(tagData, restData);
+		const data = soproxABI.pack(tagData, restData, tailData);
 
 		return new TransactionInstruction({
 			keys,
@@ -43,9 +45,11 @@ export class ProgramInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(1);
 		// Object data
-		const restData = new soproxABI.struct(PROJECT_DATA_SCHEMA, { index, name });
+		const restData = new soproxABI.struct(PROJECT_DATA_SCHEMA, { index, name: name.split('') });
+		// Tail + 1 for deconstruction purpose
+		const tailData = new soproxABI.u8(0);
 		// Pack passed data toghether
-		const data = soproxABI.pack(tagData, restData);
+		const data = soproxABI.pack(tagData, restData, tailData);
 
 		return new TransactionInstruction({
 			keys,
@@ -69,9 +73,11 @@ export class ProgramInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(2);
 		// Object data
-		const restData = new soproxABI.struct(TASK_DATA_SCHEMA, { index, message, completed });
+		const restData = new soproxABI.struct(TASK_DATA_SCHEMA, { index, message: message.split(''), completed });
+		// Tail + 1 for deconstruction purpose
+		const tailData = new soproxABI.u8(0);
 		// Pack passed data toghether
-		const data = soproxABI.pack(tagData, restData);
+		const data = soproxABI.pack(tagData, restData, tailData);
 
 		return new TransactionInstruction({
 			keys,

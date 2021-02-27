@@ -26,7 +26,7 @@ impl AppInstruction {
 					.map(|slice| u8::from_le_bytes(slice))
 					.collect();
 				Self::SetUserData {
-					name: String::from_utf8(vec_name).unwrap(),
+					name: "mfbz".to_string(), // String::from_utf8(vec_name).unwrap()
 				}
 			}
 			_ => return Err(AppError::InvalidInstruction.into()),

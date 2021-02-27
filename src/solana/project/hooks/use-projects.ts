@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useConnection } from '../../connection';
-import { APP_PROGRAM_ID } from '../../program/instruction/constants/instruction-constants';
+import { APP_PROGRAM_ID } from '../../program/instruction';
 import { ProgramTransaction } from '../../program/transaction';
 import { User, useUser } from '../../user';
 import { useWallet } from '../../wallet';
