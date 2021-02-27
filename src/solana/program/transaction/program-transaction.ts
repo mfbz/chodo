@@ -4,8 +4,8 @@ import { Task } from '../../task';
 import { User } from '../../user/user';
 import { WalletAdapter } from '../../wallet';
 import { ProgramInstruction } from '../instruction';
-import { ProjectData } from '../state/schema/project-data';
-import { TaskData } from '../state/schema/task-data';
+import { ProjectData, PROJECT_DATA_SPAN } from '../state/schema/project-data';
+import { TaskData, TASK_DATA_SPAN } from '../state/schema/task-data';
 import { UserData, USER_DATA_SPAN } from '../state/schema/user-data';
 import { sendSignedTransaction } from './utils/send-signed-transaction';
 
@@ -76,13 +76,13 @@ export class ProgramTransaction {
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
-		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(132);
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(PROJECT_DATA_SPAN);
 
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
 			lamports: rentExemptionLamports,
-			space: 132,
+			space: PROJECT_DATA_SPAN,
 			basePubkey: userPk,
 			seed: Project.getSeed(index),
 			programId,
@@ -138,13 +138,13 @@ export class ProgramTransaction {
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
-		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(173);
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(TASK_DATA_SPAN);
 
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
 			lamports: rentExemptionLamports,
-			space: 173,
+			space: TASK_DATA_SPAN,
 			basePubkey: projectPk,
 			seed: Task.getSeed(index),
 			programId,

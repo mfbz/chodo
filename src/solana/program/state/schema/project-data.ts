@@ -11,3 +11,5 @@ export const PROJECT_DATA_SCHEMA = [
 	{ key: 'index', type: 'u32' },
 	{ key: 'name', type: '[char;100]' },
 ];
+
+export const PROJECT_DATA_SPAN = 4 + 100 * 4;

@@ -13,3 +13,5 @@ export const TASK_DATA_SCHEMA = [
 	{ key: 'message', type: '[char;140]' },
 	{ key: 'completed', type: 'bool' },
 ];
+
+export const TASK_DATA_SPAN = 4 + 140 * 4 + 1;

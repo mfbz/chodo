@@ -50,12 +50,16 @@ export class ProgramInstruction {
 	): TransactionInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(1);
-		// Object data
-		const restData = new soproxABI.struct(PROJECT_DATA_SCHEMA, { index, name: name.split('') });
-		// Tail + 1 for deconstruction purpose
-		const tailData = new soproxABI.u8(0);
+		// Object data strings need to be passed as array of chars
+		// The first one is my correct utf bytes identifying char
+		const nameCharArr = name.split('');
+		// Concat N elements to make nameCharArr of the size of the SCHEMA so 100 * 4 bytes per char, so 100 elements
+		const restData = new soproxABI.struct(PROJECT_DATA_SCHEMA, {
+			index,
+			name: nameCharArr.length < 100 ? nameCharArr.concat(...Array(100 - nameCharArr.length).fill('')) : nameCharArr,
+		});
 		// Pack passed data toghether
-		const data = soproxABI.pack(tagData, restData, tailData);
+		const data = soproxABI.pack(tagData, restData);
 
 		return new TransactionInstruction({
 			keys,
@@ -78,12 +82,20 @@ export class ProgramInstruction {
 	): TransactionInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(2);
-		// Object data
-		const restData = new soproxABI.struct(TASK_DATA_SCHEMA, { index, message: message.split(''), completed });
-		// Tail + 1 for deconstruction purpose
-		const tailData = new soproxABI.u8(0);
+		// Object data strings need to be passed as array of chars
+		// The first one is my correct utf bytes identifying char
+		const messageCharArr = message.split('');
+		// Concat N elements to make nameCharArr of the size of the SCHEMA so 140 * 4 bytes per char, so 140 elements
+		const restData = new soproxABI.struct(TASK_DATA_SCHEMA, {
+			index,
+			message:
+				messageCharArr.length < 140
+					? messageCharArr.concat(...Array(140 - messageCharArr.length).fill(''))
+					: messageCharArr,
+			completed,
+		});
 		// Pack passed data toghether
-		const data = soproxABI.pack(tagData, restData, tailData);
+		const data = soproxABI.pack(tagData, restData);
 
 		return new TransactionInstruction({
 			keys,
