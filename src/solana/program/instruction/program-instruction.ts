@@ -5,7 +5,7 @@ import { TASK_DATA_SCHEMA } from '../state/schema/task-data';
 import { USER_DATA_SCHEMA } from '../state/schema/user-data';
 
 // TODO GET IT PROGRAMMATICALLY WHEN BUILDING PROGRAM
-export const APP_PROGRAM_ID = new PublicKey('CFcXG7dn15jz1Fs2MEie9sD5KgAAErPq73RyBKBKRbpB');
+export const APP_PROGRAM_ID = new PublicKey('9o8Bv2uuySA4z8hTZBTc3wg1AQgLZGL9PhbL6K12o2yA');
 
 export class ProgramInstruction {
 	static setUserData(
