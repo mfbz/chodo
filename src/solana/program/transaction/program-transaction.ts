@@ -1,13 +1,15 @@
-import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
+import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
 import { Project } from '../../project';
 import { Task } from '../../task';
 import { User } from '../../user/user';
 import { WalletAdapter } from '../../wallet';
 import { ProgramInstruction } from '../instruction';
-import { ProjectData, PROJECT_DATA_LAYOUT } from '../state/schema/project-data';
-import { TaskData, TASK_DATA_LAYOUT } from '../state/schema/task-data';
-import { UserData, USER_DATA_LAYOUT } from '../state/schema/user-data';
+import { ProjectData } from '../state/schema/project-data';
+import { TaskData } from '../state/schema/task-data';
+import { UserData } from '../state/schema/user-data';
 import { sendSignedTransaction } from './utils/send-signed-transaction';
+
+// TODOOOOO: SET SPAN DIRECTLY BECAUSE LAYOUT.SPAN DOESN'T WORK!!!
 
 // A list of useful static methods that send transaction to solana
 // It's here for a pratical purpose: have all the transaction i can do in one place near program-like stuff
@@ -22,13 +24,13 @@ export class ProgramTransaction {
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
-		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(USER_DATA_LAYOUT.span);
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(55);
 
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey,
 			lamports: rentExemptionLamports,
-			space: USER_DATA_LAYOUT.span,
+			space: 55,
 			basePubkey: wallet.publicKey,
 			seed: User.getSeed(),
 			programId,
@@ -76,13 +78,13 @@ export class ProgramTransaction {
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
-		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(PROJECT_DATA_LAYOUT.span);
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(132);
 
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
 			lamports: rentExemptionLamports,
-			space: PROJECT_DATA_LAYOUT.span,
+			space: 132,
 			basePubkey: userPk,
 			seed: Project.getSeed(index),
 			programId,
@@ -138,13 +140,13 @@ export class ProgramTransaction {
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
-		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(TASK_DATA_LAYOUT.span);
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(173);
 
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
 			lamports: rentExemptionLamports,
-			space: TASK_DATA_LAYOUT.span,
+			space: 173,
 			basePubkey: projectPk,
 			seed: Task.getSeed(index),
 			programId,

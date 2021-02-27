@@ -7,4 +7,5 @@ export interface ProjectData {
 }
 
 // Size is ???, 1 byte per character FOR NAME
+// 32 + 100
 export const PROJECT_DATA_LAYOUT: Layout<ProjectData> = struct([u32('index'), str('name')]);

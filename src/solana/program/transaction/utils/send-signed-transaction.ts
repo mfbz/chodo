@@ -40,6 +40,7 @@ export async function sendSignedTransaction(
 			const errors = await getErrorForTransaction(connection, txid);
 
 			console.error('Error executing transaction', errors);
+			console.error(status);
 			throw new Error(`Raw transaction ${txid} failed (${JSON.stringify(status)})`);
 		}
 	}
