@@ -1,12 +1,15 @@
-import { Layout, bool, u32, str, struct } from '@project-serum/borsh';
-
 // NB: Add the index to be unique from parent seed creation
+// 32 u32 + 140 char 140, bool 1
 export interface TaskData {
 	index: number;
 	message: string;
 	completed: boolean;
 }
 
-// Size is ???, 1 byte per character FOR MESSAGE (like twitter eheheh)
-// 32 + 140 message + 1 boolean
-export const TASK_DATA_LAYOUT: Layout<TaskData> = struct([u32('index'), str('message'), bool('completed')]);
+// Soprox data schema for encoding and decoding
+// https://soprox.descartes.network/development/soproxabi
+export const TASK_DATA_SCHEMA = [
+	{ key: 'index', type: 'u32' },
+	{ key: 'message', type: '[char;140]' },
+	{ key: 'completed', type: 'bool' },
+];

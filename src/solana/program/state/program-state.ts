@@ -1,19 +1,27 @@
-import { ProjectData, PROJECT_DATA_LAYOUT } from './schema/project-data';
-import { TaskData, TASK_DATA_LAYOUT } from './schema/task-data';
-import { UserData, USER_DATA_LAYOUT } from './schema/user-data';
+import { ProjectData, PROJECT_DATA_SCHEMA } from './schema/project-data';
+import { TaskData, TASK_DATA_SCHEMA } from './schema/task-data';
+import { UserData, USER_DATA_SCHEMA } from './schema/user-data';
+import soproxABI from 'soprox-abi';
 
-// Here i export the methods i can use to decode data from accountInfo.data taken from on-chain accounts
-// Decode data from byte array
 export class ProgramState {
 	static decodeUserData(data: Buffer): UserData {
-		return USER_DATA_LAYOUT.decode(data);
+		const layout = new soproxABI.struct(USER_DATA_SCHEMA);
+		layout.fromBuffer(data);
+
+		return layout.value;
 	}
 
 	static decodeProjectData(data: Buffer): ProjectData {
-		return PROJECT_DATA_LAYOUT.decode(data);
+		const layout = new soproxABI.struct(PROJECT_DATA_SCHEMA);
+		layout.fromBuffer(data);
+
+		return layout.value;
 	}
 
 	static decodeTaskData(data: Buffer): TaskData {
-		return TASK_DATA_LAYOUT.decode(data);
+		const layout = new soproxABI.struct(TASK_DATA_SCHEMA);
+		layout.fromBuffer(data);
+
+		return layout.value;
 	}
 }
