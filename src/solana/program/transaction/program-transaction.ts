@@ -24,8 +24,6 @@ export class ProgramTransaction {
 		// This is to avoid that the account is deleted after some epoch
 		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(USER_DATA_LAYOUT.span);
 
-		// Create a transaction to create the user account in a deterministic way derived from wallet public key
-		const transaction = new Transaction();
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey,
@@ -36,11 +34,9 @@ export class ProgramTransaction {
 			programId,
 			newAccountPubkey: userPk,
 		});
-		// Add to the transaction to be executed
-		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
-		sendSignedTransaction(connection, wallet, transaction);
+		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('createEmptyUserAccount transaction completed succesfully');
 	}
 
@@ -57,15 +53,11 @@ export class ProgramTransaction {
 			{ pubkey: userPk, isSigner: false, isWritable: true },
 		];
 
-		// Create the transaction to be executed
-		const transaction = new Transaction();
 		// Create the instruction
 		const instruction = ProgramInstruction.setUserData(keys, data);
-		// Add to the tx to be executed
-		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
-		sendSignedTransaction(connection, wallet, transaction);
+		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('setUserAccountData transaction completed succesfully');
 	}
 
@@ -86,8 +78,6 @@ export class ProgramTransaction {
 		// This is to avoid that the account is deleted after some epoch
 		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(PROJECT_DATA_LAYOUT.span);
 
-		// Create a transaction to create the user account in a deterministic way derived from wallet public key
-		const transaction = new Transaction();
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
@@ -98,11 +88,9 @@ export class ProgramTransaction {
 			programId,
 			newAccountPubkey: projectPk,
 		});
-		// Add to the transaction to be executed
-		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
-		sendSignedTransaction(connection, wallet, transaction);
+		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('createEmptyProjectAccount transaction completed succesfully');
 	}
 
@@ -127,15 +115,11 @@ export class ProgramTransaction {
 			{ pubkey: projectPk, isSigner: false, isWritable: true },
 		];
 
-		// Create the transaction to be executed
-		const transaction = new Transaction();
 		// Create the instruction
 		const instruction = ProgramInstruction.setProjectData(keys, data);
-		// Add to the tx to be executed
-		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
-		sendSignedTransaction(connection, wallet, transaction);
+		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('setProjectAccountData transaction completed succesfully');
 	}
 
@@ -156,8 +140,6 @@ export class ProgramTransaction {
 		// This is to avoid that the account is deleted after some epoch
 		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(TASK_DATA_LAYOUT.span);
 
-		// Create a transaction to create the user account in a deterministic way derived from wallet public key
-		const transaction = new Transaction();
 		// Create the instruction
 		const instruction = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
@@ -168,11 +150,9 @@ export class ProgramTransaction {
 			programId,
 			newAccountPubkey: taskPk,
 		});
-		// Add to the transaction to be executed
-		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
-		sendSignedTransaction(connection, wallet, transaction);
+		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('createEmptyTaskAccount transaction completed succesfully');
 	}
 
@@ -199,15 +179,11 @@ export class ProgramTransaction {
 			{ pubkey: taskPk, isSigner: false, isWritable: true },
 		];
 
-		// Create the transaction to be executed
-		const transaction = new Transaction();
 		// Create the instruction
 		const instruction = ProgramInstruction.setTaskData(keys, data);
-		// Add to the tx to be executed
-		transaction.add(instruction);
 
 		// Send the transaction signing it with wallet
-		sendSignedTransaction(connection, wallet, transaction);
+		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('setTaskAccountData transaction completed succesfully');
 	}
 }

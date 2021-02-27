@@ -9,138 +9,145 @@ import { UserContext } from './context/user-context';
 import { User } from './user';
 import { requestAirdrop } from './utils/request-airdrop';
 
-// must handle:
-// - create user account modal
-// - create user account through transaction in the modal
-// - before creating an account if devnet or testnet (before transaction) do an airdrop
-// - save user account data for the newly created account
-
-// - handle transactions that can be done by the user inside user utils
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  // The user filled when created or from wallet account and passed to context to be used
-  const [user, setUser] = useState<User>();
+	// The user filled when created or from wallet account and passed to context to be used
+	const [user, setUser] = useState<User>();
 
-  // User form
-  const [userForm] = Form.useForm();
-  // To show that i'm loading the response of the modal
-  const [confirmModalLoading, setConfirmModalLoading] = useState(false);
+	// User form
+	const [userForm] = Form.useForm();
+	// To show that i'm loading the response of the modal
+	const [confirmModalLoading, setConfirmModalLoading] = useState(false);
 
-  // To show or not the modal
-  const [modalVisible, setModalVisible] = useState(false);
-  // Useful methods to handle modal visibility
-  const showModal = useCallback(() => setModalVisible(true), []);
-  const closeModal = useCallback(() => setModalVisible(false), []);
+	// To show or not the modal
+	const [modalVisible, setModalVisible] = useState(false);
+	// Useful methods to handle modal visibility
+	const showModal = useCallback(() => setModalVisible(true), []);
+	const closeModal = useCallback(() => setModalVisible(false), []);
 
-  // The connection used to do transactions
-  const { endpoint, connection } = useConnection();
-  // The wallet i need to use for logging the user
-  const { wallet } = useWallet();
+	// The connection used to do transactions
+	const { endpoint, connection } = useConnection();
+	// The wallet i need to use for logging the user
+	const { wallet, connected: walletConnected } = useWallet();
 
-  // If I detected a wallet and it's connected try to get user data and set user automatically
-  useEffect(() => {
-    const initializeUser = async (wallet: WalletAdapter) => {
-      if (wallet.publicKey) {
-        // Get automatically the whole user account, if nothing returned it doesn't exists
-        const user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
-        if (user) {
-          // If exists get data and set user
-          setUser(user);
-        } else {
-          // If no, show crate user modal
-          showModal();
-        }
-      }
-    };
+	// If I detected a wallet and it's connected try to get user data and set user automatically
+	useEffect(() => {
+		console.log('User initialization');
 
-    if (wallet) {
-      initializeUser(wallet);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wallet]);
+		const initializeUser = async (wallet: WalletAdapter) => {
+			if (wallet.publicKey) {
+				// Get automatically the whole user account, if nothing returned it doesn't exists
+				const user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
+				if (user) {
+					console.log('User found');
+					// If exists get data and set user
+					setUser(user);
+				} else {
+					console.log('User not found, showing create modal');
+					// If no, show crate user modal
+					showModal();
+				}
+			}
+		};
 
-  const handleModalOk = useCallback(() => {
-    setConfirmModalLoading(true);
+		if (wallet && walletConnected) {
+			console.log('Initialize user from wallet');
+			initializeUser(wallet);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [wallet, walletConnected]);
 
-    console.log('Pressed user form create');
-    userForm.submit();
-  }, [userForm]);
-  const onSubmitUserForm = useCallback(
-    values => {
-      console.log('User form submitted values', values);
+	const handleModalOk = useCallback(() => {
+		setConfirmModalLoading(true);
 
-      const createUser = async (wallet: WalletAdapter) => {
-        // Get data from the form to be saved
-        // name max length is already determined with a filter on the input
-        const data = { name: values.name };
+		console.log('Pressed user form create');
+		userForm.submit();
+	}, [userForm]);
+	const onSubmitUserForm = useCallback(
+		(values) => {
+			console.log('User form submitted values', values);
 
-        if (wallet.publicKey) {
-          // Do an airdrop to wallet account
-          await requestAirdrop(endpoint, connection, wallet.publicKey);
+			const createUser = async (wallet: WalletAdapter) => {
+				// Get data from the form to be saved
+				// name max length is already determined with a filter on the input
+				const data = { name: values.name };
 
-          try {
-            // Create an empty user account through SystemProgram transaction
-            await ProgramTransaction.createEmptyUserAccount(connection, wallet, APP_PROGRAM_ID);
-            // Set user data to the account using submitted value
-            await ProgramTransaction.setUserAccountData(connection, wallet, APP_PROGRAM_ID, data);
-          } catch (error) {
-            VaporMessage.error({ content: 'An error occurred creating user account' });
-            console.error('An error occurred creating user account', error);
-          }
+				if (wallet.publicKey) {
+					// Do an airdrop to wallet account
+					await requestAirdrop(endpoint, connection, wallet.publicKey);
+					console.log('Airdrop to wallet account completed');
 
-          // Get the user with filled data, set it and close everything
-          const user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
-          if (user) {
-            setUser(user);
+					try {
+						// Create an empty user account through SystemProgram transaction
+						await ProgramTransaction.createEmptyUserAccount(connection, wallet, APP_PROGRAM_ID);
+						console.log('Created empty user account');
 
-            closeModal();
-            setConfirmModalLoading(false);
-            userForm.resetFields();
-          } else {
-            VaporMessage.error({ content: 'An error occurred creating user account' });
-            console.error('User account was created but not found');
-          }
-        }
-      };
+						// Set user data to the account using submitted value
+						await ProgramTransaction.setUserAccountData(connection, wallet, APP_PROGRAM_ID, data);
+						console.log('The data has been set to user account');
+					} catch (error) {
+						VaporMessage.error({ content: 'An error occurred creating user account' });
+						console.error('An error occurred creating user account', error);
+					}
 
-      if (wallet) {
-        createUser(wallet);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [wallet, userForm],
-  );
+					// Get the user with filled data, set it and close everything
+					const user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
+					if (user) {
+						console.log('Just created user found, setting it');
+						setUser(user);
 
-  return (
-    <UserContext.Provider
-      value={{
-        user,
-      }}>
-      <>
-        {children}
+						closeModal();
+						setConfirmModalLoading(false);
+						userForm.resetFields();
+					} else {
+						VaporMessage.error({ content: 'An error occurred creating user account' });
+						console.error('User account was created but not found');
+					}
+				}
+			};
 
-        <Modal
-          title={
-            <Typography.Title level={5} style={{ padding: 0, margin: 0 }}>
-              {'Create account'}
-            </Typography.Title>
-          }
-          okText={'Create'}
-          centered={true}
-          closable={false}
-          visible={modalVisible}
-          confirmLoading={confirmModalLoading}
-          onOk={handleModalOk}>
-          <Form form={userForm} layout="vertical" onFinish={onSubmitUserForm}>
-            <Form.Item
-              name={'name'}
-              label={<Typography.Text strong={true}>Name</Typography.Text>}
-              rules={[{ required: true, message: '' }]}
-              style={{ marginBottom: 0 }}>
-              <Input maxLength={55} size={'large'} style={{ borderRadius: 8 }} />
-            </Form.Item>
-          </Form>
-        </Modal>
-      </>
-    </UserContext.Provider>
-  );
+			if (wallet) {
+				console.log('Creating user account...');
+				createUser(wallet);
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[wallet, userForm],
+	);
+
+	return (
+		<UserContext.Provider
+			value={{
+				user,
+			}}
+		>
+			<>
+				{children}
+
+				<Modal
+					title={
+						<Typography.Title level={5} style={{ padding: 0, margin: 0 }}>
+							{'Create account'}
+						</Typography.Title>
+					}
+					okText={'Create'}
+					centered={true}
+					closable={false}
+					visible={modalVisible}
+					confirmLoading={confirmModalLoading}
+					onOk={handleModalOk}
+				>
+					<Form form={userForm} layout="vertical" onFinish={onSubmitUserForm}>
+						<Form.Item
+							name={'name'}
+							label={<Typography.Text strong={true}>Name</Typography.Text>}
+							rules={[{ required: true, message: '' }]}
+							style={{ marginBottom: 0 }}
+						>
+							<Input maxLength={55} size={'large'} style={{ borderRadius: 8 }} />
+						</Form.Item>
+					</Form>
+				</Modal>
+			</>
+		</UserContext.Provider>
+	);
 };

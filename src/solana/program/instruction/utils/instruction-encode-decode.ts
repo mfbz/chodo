@@ -1,5 +1,5 @@
 import { TransactionInstruction } from '@solana/web3.js';
-import { APP_INSTRUCTION_MAX_SPAN, APP_INSTRUCTION_LAYOUT } from '../constants/instruction-constants';
+import { APP_INSTRUCTION_LAYOUT } from '../constants/instruction-constants';
 import {
 	AppInstructionLayoutType,
 	AppInstructionType,
@@ -9,7 +9,8 @@ import {
 } from '../interfaces/instruction-schema';
 
 export function encodeAppInstructionData(instruction: AppInstructionLayoutType) {
-	const b = Buffer.alloc(APP_INSTRUCTION_MAX_SPAN);
+	// max span for the instructions! i have to set this manually because max span from map keeps returning -1 :C
+	const b = Buffer.alloc(173);
 	const span = APP_INSTRUCTION_LAYOUT.encode(instruction, b);
 	return b.slice(0, span);
 }

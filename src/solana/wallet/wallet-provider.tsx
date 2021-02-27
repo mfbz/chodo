@@ -136,6 +136,7 @@ export const WalletProvider = ({
 
 								return (
 									<div
+										key={walletEndpoint.url}
 										style={{
 											display: 'flex',
 											flexDirection: 'column',
@@ -144,7 +145,8 @@ export const WalletProvider = ({
 											padding: 16,
 											marginRight: isLast ? 0 : 16,
 											background: '#FFFFFF',
-											border: `1px solid ${providerUrl === walletEndpoint.url ? '#00FFB9' : '#141033'}`,
+											border: `2px solid ${providerUrl === walletEndpoint.url ? '#00FFB9' : '#EEECFD'}`,
+											borderRadius: 16,
 											cursor: 'pointer',
 										}}
 									>
