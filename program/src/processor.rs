@@ -5,7 +5,7 @@ use solana_sdk::{
 	account_info::{next_account_info, AccountInfo},
 	entrypoint::ProgramResult,
 	program_error::ProgramError,
-	program_pack::Pack,
+	program_pack::{Pack, Sealed},
 	pubkey::Pubkey,
 };
 
@@ -41,14 +41,16 @@ impl Processor {
 				}
 
 				// Create a new object from User constructor to initialize a new user
-				let out_user_account_data = UserData { name };
-
+				//let out_user_account_data = UserData { name };
 				// Get a mutable reference of current user_account data to modify it
-				let mut user_account_data = user_account.try_borrow_mut_data()?;
-				// Pack current modified user data to user account borrowed data to save it
-				out_user_account_data.pack(&mut user_account_data);
+				//let mut user_account_data = user_account.try_borrow_mut_data()?;
+				// out_user_account_data.pack(&mut user_account_data);
 
-				return Ok(());
+				let mut out_user_account_data = UserData::unpack(&user_account.data.borrow())?;
+				out_user_account_data.name = name;
+				UserData::pack(out_user_account_data, &mut user_account.data.borrow_mut())?;
+
+				Ok(())
 			}
 		}
 	}

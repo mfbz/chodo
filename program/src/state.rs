@@ -4,16 +4,23 @@ use arrayref::{array_mut_ref, array_ref, array_refs, mut_array_refs};
 use solana_sdk::{
 	program_error::ProgramError,
 	program_option::COption,
-	program_pack::{Pack, Sealed},
-	pubkey::Pubkey,
+	program_pack::{IsInitialized, Pack, Sealed},
+	pubkey::{Pubkey, PubkeyError},
 };
 use std::str;
 
-/// UserData
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct UserData {
 	/// The name of the user
 	pub name: String,
+}
+
+impl Sealed for UserData {}
+
+impl IsInitialized for UserData {
+	fn is_initialized(&self) -> bool {
+		true
+	}
 }
 
 impl UserData {
@@ -35,13 +42,13 @@ impl Pack for UserData {
 		// break an array into a series of contiguous and non-overlapping arrays, generating sub arrays of bytes
 		// each value destructured on the left is an array of bytes
 		// Put each slice of data accordingly with its bytes
-		let (nameByteArr) = array_refs![src, 55];
-
+		// NB: Use array_refs if multiple slices
+		let (nameByteArr) = array_ref![src, 0, 55];
 		// Extract name string from utf8 byte array by unwrapping and sending the error above if invalid data
-		let name = str::from_utf8(&nameByteArr).unwrap();
+		let name = String::from_utf8(nameByteArr.to_vec()).unwrap();
 
 		// I unpacked correctly, return unpacked struct instance
-		Ok(UserData { name });
+		Ok(UserData { name })
 	}
 
 	// All applied on dst mutable byte array reference passed and return nothing because it modified dst input
@@ -51,17 +58,16 @@ impl Pack for UserData {
 
 		// generate a series of mutable array references to an input mutable array reference
 		// dst is an array of mutable references that will be filled with byte arrays to be packed
-		let (nameByteArr_dst) = mut_array_refs![dst, 55];
+		// NB: Use mut_array_refs! if multiple slices
+		let (nameByteArr_dst) = array_mut_ref![dst, 0, 55];
 
 		// Create a mutable user object from itself to get its values data
 		let &UserData { name } = self;
-
-		// Convert data to byte array and save into its dst array
+		// Convert string into vector because otherwise without a size i cannot write the string
+		// https://stackoverflow.com/questions/53032711/how-do-i-return-a-fixed-size-array-of-string-literals-from-a-function
 		*nameByteArr_dst = name.as_bytes();
 	}
 }
-
-impl Sealed for UserData {}
 
 // State pack/unpack helpers
 fn pack_coption_key(src: &COption<Pubkey>, dst: &mut [u8; 36]) {

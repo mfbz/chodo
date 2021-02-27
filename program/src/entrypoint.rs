@@ -1,7 +1,7 @@
 #![cfg(feature = "program")]
 #![cfg(not(feature = "no-entrypoint"))]
 
-use crate::{error::AppError, processor::Processor};
+use crate::processor::Processor;
 use solana_sdk::{
 	account_info::AccountInfo, entrypoint_deprecated, entrypoint_deprecated::ProgramResult,
 	pubkey::Pubkey,
@@ -14,8 +14,5 @@ fn process_instruction(
 	accounts: &[AccountInfo],
 	instruction_data: &[u8],
 ) -> ProgramResult {
-	if let Err(error) = Processor::process(program_id, accounts, instruction_data) {
-		return Err(error);
-	}
-	return Ok(());
+	return Processor::process(program_id, accounts, instruction_data);
 }
