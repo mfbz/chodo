@@ -1,11 +1,7 @@
 #![cfg(feature = "program")]
 
 use crate::error::AppError;
-use solana_sdk::{
-	program_error::ProgramError,
-	program_pack::{Pack, Sealed},
-};
-use std::mem::size_of;
+use solana_sdk::program_error::ProgramError;
 
 /// Instructions supported by the App program
 #[derive(Clone, Debug, PartialEq)]
@@ -26,9 +22,9 @@ impl AppInstruction {
 			0 => {
 				// Extract data part by part and leave the rest for subsequent extractions
 				// 55 because it's the length of name data
-				let (nameByteArr, rest) = rest.split_at(55);
+				let (name_byte_arr, rest) = rest.split_at(55);
 				// Try conversion of input data to string otherwise trigger error
-				let name = String::from_utf8(nameByteArr.to_vec()).unwrap();
+				let name = String::from_utf8(name_byte_arr.to_vec()).unwrap();
 
 				// Return Create user enum value
 				Self::SetUserData { name }
