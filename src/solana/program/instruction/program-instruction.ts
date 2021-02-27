@@ -5,15 +5,17 @@ import { TASK_DATA_SCHEMA } from '../state/schema/task-data';
 import { USER_DATA_SCHEMA } from '../state/schema/user-data';
 
 // TODO GET IT PROGRAMMATICALLY WHEN BUILDING PROGRAM
-export const APP_PROGRAM_ID = new PublicKey('8aDnUXAvqX3mzSpB3saCXZ9gmxTj85axeJZAFPQCqsUs');
+export const APP_PROGRAM_ID = new PublicKey('CFcXG7dn15jz1Fs2MEie9sD5KgAAErPq73RyBKBKRbpB');
 
 export class ProgramInstruction {
 	static setUserData(
 		keys: AccountMeta[],
 		{
 			name,
+			premium,
 		}: {
 			name: string;
+			premium: boolean;
 		},
 	): TransactionInstruction {
 		// The code for the instruction to call
@@ -25,12 +27,11 @@ export class ProgramInstruction {
 		const nameCharArr = name.split('');
 		// Concat N elements to make nameCharArr of the size of the SCHEMA so 55 * 4 bytes per char, so 55 elements
 		const restData = new soproxABI.struct(USER_DATA_SCHEMA, {
-			name: nameCharArr.length < 55 ? nameCharArr.concat(new Array(55 - nameCharArr.length).map((_) => '')) : 55,
+			name: nameCharArr.length < 55 ? nameCharArr.concat(...Array(55 - nameCharArr.length).fill('')) : nameCharArr,
+			premium,
 		});
-		// Tail + 1 for deconstruction purpose
-		const tailData = new soproxABI.u8(1);
 		// Pack passed data toghether
-		const data = soproxABI.pack(tagData, restData, tailData);
+		const data = soproxABI.pack(tagData, restData);
 
 		return new TransactionInstruction({
 			keys,

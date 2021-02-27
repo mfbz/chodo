@@ -76,7 +76,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 			const createUser = async (wallet: WalletAdapter) => {
 				// Get data from the form to be saved
 				// name max length is already determined with a filter on the input
-				const data = { name: values.name };
+				const data = { name: values.name, premium: true };
 
 				if (wallet.publicKey) {
 					// Do an airdrop to wallet account

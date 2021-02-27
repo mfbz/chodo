@@ -22,7 +22,7 @@ impl Processor {
 		match instruction {
 			// Set user data, code 0
 			AppInstruction::SetUserData {
-				name
+				name, premium
 			} => {
 				let accounts_iter = &mut accounts.iter();
 
@@ -31,6 +31,7 @@ impl Processor {
 
 				let mut data = UserData::unpack(&user_account.data.borrow())?;
         data.name = name;
+				data.premium = premium;
         UserData::pack(data, &mut user_account.data.borrow_mut())?;
 
 				Ok(())

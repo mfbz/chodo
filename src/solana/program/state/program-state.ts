@@ -10,6 +10,7 @@ export class ProgramState {
 
 		return {
 			name: layout.value.name,
+			premium: layout.value.premium,
 		};
 	}
 
