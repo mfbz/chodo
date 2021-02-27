@@ -36,11 +36,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 		const initializeUser = async (wallet: WalletAdapter) => {
 			if (wallet.publicKey) {
 				// Get automatically the whole user account, if nothing returned it doesn't exists
-				const user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
-				if (user) {
-					console.log('User found');
+				const _user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
+				if (_user && _user.data.name.length) {
+					console.log('User found', _user);
 					// If exists get data and set user
-					setUser(user);
+					setUser(_user);
 				} else {
 					console.log('User not found, showing create modal');
 					// If no, show crate user modal
@@ -77,9 +77,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 					console.log('Airdrop to wallet account completed');
 
 					try {
-						// Create an empty user account through SystemProgram transaction
-						await ProgramTransaction.createEmptyUserAccount(connection, wallet, APP_PROGRAM_ID);
-						console.log('Created empty user account');
+						/*
+						if (!user) {
+							console.log('Creating empty user account');
+							// Create an empty user account through SystemProgram transaction
+							await ProgramTransaction.createEmptyUserAccount(connection, wallet, APP_PROGRAM_ID);
+							console.log('Created empty user account');
+						}*/
 
 						// Set user data to the account using submitted value
 						await ProgramTransaction.setUserAccountData(connection, wallet, APP_PROGRAM_ID, data);
@@ -90,10 +94,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 					}
 
 					// Get the user with filled data, set it and close everything
-					const user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
-					if (user) {
+					const _user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
+					if (_user) {
 						console.log('Just created user found, setting it');
-						setUser(user);
+						setUser(_user);
 
 						closeModal();
 						setConfirmModalLoading(false);
@@ -111,7 +115,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[wallet, userForm],
+		[wallet, user, userForm],
 	);
 
 	return (

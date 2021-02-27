@@ -3,7 +3,7 @@
 
 use crate::processor::Processor;
 use solana_sdk::{
-	account_info::AccountInfo, entrypoint_deprecated, entrypoint_deprecated::ProgramResult,
+	account_info::AccountInfo, entrypoint_deprecated, entrypoint_deprecated::ProgramResult, info,
 	pubkey::Pubkey,
 };
 
@@ -14,5 +14,6 @@ fn process_instruction(
 	accounts: &[AccountInfo],
 	instruction_data: &[u8],
 ) -> ProgramResult {
+	info!("Processing instructions");
 	return Processor::process(program_id, accounts, instruction_data);
 }

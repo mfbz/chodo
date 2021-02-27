@@ -4,6 +4,7 @@ use crate::{error::AppError, instruction::AppInstruction, state::UserData};
 use solana_sdk::{
 	account_info::{next_account_info, AccountInfo},
 	entrypoint::ProgramResult,
+	info,
 	program_error::ProgramError,
 	program_pack::Pack,
 	pubkey::Pubkey,
@@ -19,6 +20,8 @@ impl Processor {
 		let instruction = AppInstruction::unpack(input)?;
 		// A utility to itearate on accounts array
 		let accounts_iter = &mut accounts.iter();
+
+		info!("Received instruction");
 
 		// Depending on returned enum process the correct instruction
 		match instruction {

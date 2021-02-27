@@ -57,6 +57,7 @@ export class ProgramTransaction {
 
 		// Create the instruction
 		const instruction = ProgramInstruction.setUserData(keys, data);
+		console.log('INSTRUCTION', instruction);
 
 		// Send the transaction signing it with wallet
 		await sendSignedTransaction(connection, wallet, [instruction], []);
