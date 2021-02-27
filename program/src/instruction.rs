@@ -1,33 +1,35 @@
 #![cfg(feature = "program")]
 
 use crate::error::AppError;
+use crate::schema::user_data::vec_to_array_55;
 use solana_sdk::program_error::ProgramError;
+use std::{char, convert::TryInto};
 
-/// Instructions supported by the App program
 #[derive(Clone, Debug, PartialEq)]
 pub enum AppInstruction {
-	/// 0. `[signer]` The wallet account that is signer of the transaction
-	/// 1. `[writable]` The user account created from signer account with seed to be updated with data
-	SetUserData { name: String },
+	SetUserData { name: [char; 55] },
 }
 
 impl AppInstruction {
-	/// Unpacks a byte buffer into a [AppInstruction](enum.AppInstruction.html).
-	pub fn unpack(input: &[u8]) -> Result<Self, ProgramError> {
-		// Get the tag from input byte buffer and separate it from the rest
-		let (&tag, rest) = input.split_first().ok_or(AppError::InvalidInstruction)?;
-
-		// Execute a method depending on the passed tag
+	pub fn unpack(instruction: &[u8]) -> Result<Self, ProgramError> {
+		let (&tag, rest) = instruction
+			.split_first()
+			.ok_or(AppError::InvalidInstruction)?;
 		Ok(match tag {
+			// Set user data
 			0 => {
-				// Extract data part by part and leave the rest for subsequent extractions
-				// 55 because it's the length of name data
-				let (name_byte_arr, rest) = rest.split_at(55);
-				// Try conversion of input data to string otherwise trigger error
-				let name = String::from_utf8(name_byte_arr.to_vec()).unwrap();
-
-				// Return Create user enum value
-				Self::SetUserData { name }
+				// Extract name from instruction
+				let vec_name: Vec<_> = rest
+					.get(..(55 * 4))
+					.unwrap()
+					.chunks(4)
+					.map(|slice| slice.try_into().unwrap())
+					.map(|slice| u32::from_le_bytes(slice))
+					.map(|slice| char::from_u32(slice).unwrap())
+					.collect();
+				Self::SetUserData {
+					name: vec_to_array_55(vec_name),
+				}
 			}
 			_ => return Err(AppError::InvalidInstruction.into()),
 		})
