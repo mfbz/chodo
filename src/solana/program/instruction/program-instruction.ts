@@ -5,7 +5,7 @@ import { TASK_DATA_SCHEMA } from '../state/schema/task-data';
 import { USER_DATA_SCHEMA } from '../state/schema/user-data';
 
 // TODO GET IT PROGRAMMATICALLY WHEN BUILDING PROGRAM
-export const APP_PROGRAM_ID = new PublicKey('C8MYDYst3UDJnAcVswc3ME97JtLJiCdAsXAB9JcLRVwZ');
+export const APP_PROGRAM_ID = new PublicKey('8aDnUXAvqX3mzSpB3saCXZ9gmxTj85axeJZAFPQCqsUs');
 
 export class ProgramInstruction {
 	static setUserData(
@@ -19,9 +19,16 @@ export class ProgramInstruction {
 		// The code for the instruction to call
 		const tagData = new soproxABI.u8(0);
 		// Object data strings need to be passed as array of chars
-		const restData = new soproxABI.struct(USER_DATA_SCHEMA, { name: name.split('') });
+		// The string must be an array of the size of the STRING.LENGTH * bytes * string
+
+		// The first one is my correct utf bytes identifying char
+		const nameCharArr = name.split('');
+		// Concat N elements to make nameCharArr of the size of the SCHEMA so 55 * 4 bytes per char, so 55 elements
+		const restData = new soproxABI.struct(USER_DATA_SCHEMA, {
+			name: nameCharArr.length < 55 ? nameCharArr.concat(new Array(55 - nameCharArr.length).map((_) => '')) : 55,
+		});
 		// Tail + 1 for deconstruction purpose
-		const tailData = new soproxABI.u8(0);
+		const tailData = new soproxABI.u8(1);
 		// Pack passed data toghether
 		const data = soproxABI.pack(tagData, restData, tailData);
 

@@ -30,16 +30,15 @@ impl Pack for UserData {
 		let (name, _) = array_refs![src, 55 * 4, 1];
 
 		// Convert from bytes chunk to char, 4 by 4 because 1 char = 4 bytes
-		// here it's like 'mfbz' -> ['m', 'f', 'b', 'z']
-		let vec_name: Vec<_> = name
+		// here it's like 'mfbz' -> ['m', '', '', '', 'f', '', '', '', 'b', 'z']
+		let name_s: String = name
 			.chunks(4)
-			.map(|slice| slice.try_into().unwrap())
-			.map(|slice| u8::from_le_bytes(slice))
+			.map(|slice| String::from_utf8([slice[0]].to_vec()).unwrap())
 			.collect();
 
 		// Convert from vector to char array like name type
 		Ok(UserData {
-			name: String::from_utf8(vec_name).unwrap(),
+			name: name_s,
 		})
 	}
 	// Pack data from the data struct to [u8]
