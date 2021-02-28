@@ -3,9 +3,10 @@ import soproxABI from 'soprox-abi';
 import { PROJECT_DATA_SCHEMA } from '../state/schema/project-data';
 import { TASK_DATA_SCHEMA } from '../state/schema/task-data';
 import { USER_DATA_SCHEMA } from '../state/schema/user-data';
+import config from '../../../app.config.json';
 
-// TODO GET IT PROGRAMMATICALLY WHEN BUILDING PROGRAM
-export const APP_PROGRAM_ID = new PublicKey('9o8Bv2uuySA4z8hTZBTc3wg1AQgLZGL9PhbL6K12o2yA');
+// Main app pk created directly from config
+export const APP_PROGRAM_ID = new PublicKey(config.programAddress);
 
 export class ProgramInstruction {
 	static setUserData(
