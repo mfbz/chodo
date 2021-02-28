@@ -207,6 +207,7 @@ export const App = React.memo(function App() {
 
 							<List
 								dataSource={tasks}
+								locale={{ emptyText: null }}
 								renderItem={(item, index) => {
 									const isFirst = index === 0;
 
