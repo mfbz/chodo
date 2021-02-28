@@ -24,8 +24,8 @@
 		"localnet:up": "npm run cli:clean-store && set -x; solana-localnet down; set -e; solana-localnet up",
 		"localnet:down": "solana-localnet down",
 		"localnet:logs": "solana-localnet logs -f",
-		"preinstall": "npx npm-force-resolutions",
-		"postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=./program/Cargo.toml"
+		"preinstall-x": "npx npm-force-resolutions",
+		"postinstall-x": "npm run bpf-sdk:update && cargo update --manifest-path=./program/Cargo.toml"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^4.2.2",
