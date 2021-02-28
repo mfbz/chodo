@@ -31,8 +31,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
 	// If I detected a wallet and it's connected try to get user data and set user automatically
 	useEffect(() => {
-		console.log('User initialization');
-
 		const initializeUser = async (wallet: WalletAdapter) => {
 			if (wallet.publicKey) {
 				// Get automatically the whole user account, if nothing returned it doesn't exists
@@ -44,7 +42,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 					setUser(_user);
 
 					// If no data open modal to set it
-					console.log('user NAME length:', _user.data.name.length);
 					if (_user.data.name.length === 0) {
 						showModal();
 					}
@@ -64,8 +61,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	}, [wallet, walletConnected]);
 
 	const handleModalOk = useCallback(() => {
-		setConfirmModalLoading(true);
-
 		console.log('Pressed user form create');
 		userForm.submit();
 	}, [userForm]);
@@ -74,6 +69,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 			console.log('User form submitted values', values);
 
 			const createUser = async (wallet: WalletAdapter) => {
+				// Show loading indicator on button
+				setConfirmModalLoading(true);
+
 				// Get data from the form to be saved
 				// name max length is already determined with a filter on the input
 				const data = { name: values.name, premium: true };
@@ -102,7 +100,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 					// Get the user with filled data, set it and close everything
 					const _user = await User.fetch(connection, wallet.publicKey, APP_PROGRAM_ID);
 					if (_user) {
-						console.log('Just created user found, setting it');
+						console.log('User found');
+						console.log(_user);
 						setUser(_user);
 
 						closeModal();

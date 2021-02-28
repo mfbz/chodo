@@ -44,8 +44,6 @@ export const App = React.memo(function App() {
 	}, []);
 
 	const handleProjectModalOk = useCallback(() => {
-		setConfirmProjectModalLoading(true);
-
 		console.log('Pressed project form add');
 		projectForm.submit();
 	}, [projectForm]);
@@ -57,6 +55,9 @@ export const App = React.memo(function App() {
 			console.log('Project form submitted values', values);
 
 			const onCreateProject = async () => {
+				// Show loading indicator
+				setConfirmProjectModalLoading(true);
+
 				// Get data from the form to be saved
 				// name max length is already determined with a filter on the input
 				const data = { name: values.name };
@@ -92,8 +93,6 @@ export const App = React.memo(function App() {
 		setTaskModalVisible(true);
 	}, []);
 	const handleTaskModalOk = useCallback(() => {
-		setConfirmTaskModalLoading(true);
-
 		console.log('Pressed task form create');
 		taskForm.submit();
 	}, [taskForm]);
@@ -106,6 +105,9 @@ export const App = React.memo(function App() {
 			console.log('Task form submitted values', values);
 
 			const onCreateTask = async () => {
+				// Show loading indicator
+				setConfirmTaskModalLoading(true);
+
 				// Get data from the form to be saved
 				// max length is already determined with a filter on the input
 				const data = { message: values.message, completed: false };
