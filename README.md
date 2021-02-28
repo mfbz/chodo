@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LINK_TO_APP">
-    <img width="200" src="./chodo_logo.png">
+    <img width="200" src="./chodo_icon.png">
   </a>
 </p>
 
