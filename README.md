@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="LINK_TO_APP">
+  <a href="https://chodo.netlify.app/">
     <img width="200" src="./chodo_icon.png">
   </a>
 </p>
@@ -10,7 +10,13 @@
 
 The to-do list dapp to build your next dream project.
 
-TODO
+dapp:
+<https://chodo.netlify.app/>
+
+video:
+<https://vimeo.com/517898033>
+
+<img src="./chodo_screenshot.png">
 
 </div>
 
