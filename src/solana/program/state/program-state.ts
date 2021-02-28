@@ -15,12 +15,7 @@ export class ProgramState {
 	}
 
 	static decodeProjectData(data: Buffer): ProjectData {
-		console.log('PROJECT BUFFER');
-		console.log(data);
-
 		const layout = new soproxABI.struct(PROJECT_DATA_SCHEMA);
-		console.log('PROJECT LAYOUT');
-		console.log(layout);
 		layout.fromBuffer(data);
 
 		return {

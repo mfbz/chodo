@@ -54,11 +54,6 @@ export class ProgramInstruction {
 		// Object data strings need to be passed as array of chars
 		// The first one is my correct utf bytes identifying char
 		const nameCharArr = name.split('');
-		console.log('DATA_TO_SAVE');
-		console.log({
-			index,
-			name: nameCharArr.length < 100 ? nameCharArr.concat(...Array(100 - nameCharArr.length).fill('')) : nameCharArr,
-		});
 		// Concat N elements to make nameCharArr of the size of the SCHEMA so 100 * 4 bytes per char, so 100 elements
 		const restData = new soproxABI.struct(PROJECT_DATA_SCHEMA, {
 			index,
