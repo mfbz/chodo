@@ -31,6 +31,15 @@ export const App = React.memo(function App() {
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>(
 		projects.length ? projects[0] : undefined,
 	);
+	// If projects finally loads preselect first one
+	useEffect(() => {
+		if (projects && projects.length) {
+			setSelectedProject((_project) => {
+				return !_project ? projects[0] : _project;
+			});
+		}
+	}, [projects]);
+
 	// Project form data to handle visibility and submit
 	const [projectForm] = Form.useForm();
 	const [projectModalVisible, setProjectModalVisible] = useState(false);
