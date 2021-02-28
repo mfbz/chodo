@@ -8,8 +8,11 @@ export class ProgramState {
 		const layout = new soproxABI.struct(USER_DATA_SCHEMA);
 		layout.fromBuffer(data);
 
+		// NB: Remember that strings are passed as char with a char each 4 where the last 3 could be 0
+		// If i don't remove them i could have a string like '' of length 4 because it's identified by 4 zeros
+		// So remove them by filtering the ones that have a char code of 0 in their position
 		return {
-			name: layout.value.name,
+			name: [...layout.value.name].filter((c) => c.charCodeAt(0) !== 0).join(''),
 			premium: layout.value.premium,
 		};
 	}
@@ -20,7 +23,7 @@ export class ProgramState {
 
 		return {
 			index: layout.value.index,
-			name: layout.value.name,
+			name: [...layout.value.name].filter((c) => c.charCodeAt(0) !== 0).join(''),
 		};
 	}
 
@@ -30,7 +33,7 @@ export class ProgramState {
 
 		return {
 			index: layout.value.index,
-			message: layout.value.message,
+			message: [...layout.value.message].filter((c) => c.charCodeAt(0) !== 0).join(''),
 			completed: layout.value.completed,
 		};
 	}
