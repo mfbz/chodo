@@ -61,6 +61,49 @@ export class ProgramTransaction {
 		console.log('setUserAccountData transaction completed succesfully');
 	}
 
+	// A useful method that create an empty account and set its data in 1 time
+	static async createUserAccountWithData(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		data: UserData,
+	) {
+		if (!wallet.publicKey) {
+			throw new Error('The wallet does not have a public key');
+		}
+		// Derive the user public key by generating from seed
+		const userPk = await User.getPublicKeyFromSeed(wallet.publicKey, programId);
+
+		// 1 - Create empty account instruction
+		// Calculate minimum balance for rent exemption depending on occupied space by the account
+		// This is to avoid that the account is deleted after some epoch
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(USER_DATA_SPAN);
+
+		// Create the instruction
+		const insCreateEmptyAccount = SystemProgram.createAccountWithSeed({
+			fromPubkey: wallet.publicKey,
+			lamports: rentExemptionLamports,
+			space: USER_DATA_SPAN,
+			basePubkey: wallet.publicKey,
+			seed: User.getSeed(),
+			programId,
+			newAccountPubkey: userPk,
+		});
+
+		// 2 - Set data to account
+		// These are the accounts passed to the transaction
+		const keys = [
+			{ pubkey: wallet.publicKey, isSigner: true, isWritable: false },
+			{ pubkey: userPk, isSigner: false, isWritable: true },
+		];
+		// Create the instruction
+		const insSetAccountData = ProgramInstruction.setUserData(keys, data);
+
+		// Send the transaction signing it with wallet
+		await sendSignedTransaction(connection, wallet, [insCreateEmptyAccount, insSetAccountData], []);
+		console.log('createUserAccountWithData transaction completed succesfully');
+	}
+
 	static async createEmptyProjectAccount(
 		connection: Connection,
 		wallet: WalletAdapter,

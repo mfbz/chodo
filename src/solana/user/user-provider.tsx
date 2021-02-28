@@ -83,15 +83,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
 					try {
 						if (!user) {
-							console.log('Creating empty user account');
+							// USER DOES NOT EXISTS, CREATE EVERYTHING
 							// Create an empty user account through SystemProgram transaction
-							await ProgramTransaction.createEmptyUserAccount(connection, wallet, APP_PROGRAM_ID);
-							console.log('Created empty user account');
+							await ProgramTransaction.createUserAccountWithData(connection, wallet, APP_PROGRAM_ID, data);
+							console.log('Created a new user account with data');
+						} else {
+							// USER EXISTS, UPDATE DATA
+							// Set user data to the account using submitted value
+							await ProgramTransaction.setUserAccountData(connection, wallet, APP_PROGRAM_ID, data);
+							console.log('The data has been set to user account');
 						}
-
-						// Set user data to the account using submitted value
-						await ProgramTransaction.setUserAccountData(connection, wallet, APP_PROGRAM_ID, data);
-						console.log('The data has been set to user account');
 					} catch (error) {
 						VaporMessage.error({ content: 'An error occurred creating user account' });
 						console.error('An error occurred creating user account', error);
