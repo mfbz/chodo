@@ -2,23 +2,13 @@
 
 use crate::error::AppError;
 use crate::instruction::AppInstruction;
-use crate::schema::dummy::Dummy;
+use crate::schema::{user_data::UserData, project_data::ProjectData, task_data::TaskData};
 use solana_sdk::{
 	account_info::{next_account_info, AccountInfo},
 	entrypoint::ProgramResult,
-	info,
-	program_pack::Pack,
+	program_pack::{IsInitialized, Pack},
 	pubkey::Pubkey,
 };
-
-/*
- * After taking serialized data from Entrypoint.rs, all computation will be executed in Processor.rs.
- * You may remember that all the data is serialized. Therefore, to work on and then store the data,
- * we have to define methods to "unpack" and "pack" them, which is the main purpose of Instruction.rs.
- * First, Processor.rs passes instruction_data to Instruction.rs to unpack it and then get parameters from the return.
- * Next, depend on the instruction type, Processor.rs will decide which function would be called to handle the data.
- * Finally, return Ok or Error as results.
-*/
 
 pub struct Processor {}
 
@@ -28,31 +18,58 @@ impl Processor {
 		accounts: &[AccountInfo],
 		instruction_data: &[u8],
 	) -> ProgramResult {
-		// Unpack the data passed in the transaction deserializing it.
 		let instruction = AppInstruction::unpack(instruction_data)?;
-		// Do different program actions depending on the passed instruction
 		match instruction {
-			AppInstruction::SayHello { amount, toggle } => {
-				info!("Calling SayHello function");
-
-				// Get the iterator over accounts passed
+			// Set user data, code 0
+			AppInstruction::SetUserData {
+				name, premium
+			} => {
 				let accounts_iter = &mut accounts.iter();
 
-				// Get owner account
-				let account = next_account_info(accounts_iter)?;
-				if account.owner != program_id {
-					return Err(AppError::IncorrectProgramId.into());
-				}
+				let wallet_account = next_account_info(accounts_iter)?;
+				let user_account = next_account_info(accounts_iter)?;
 
-				// Get the data from the account as mutable reference
-				let mut data = Dummy::unpack(&account.data.borrow())?;
-				// Modify it
-				data.amount = data.amount.checked_add(amount).ok_or(AppError::Overflow)?;
-				data.toggle = toggle;
-				// Pack it back again to save it
-				Dummy::pack(data, &mut account.data.borrow_mut())?;
+				let mut data = UserData::unpack(&user_account.data.borrow())?;
+        data.name = name;
+				data.premium = premium;
+        UserData::pack(data, &mut user_account.data.borrow_mut())?;
 
-				// Everything went good, return ok
+				Ok(())
+			},
+			// Set user data, code 1
+			AppInstruction::SetProjectData {
+				index, name
+			} => {
+				let accounts_iter = &mut accounts.iter();
+
+				let wallet_account = next_account_info(accounts_iter)?;
+				let user_account = next_account_info(accounts_iter)?;
+				let project_account = next_account_info(accounts_iter)?;
+
+				let mut data = ProjectData::unpack(&project_account.data.borrow())?;
+				data.index = index;
+        data.name = name;
+        ProjectData::pack(data, &mut project_account.data.borrow_mut())?;
+
+				Ok(())
+			},
+			// Set user data, code 2
+			AppInstruction::SetTaskData {
+				index, message, completed
+			} => {
+				let accounts_iter = &mut accounts.iter();
+
+				let wallet_account = next_account_info(accounts_iter)?;
+				let user_account = next_account_info(accounts_iter)?;
+				let project_account = next_account_info(accounts_iter)?;
+				let task_account = next_account_info(accounts_iter)?;
+
+				let mut data = TaskData::unpack(&task_account.data.borrow())?;
+				data.index = index;
+        data.message = message;
+				data.completed = completed;
+        TaskData::pack(data, &mut task_account.data.borrow_mut())?;
+
 				Ok(())
 			}
 		}

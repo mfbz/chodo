@@ -24,19 +24,25 @@
 		"localnet:up": "npm run cli:clean-store && set -x; solana-localnet down; set -e; solana-localnet up",
 		"localnet:down": "solana-localnet down",
 		"localnet:logs": "solana-localnet logs -f",
+		"preinstall": "npx npm-force-resolutions",
 		"postinstall": "npm run bpf-sdk:update && cargo update --manifest-path=./program/Cargo.toml"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^4.2.2",
 		"@craco/craco": "^6.1.1",
+		"@ledgerhq/hw-transport-webusb": "^5.43.0",
+		"@project-serum/borsh": "^0.1.0",
+		"@project-serum/sol-wallet-adapter": "^0.1.5",
 		"@solana/web3.js": "0.87.2",
 		"antd": "^4.12.3",
+		"bn.js": "^5.1.3",
+		"buffer-layout": "^1.2.0",
 		"craco-less": "^1.17.1",
+		"eventemitter3": "^4.0.7",
 		"moment": "^2.29.1",
 		"react": "^17.0.1",
 		"react-cool-dimensions": "^1.1.8",
 		"react-dom": "^17.0.1",
-		"react-icons": "^4.2.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "^4.0.2",
 		"rxjs": "^6.6.3",
@@ -47,7 +53,10 @@
 		"@testing-library/react": "^11.2.2",
 		"@testing-library/react-hooks": "^5.0.3",
 		"@testing-library/user-event": "^12.7.1",
+		"@types/bn.js": "^5.1.0",
 		"@types/jest": "^26.0.20",
+		"@types/ledgerhq__hw-transport": "^4.21.3",
+		"@types/ledgerhq__hw-transport-webusb": "^4.70.1",
 		"@types/react": "^17.0.2",
 		"@types/react-dom": "^17.0.1",
 		"@types/react-router-dom": "^5.1.6",
@@ -73,5 +82,8 @@
 		"not dead",
 		"not ie <= 11",
 		"not op_mini all"
-	]
+	],
+	"resolutions": {
+		"buffer": "6.0.1"
+	}
 }

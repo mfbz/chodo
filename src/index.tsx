@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Application } from './application';
+import { Main } from './main';
 import './style.less';
+import config from './app.config.json';
 
-render(<Application />, document.getElementById('root'));
+render(<Main config={config} />, document.getElementById('root'));

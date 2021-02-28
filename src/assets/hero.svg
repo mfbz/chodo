@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="960" height="1080" viewBox="0 0 960 1080">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="mask" width="960" height="1080" transform="translate(960 0)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="hero" transform="translate(-960 0)" clip-path="url(#clip-path)">
+    <g id="content" transform="matrix(0.966, -0.259, 0.259, 0.966, -39.691, 363.447)">
+      <rect id="background" width="962.876" height="1601" transform="translate(1088 -301.104)" fill="#040214"/>
+      <g id="task-box-big" transform="translate(1232.271 391)">
+        <rect id="Rectangle_19" data-name="Rectangle 19" width="520" height="868" rx="32" fill="#141033"/>
+        <g id="task-box" transform="translate(53 149)">
+          <rect id="Rectangle_18" data-name="Rectangle 18" width="414" height="120" rx="32" fill="#eeecfd"/>
+          <path id="icon" d="M8.436,25.044,2.02,18.513a7.109,7.109,0,0,1,0-9.927,6.81,6.81,0,0,1,9.752,0l1.54,1.567,7.956-8.1a6.81,6.81,0,0,1,9.752,0,7.108,7.108,0,0,1,0,9.926L18.189,25.044a6.81,6.81,0,0,1-9.752,0Z" transform="translate(352.98 27.45)" fill="#ff006c"/>
+          <g id="task-text" transform="translate(40 32)">
+            <rect id="Rectangle_16" data-name="Rectangle 16" width="196" height="24" rx="12" fill="#dad8ed"/>
+            <rect id="Rectangle_17" data-name="Rectangle 17" width="268" height="20" rx="10" transform="translate(0 36)" fill="#dad8ed"/>
+          </g>
+          <g id="reward" transform="translate(334 69)">
+            <circle id="Ellipse_1" data-name="Ellipse 1" cx="8" cy="8" r="8" transform="translate(0 1)" fill="#00ffb9"/>
+            <text id="SOL" transform="translate(37.5 15)" fill="#00ffb9" font-size="16" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="-14.773" y="0">SOL</tspan></text>
+          </g>
+        </g>
+        <rect id="Rectangle_20" data-name="Rectangle 20" width="322" height="40" rx="20" transform="translate(53 52)" fill="#09061d"/>
+        <g id="task-box-2" data-name="task-box" transform="translate(50 511)">
+          <rect id="Rectangle_18-2" data-name="Rectangle 18" width="414" height="120" rx="32" fill="#eeecfd"/>
+          <g id="task-text-2" data-name="task-text" transform="translate(40 32)">
+            <rect id="Rectangle_16-2" data-name="Rectangle 16" width="196" height="24" rx="12" fill="#dad8ed"/>
+            <rect id="Rectangle_17-2" data-name="Rectangle 17" width="268" height="20" rx="10" transform="translate(0 36)" fill="#dad8ed"/>
+          </g>
+          <g id="reward-2" data-name="reward" transform="translate(334 69)">
+            <circle id="Ellipse_1-2" data-name="Ellipse 1" cx="8" cy="8" r="8" transform="translate(0 1)" fill="#00ffb9"/>
+            <text id="SOL-2" data-name="SOL" transform="translate(37.5 15)" fill="#00ffb9" font-size="16" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="-14.773" y="0">SOL</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="task-box-3" data-name="task-box" transform="translate(1018.372 722.175)">
+        <rect id="Rectangle_18-3" data-name="Rectangle 18" width="414" height="120" rx="32" fill="#eeecfd"/>
+        <path id="icon-2" data-name="icon" d="M8.436,25.044,2.02,18.513a7.109,7.109,0,0,1,0-9.927,6.81,6.81,0,0,1,9.752,0l1.54,1.567,7.956-8.1a6.81,6.81,0,0,1,9.752,0,7.108,7.108,0,0,1,0,9.926L18.189,25.044a6.81,6.81,0,0,1-9.752,0Z" transform="translate(352.98 27.45)" fill="#ff006c"/>
+        <g id="task-text-3" data-name="task-text" transform="translate(40 32)">
+          <rect id="Rectangle_16-3" data-name="Rectangle 16" width="196" height="24" rx="12" fill="#dad8ed"/>
+          <rect id="Rectangle_17-3" data-name="Rectangle 17" width="268" height="20" rx="10" transform="translate(0 36)" fill="#dad8ed"/>
+        </g>
+        <g id="reward-3" data-name="reward" transform="translate(334 69)">
+          <circle id="Ellipse_1-3" data-name="Ellipse 1" cx="8" cy="8" r="8" transform="translate(0 1)" fill="#00ffb9"/>
+          <text id="SOL-3" data-name="SOL" transform="translate(37.5 15)" fill="#00ffb9" font-size="16" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="-14.773" y="0">SOL</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

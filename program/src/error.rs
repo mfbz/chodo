@@ -12,14 +12,6 @@ use thiserror::Error;
 /// Re-exporting PrintProgramError as PrintAppError for convention
 pub use solana_sdk::program_error::PrintProgramError as PrintAppError;
 
-/*
- * Another component in Solana Rust-based programs is Error.rs.
- * This component is to defined errors and explanations of those errors.
- * Other components can use Error.rs to throw a very detailed error without a lengthy coding.
- * Because the logic of this file is quite simple, so we don't need an overkill document here.
- * The only thing developers must do is following the convention and create numerous errors of desire.
-*/
-
 /// Errors that may be returned by the app program.
 #[derive(Clone, Debug, Eq, Error, DriveFromPrimitive, PartialEq)]
 pub enum AppError {

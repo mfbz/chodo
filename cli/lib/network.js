@@ -32,8 +32,8 @@ const establishConnection = async () => {
 };
 
 // Establish an account to pay for everything
-const loadPayer = async (connection) => {
-	const _payer = soproxConf.payers[0];
+const loadPayer = async (connection, index = 0) => {
+	const _payer = soproxConf.payers[index];
 	if (!_payer || !_payer.secretKey) throw new Error('Not setup payers yet');
 
 	// Get an account from inserted payer secret key to be able to sign things
@@ -101,6 +101,7 @@ const loadProgram = async (data, payer, connection) => {
 
 	// Try to get the program from temp file
 	// If it has the same data just return it, it's the same
+	/*
 	if (config && Buffer.from(data).toString('hex') == config.data) {
 		console.log('The program has been loaded at:', config.address);
 		const program = {
@@ -109,6 +110,7 @@ const loadProgram = async (data, payer, connection) => {
 		};
 		return program;
 	}
+	*/
 
 	// Deploy the program
 	const _program = await deployProgram(data, payer, connection);
