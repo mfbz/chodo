@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Avatar, Checkbox, Form, Input, List, Modal, Typography } from 'antd';
+import { Avatar, Checkbox, Form, Input, List, Modal, Switch, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { VaporButton } from '../../components/vapor-button';
 import { VaporLoader } from '../../components/vapor-loader';
 import { VaporMessage } from '../../components/vapor-message';
@@ -156,6 +156,16 @@ export const App = React.memo(function App() {
 		[checkTask],
 	);
 
+	// To decide wether to show also completed tasks
+	const [showCompletedTasks, setShowCompletedTasks] = useState(false);
+	// What to do when changed show completed tasks
+	const onChangeShowCompletedTasks = useCallback((checked: boolean) => setShowCompletedTasks(checked), []);
+
+	// These are the tasks to show filtered depending on the choice to display completed and not completed ones
+	const tasksToShow = useMemo(() => {
+		return showCompletedTasks ? tasks : tasks.filter((task) => !task.data.completed);
+	}, [tasks, showCompletedTasks]);
+
 	// If no user show loading indicator until conected, otherwise show real app wrapper passing the user to be sure it's present
 	return user ? (
 		<>
@@ -221,17 +231,26 @@ export const App = React.memo(function App() {
 									display: 'flex',
 									flexDirection: 'row',
 									alignItems: 'center',
+									justifyContent: 'space-between',
 									paddingTop: 12,
 									paddingBottom: 8,
 									paddingLeft: 16,
 									paddingRight: 16,
 								}}
 							>
-								<Typography.Text strong={true}>To do</Typography.Text>
+								<div style={{}}>
+									<Typography.Text strong={true}>To do</Typography.Text>
+								</div>
+
+								<div style={{ display: 'flex', flexDirection: 'row' }}>
+									<Typography.Text type={'secondary'}>Show completed</Typography.Text>
+
+									<Switch checked={showCompletedTasks} onChange={onChangeShowCompletedTasks} />
+								</div>
 							</div>
 
 							<List
-								dataSource={tasks}
+								dataSource={tasksToShow}
 								locale={{ emptyText: null }}
 								renderItem={(item, index) => {
 									const isFirst = index === 0;
