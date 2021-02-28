@@ -222,9 +222,11 @@ export const App = React.memo(function App() {
 								}}
 							>
 								<div style={{}}>
-									<VaporButton icon={<PlusOutlined />} danger={true} size={'large'} onClick={onCreateTask}>
-										Create task
-									</VaporButton>
+									{selectedProject && (
+										<VaporButton icon={<PlusOutlined />} danger={true} size={'large'} onClick={onCreateTask}>
+											Create task
+										</VaporButton>
+									)}
 								</div>
 
 								<div style={{ marginLeft: 16 }}>
