@@ -4,7 +4,7 @@ import { APP_PROGRAM_ID } from '../../program/instruction';
 import { ProgramTransaction } from '../../program/transaction';
 import { Project } from '../../project';
 import { useUser } from '../../user';
-import { useWallet } from '../../wallet';
+import { useWallet, WalletAdapter } from '../../wallet';
 import { Task } from '../task';
 
 // Load all the tasks of the user in the context
@@ -16,17 +16,19 @@ export function useTasks(project?: Project) {
 	const [tasks, setTasks] = useState<Task[]>([]);
 
 	useEffect(() => {
-		const fetchTasks = async (project: Project) => {
-			const _tasks = await Task.fetchAll(connection, project.publicKey, APP_PROGRAM_ID);
-			setTasks(_tasks);
+		const fetchTasks = async (wallet: WalletAdapter, project: Project) => {
+			if (wallet.publicKey) {
+				const _tasks = await Task.fetchAll(connection, wallet.publicKey, APP_PROGRAM_ID, project.publicKey);
+				setTasks(_tasks);
+			}
 		};
 
 		// When the wallet and the user are available fetch and set tasks
-		if (project) {
-			fetchTasks(project);
+		if (wallet && project) {
+			fetchTasks(wallet, project);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [project]);
+	}, [wallet, project]);
 
 	// Due to the fact that the initialization operation is expensive i provide useful methods to updated tasks array
 	// Without the need to reload it everytime
@@ -71,7 +73,7 @@ export function useTasks(project?: Project) {
 			);
 
 			// Get the task with filled data
-			const task = await Task.fetch(connection, project.publicKey, APP_PROGRAM_ID, data.index);
+			const task = await Task.fetch(connection, wallet.publicKey, APP_PROGRAM_ID, project.publicKey, data.index);
 			if (task) {
 				setTasks((_tasks) => [..._tasks, task]);
 			} else {
@@ -115,7 +117,7 @@ export function useTasks(project?: Project) {
 			);
 
 			// Get the task with filled data
-			const _task = await Task.fetch(connection, project.publicKey, APP_PROGRAM_ID, data.index);
+			const _task = await Task.fetch(connection, wallet.publicKey, APP_PROGRAM_ID, project.publicKey, data.index);
 			if (_task) {
 				// Replace task at its position
 				setTasks((_tasks) => {

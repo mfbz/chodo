@@ -6,8 +6,19 @@ use std::{char, convert::TryInto};
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum AppInstruction {
+	/// 0. `[signer]` The account of the person signing transactions (wallet)
+  /// 1. `[writable]` The user account to write data into
 	SetUserData { name: String, premium: bool },
+
+	/// 0. `[signer]` The account of the person signing transactions (wallet)
+	/// 1. `[]` The user account
+	/// 2. `[writable]` The project account to write data into
 	SetProjectData { index: u32, name: String },
+
+	/// 0. `[signer]` The account of the person signing transactions (wallet)
+	/// 1. `[]` The user account
+	/// 2. `[]` The project account
+	/// 3. `[writable]` The task account to write data into
 	SetTaskData { index: u32, message: String, completed: bool },
 }
 

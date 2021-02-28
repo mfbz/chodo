@@ -72,7 +72,7 @@ export class ProgramTransaction {
 			throw new Error('The wallet does not have a public key');
 		}
 		// Derive poject public key from userpk and seed
-		const projectPk = await Project.getPublicKeyFromSeed(userPk, programId, index);
+		const projectPk = await Project.getPublicKeyFromSeed(wallet.publicKey, programId, userPk, index);
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
@@ -83,8 +83,8 @@ export class ProgramTransaction {
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
 			lamports: rentExemptionLamports,
 			space: PROJECT_DATA_SPAN,
-			basePubkey: userPk,
-			seed: Project.getSeed(index),
+			basePubkey: wallet.publicKey, // Must be always the signer
+			seed: Project.getSeed(userPk, index),
 			programId,
 			newAccountPubkey: projectPk,
 		});
@@ -106,7 +106,7 @@ export class ProgramTransaction {
 			throw new Error('The wallet does not have a public key');
 		}
 		// Derive poject public key from userpk and seed
-		const projectPk = await Project.getPublicKeyFromSeed(userPk, programId, index);
+		const projectPk = await Project.getPublicKeyFromSeed(wallet.publicKey, programId, userPk, index);
 
 		// These are the accounts passed to the transaction
 		const keys = [
@@ -134,7 +134,7 @@ export class ProgramTransaction {
 			throw new Error('The wallet does not have a public key');
 		}
 		// Derive task from project pk
-		const taskPk = await Task.getPublicKeyFromSeed(projectPk, programId, index);
+		const taskPk = await Task.getPublicKeyFromSeed(wallet.publicKey, programId, projectPk, index);
 
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
@@ -145,8 +145,8 @@ export class ProgramTransaction {
 			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
 			lamports: rentExemptionLamports,
 			space: TASK_DATA_SPAN,
-			basePubkey: projectPk,
-			seed: Task.getSeed(index),
+			basePubkey: wallet.publicKey,
+			seed: Task.getSeed(projectPk, index),
 			programId,
 			newAccountPubkey: taskPk,
 		});
@@ -169,7 +169,7 @@ export class ProgramTransaction {
 			throw new Error('The wallet does not have a public key');
 		}
 		// Derive task from project pk
-		const taskPk = await Task.getPublicKeyFromSeed(projectPk, programId, index);
+		const taskPk = await Task.getPublicKeyFromSeed(wallet.publicKey, programId, projectPk, index);
 
 		// These are the accounts passed to the transaction
 		const keys = [

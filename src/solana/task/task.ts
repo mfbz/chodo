@@ -1,4 +1,4 @@
-import { Connection, PublicKey } from '@solana/web3.js';
+import { Connection, MAX_SEED_LENGTH, PublicKey } from '@solana/web3.js';
 import { ProgramState } from '../program/state';
 import { TaskData } from '../program/state/schema/task-data';
 
@@ -20,9 +20,14 @@ export class Task {
 		this.data = data;
 	}
 
-	// NB: Project pk
-	static async fetch(connection: Connection, projectPk: PublicKey, programId: PublicKey, index: number) {
-		const taskPk = await Task.getPublicKeyFromSeed(projectPk, programId, index);
+	static async fetch(
+		connection: Connection,
+		walletPk: PublicKey,
+		programId: PublicKey,
+		projectPk: PublicKey,
+		index: number,
+	) {
+		const taskPk = await Task.getPublicKeyFromSeed(walletPk, programId, projectPk, index);
 		const taskInfo = await connection.getAccountInfo(taskPk);
 
 		if (taskInfo != null) {
@@ -37,15 +42,14 @@ export class Task {
 		return null;
 	}
 
-	// NB: Project pk
-	static async fetchAll(connection: Connection, projectPk: PublicKey, programId: PublicKey) {
+	static async fetchAll(connection: Connection, walletPk: PublicKey, programId: PublicKey, projectPk: PublicKey) {
 		const tasks = [];
 
 		let index = TASK_STARTING_INDEX;
 		// Cycle indefinitely to get all the possible tasks from starting index
 		while (true) {
 			// Fetch the task at index
-			const task = await Task.fetch(connection, projectPk, programId, index);
+			const task = await Task.fetch(connection, walletPk, programId, projectPk, index);
 
 			if (task) {
 				// Return a new task with data taken from the task account
@@ -62,18 +66,17 @@ export class Task {
 		return tasks;
 	}
 
-	static getSeed(index: number) {
-		// The index of the task is used to determine univocally it from the user
-		// To deterministically derive tasks from the user i need to identify them with a seed that depends on the index of the message
-		// The seed is what i can use to map my user and program to a specific task
-		return TASK_SEED + index.toString();
+	static getSeed(projectPk: PublicKey, index: number) {
+		// The projectPk and the index of the project are used to determine univocally it from the user
+		// NB: Concat the public key at the end so if it's cut i still map to the same user for identification
+		return (TASK_SEED + index.toString() + projectPk.toString()).substring(0, MAX_SEED_LENGTH);
 	}
 
-	// NB: From projectPk
-	static async getPublicKeyFromSeed(projectPk: PublicKey, programId: PublicKey, index: number) {
+	// NB: The creator MUST be always the wallet because otherwise i would need also projectpk signer key
+	static async getPublicKeyFromSeed(walletPk: PublicKey, programId: PublicKey, projectPk: PublicKey, index: number) {
 		// NB: Create from project public key because of their parent/child relation
 		// This is also so that the seed is relative to project pk
-		const seed = Task.getSeed(index);
-		return await PublicKey.createWithSeed(projectPk, seed, programId);
+		const seed = Task.getSeed(projectPk, index);
+		return await PublicKey.createWithSeed(walletPk, seed, programId);
 	}
 }
