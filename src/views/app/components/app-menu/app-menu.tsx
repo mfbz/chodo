@@ -62,7 +62,7 @@ export const AppMenu = React.memo(function AppMenu({
 					}
 					dataSource={projects}
 					split={false}
-					locale={{ emptyText: null }}
+					locale={{ emptyText: <div style={{ height: 0, margin: 0, padding: 0 }}></div> }}
 					renderItem={(item, _index) => {
 						const isSelected = item.data.index === selectedProject?.data.index;
 						const isLast = _index === projects.length - 1;

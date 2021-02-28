@@ -243,7 +243,9 @@ export const App = React.memo(function App() {
 								</div>
 
 								<div style={{ display: 'flex', flexDirection: 'row' }}>
-									<Typography.Text type={'secondary'}>Show completed</Typography.Text>
+									<Typography.Text type={'secondary'} style={{ marginRight: 12 }}>
+										Show completed
+									</Typography.Text>
 
 									<Switch checked={showCompletedTasks} onChange={onChangeShowCompletedTasks} />
 								</div>
@@ -251,7 +253,7 @@ export const App = React.memo(function App() {
 
 							<List
 								dataSource={tasksToShow}
-								locale={{ emptyText: null }}
+								locale={{ emptyText: <div></div> }}
 								renderItem={(item, index) => {
 									const isFirst = index === 0;
 
