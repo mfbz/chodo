@@ -1,11 +1,12 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Avatar, Checkbox, Form, Input, List, Modal, Typography } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React, { useCallback, useEffect, useState } from 'react';
 import { VaporButton } from '../../components/vapor-button';
 import { VaporLoader } from '../../components/vapor-loader';
 import { VaporMessage } from '../../components/vapor-message';
 import { Project, useProjects } from '../../solana/project';
-import { useTasks } from '../../solana/task';
+import { Task, useTasks } from '../../solana/task';
 import { useUser } from '../../solana/user';
 import { useWallet } from '../../solana/wallet';
 import { AppMenu } from './components/app-menu';
@@ -30,7 +31,6 @@ export const App = React.memo(function App() {
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>(
 		projects.length ? projects[0] : undefined,
 	);
-
 	// Project form data to handle visibility and submit
 	const [projectForm] = Form.useForm();
 	const [projectModalVisible, setProjectModalVisible] = useState(false);
@@ -75,15 +75,13 @@ export const App = React.memo(function App() {
 
 				projectForm.resetFields();
 			};
-
 			onCreateProject();
 		},
 		[projectForm, createProject],
 	);
 
 	// Get all the tasks of the current project
-	const { tasks, createTask } = useTasks(selectedProject);
-
+	const { tasks, createTask, checkTask } = useTasks(selectedProject);
 	// Task form data to handle visibility and submit
 	const [taskForm] = Form.useForm();
 	const [taskModalVisible, setTaskModalVisible] = useState(false);
@@ -125,10 +123,37 @@ export const App = React.memo(function App() {
 
 				taskForm.resetFields();
 			};
-
 			onCreateTask();
 		},
 		[taskForm, createTask],
+	);
+
+	// The modal used for loading stuff
+	const [loadingModalVisible, setLoadingModalVisible] = useState(false);
+	// The method to trigger an update when checked a task
+	const onSubmitCheckTask = useCallback(
+		(task: Task, completed: boolean) => {
+			console.log('Checked task is', task);
+
+			const onCheckTask = async () => {
+				// Show loading indicator
+				setLoadingModalVisible(true);
+				// The data to execute the transaction
+				const data = { task, completed };
+
+				try {
+					await checkTask(data);
+				} catch (error) {
+					VaporMessage.error({ content: 'An error occurred checking the task' });
+					console.error('An error occurred checking the task', error);
+				}
+
+				// Close everything that was open
+				setLoadingModalVisible(false);
+			};
+			onCheckTask();
+		},
+		[checkTask],
 	);
 
 	// If no user show loading indicator until conected, otherwise show real app wrapper passing the user to be sure it's present
@@ -202,7 +227,7 @@ export const App = React.memo(function App() {
 									paddingRight: 16,
 								}}
 							>
-								<Typography.Text strong={true}>Tasks</Typography.Text>
+								<Typography.Text strong={true}>To do</Typography.Text>
 							</div>
 
 							<List
@@ -210,6 +235,10 @@ export const App = React.memo(function App() {
 								locale={{ emptyText: null }}
 								renderItem={(item, index) => {
 									const isFirst = index === 0;
+
+									const onCheckedChangeTask = (event: CheckboxChangeEvent) => {
+										onSubmitCheckTask(item, event.target.checked);
+									};
 
 									return (
 										<List.Item style={{ cursor: 'pointer', padding: 0, marginTop: isFirst ? -2 : 0 }}>
@@ -225,10 +254,7 @@ export const App = React.memo(function App() {
 													paddingRight: 16,
 												}}
 											>
-												<Checkbox
-													checked={item.data.completed}
-													onChange={(event) => console.log(event.target.checked)}
-												/>
+												<Checkbox checked={item.data.completed} onChange={onCheckedChangeTask} />
 
 												<div style={{ marginLeft: 16 }}>
 													<Typography.Text delete={item.data.completed}>{item.data.message}</Typography.Text>
@@ -293,6 +319,10 @@ export const App = React.memo(function App() {
 						<Input maxLength={140} size={'large'} style={{ borderRadius: 8 }} />
 					</Form.Item>
 				</Form>
+			</Modal>
+
+			<Modal centered={true} closable={false} visible={loadingModalVisible} footer={null}>
+				<VaporLoader showLogo={false} />
 			</Modal>
 		</>
 	) : (
