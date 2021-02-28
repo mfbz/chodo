@@ -153,7 +153,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 							rules={[{ required: true, message: '' }]}
 							style={{ marginBottom: 0 }}
 						>
-							<Input maxLength={55} size={'large'} style={{ borderRadius: 8 }} />
+							<Input autoFocus={true} maxLength={55} size={'large'} style={{ borderRadius: 8 }} />
 						</Form.Item>
 					</Form>
 				</Modal>

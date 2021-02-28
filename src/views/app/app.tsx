@@ -311,7 +311,7 @@ export const App = React.memo(function App() {
 						rules={[{ required: true, message: '' }]}
 						style={{ marginBottom: 0 }}
 					>
-						<Input maxLength={100} size={'large'} style={{ borderRadius: 8 }} />
+						<Input autoFocus={true} maxLength={100} size={'large'} style={{ borderRadius: 8 }} />
 					</Form.Item>
 				</Form>
 			</Modal>
@@ -337,7 +337,7 @@ export const App = React.memo(function App() {
 						rules={[{ required: true, message: '' }]}
 						style={{ marginBottom: 0 }}
 					>
-						<Input maxLength={140} size={'large'} style={{ borderRadius: 8 }} />
+						<Input autoFocus={true} maxLength={140} size={'large'} style={{ borderRadius: 8 }} />
 					</Form.Item>
 				</Form>
 			</Modal>
