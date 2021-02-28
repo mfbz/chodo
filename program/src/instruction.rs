@@ -59,7 +59,7 @@ impl AppInstruction {
           .ok_or(AppError::InvalidInstruction)?;
 				// Extract name from instruction
 				let name_s: String = rest
-					.get((100 * 4)..(100 * 4 + 1))
+					.get((4)..(4 + 100 * 4))
 					.unwrap()
 					.chunks(4)
 					.map(|slice| String::from_utf8([slice[0]].to_vec()).unwrap())
@@ -80,13 +80,13 @@ impl AppInstruction {
           .ok_or(AppError::InvalidInstruction)?;
 				// Extract name from instruction
 				let message_s: String = rest
-					.get((140 * 4)..(140 * 4 + 1))
+					.get((4)..(4 + 140 * 4))
 					.unwrap()
 					.chunks(4)
 					.map(|slice| String::from_utf8([slice[0]].to_vec()).unwrap())
 					.collect();
 				// Extract completed
-				let completed_b = match rest.get((140 * 4 + 1)..(140 * 4 + 1 + 1)).ok_or(AppError::InvalidInstruction)? {
+				let completed_b = match rest.get((4 + 140 * 4)..(4 + 140 * 4 + 1)).ok_or(AppError::InvalidInstruction)? {
           [0] => false,
           [1] => true,
           _ => return Err(ProgramError::InvalidAccountData),
