@@ -145,6 +145,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 					visible={modalVisible}
 					confirmLoading={confirmModalLoading}
 					onOk={handleModalOk}
+					cancelButtonProps={{ style: { display: 'none' } }}
 				>
 					<Form form={userForm} layout="vertical" onFinish={onSubmitUserForm}>
 						<Form.Item
