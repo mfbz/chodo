@@ -78,7 +78,6 @@ export class ProgramTransaction {
 		// Calculate minimum balance for rent exemption depending on occupied space by the account
 		// This is to avoid that the account is deleted after some epoch
 		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(USER_DATA_SPAN);
-
 		// Create the instruction
 		const insCreateEmptyAccount = SystemProgram.createAccountWithSeed({
 			fromPubkey: wallet.publicKey,
@@ -166,6 +165,51 @@ export class ProgramTransaction {
 		console.log('setProjectAccountData transaction completed succesfully');
 	}
 
+	// Unique instruction to create a project account with data
+	static async createProjectAccountWithData(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		data: ProjectData,
+		userPk: PublicKey,
+		index: number,
+	) {
+		if (!wallet.publicKey) {
+			throw new Error('The wallet does not have a public key');
+		}
+		// Derive poject public key from userpk and seed
+		const projectPk = await Project.getPublicKeyFromSeed(wallet.publicKey, programId, userPk, index);
+
+		// 1
+		// Calculate minimum balance for rent exemption depending on occupied space by the account
+		// This is to avoid that the account is deleted after some epoch
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(PROJECT_DATA_SPAN);
+		// Create the instruction
+		const insCreateEmptyAccount = SystemProgram.createAccountWithSeed({
+			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
+			lamports: rentExemptionLamports,
+			space: PROJECT_DATA_SPAN,
+			basePubkey: wallet.publicKey, // Must be always the signer
+			seed: Project.getSeed(userPk, index),
+			programId,
+			newAccountPubkey: projectPk,
+		});
+
+		// 2
+		// These are the accounts passed to the transaction
+		const keys = [
+			{ pubkey: wallet.publicKey, isSigner: true, isWritable: false },
+			{ pubkey: userPk, isSigner: false, isWritable: false },
+			{ pubkey: projectPk, isSigner: false, isWritable: true },
+		];
+		// Create the instruction
+		const insSetAccountData = ProgramInstruction.setProjectData(keys, data);
+
+		// Send the transaction signing it with wallet
+		await sendSignedTransaction(connection, wallet, [insCreateEmptyAccount, insSetAccountData], []);
+		console.log('createProjectAccountWithData transaction completed succesfully');
+	}
+
 	static async createEmptyTaskAccount(
 		connection: Connection,
 		wallet: WalletAdapter,
@@ -228,5 +272,52 @@ export class ProgramTransaction {
 		// Send the transaction signing it with wallet
 		await sendSignedTransaction(connection, wallet, [instruction], []);
 		console.log('setTaskAccountData transaction completed succesfully');
+	}
+
+	// Unique method to create an empty task account and set data to it
+	static async createTaskAccountWithData(
+		connection: Connection,
+		wallet: WalletAdapter,
+		programId: PublicKey,
+		data: TaskData,
+		userPk: PublicKey,
+		projectPk: PublicKey,
+		index: number,
+	) {
+		if (!wallet.publicKey) {
+			throw new Error('The wallet does not have a public key');
+		}
+		// Derive task from project pk
+		const taskPk = await Task.getPublicKeyFromSeed(wallet.publicKey, programId, projectPk, index);
+
+		// 1
+		// Calculate minimum balance for rent exemption depending on occupied space by the account
+		// This is to avoid that the account is deleted after some epoch
+		const rentExemptionLamports = await connection.getMinimumBalanceForRentExemption(TASK_DATA_SPAN);
+		// Create the instruction
+		const insCreateEmptyAccount = SystemProgram.createAccountWithSeed({
+			fromPubkey: wallet.publicKey, // From where to transfer the lamports, always the wallet
+			lamports: rentExemptionLamports,
+			space: TASK_DATA_SPAN,
+			basePubkey: wallet.publicKey,
+			seed: Task.getSeed(projectPk, index),
+			programId,
+			newAccountPubkey: taskPk,
+		});
+
+		// 2
+		// These are the accounts passed to the transaction
+		const keys = [
+			{ pubkey: wallet.publicKey, isSigner: true, isWritable: false },
+			{ pubkey: userPk, isSigner: false, isWritable: false },
+			{ pubkey: projectPk, isSigner: false, isWritable: false },
+			{ pubkey: taskPk, isSigner: false, isWritable: true },
+		];
+		// Create the instruction
+		const insSetAccountData = ProgramInstruction.setTaskData(keys, data);
+
+		// Send the transaction signing it with wallet
+		await sendSignedTransaction(connection, wallet, [insCreateEmptyAccount, insSetAccountData], []);
+		console.log('createTaskAccountWithData transaction completed succesfully');
 	}
 }

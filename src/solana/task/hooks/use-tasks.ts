@@ -53,16 +53,8 @@ export function useTasks(project?: Project) {
 				completed,
 			};
 
-			// Create an empty task account through SystemProgram transaction
-			await ProgramTransaction.createEmptyTaskAccount(
-				connection,
-				wallet,
-				APP_PROGRAM_ID,
-				project.publicKey,
-				data.index,
-			);
 			// Set task data to the account using submitted value
-			await ProgramTransaction.setTaskAccountData(
+			await ProgramTransaction.createTaskAccountWithData(
 				connection,
 				wallet,
 				APP_PROGRAM_ID,
@@ -71,6 +63,7 @@ export function useTasks(project?: Project) {
 				project.publicKey,
 				data.index,
 			);
+			console.log('Task account with data created');
 
 			// Get the task with filled data
 			const task = await Task.fetch(connection, wallet.publicKey, APP_PROGRAM_ID, project.publicKey, data.index);
@@ -115,6 +108,7 @@ export function useTasks(project?: Project) {
 				project.publicKey,
 				data.index,
 			);
+			console.log('Changed task account data');
 
 			// Get the task with filled data
 			const _task = await Task.fetch(connection, wallet.publicKey, APP_PROGRAM_ID, project.publicKey, data.index);

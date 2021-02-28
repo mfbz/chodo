@@ -48,20 +48,8 @@ export function useProjects() {
 				name,
 			};
 
-			console.log('Creating empty project account');
-			// Create an empty project account through SystemProgram transaction
-			await ProgramTransaction.createEmptyProjectAccount(
-				connection,
-				wallet,
-				APP_PROGRAM_ID,
-				user.publicKey,
-				data.index,
-			);
-			console.log('Empty project account created');
-
-			console.log('Setting project account data');
 			// Set project data to the account using submitted value
-			await ProgramTransaction.setProjectAccountData(
+			await ProgramTransaction.createProjectAccountWithData(
 				connection,
 				wallet,
 				APP_PROGRAM_ID,
@@ -69,7 +57,7 @@ export function useProjects() {
 				user.publicKey,
 				data.index,
 			);
-			console.log('Project account data set');
+			console.log('Project account with data created');
 
 			// Get the project with filled data
 			const project = await Project.fetch(connection, wallet.publicKey, APP_PROGRAM_ID, user.publicKey, data.index);
