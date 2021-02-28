@@ -81,8 +81,7 @@ export const Home = React.memo(function Home() {
 
 						<div style={{ maxWidth: 720 }}>
 							<Typography.Title level={4} style={{ fontWeight: 'normal' }}>
-								Create to-do lists to organize your work efficiently and boost your team productivity thanks to rewards
-								based on completing tasks.
+								Create to-do lists to organize your work efficiently and boost your productivity by completing tasks.
 							</Typography.Title>
 						</div>
 

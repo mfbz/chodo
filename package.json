@@ -1,7 +1,7 @@
 {
 	"name": "chodo",
 	"version": "1.0.0",
-	"description": "A to-do list with rewards upon completing tasks.",
+	"description": "The to-do list dapp to build your next dream project.",
 	"author": "mfbz",
 	"testnetDefaultChannel": "v1.3.15",
 	"scripts": {
