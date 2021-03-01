@@ -8,7 +8,7 @@ import ChodoLogoSVG from '../../assets/logo.svg';
 import { useMediaQuery } from 'react-responsive';
 
 export const Home = React.memo(function Home() {
-	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 992px)' });
 
 	return (
 		<div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -42,7 +42,13 @@ export const Home = React.memo(function Home() {
 				}}
 			>
 				<Layout style={{ background: '#00000000' }}>
-					<Layout.Header style={{ background: '#00000000' }}>
+					<Layout.Header
+						style={{
+							background: '#00000000',
+							paddingLeft: isSmallScreenOrMobile ? 24 : 50,
+							paddingRight: isSmallScreenOrMobile ? 24 : 50,
+						}}
+					>
 						<div
 							style={{
 								width: '100%',
@@ -69,7 +75,13 @@ export const Home = React.memo(function Home() {
 						</div>
 					</Layout.Header>
 
-					<Layout.Content style={{ background: '#00000000', padding: 50 }}>
+					<Layout.Content
+						style={{
+							background: '#00000000',
+							paddingLeft: isSmallScreenOrMobile ? 24 : 50,
+							paddingRight: isSmallScreenOrMobile ? 24 : 50,
+						}}
+					>
 						<div
 							style={{
 								height: '100%',
@@ -81,11 +93,13 @@ export const Home = React.memo(function Home() {
 						>
 							<div style={{ display: 'flex', flexDirection: 'column' }}>
 								<div style={{ maxWidth: 720 }}>
-									<Typography.Title>Plan your next dream project</Typography.Title>
+									<Typography.Title level={isSmallScreenOrMobile ? 2 : 1}>
+										Plan your next dream project
+									</Typography.Title>
 								</div>
 
 								<div style={{ maxWidth: 720 }}>
-									<Typography.Title level={4} style={{ fontWeight: 'normal' }}>
+									<Typography.Title level={isSmallScreenOrMobile ? 5 : 4} style={{ fontWeight: 'normal' }}>
 										Create to-do lists to organize your work efficiently and boost your productivity by completing
 										tasks.
 									</Typography.Title>
@@ -102,7 +116,13 @@ export const Home = React.memo(function Home() {
 						</div>
 					</Layout.Content>
 
-					<Layout.Footer style={{ background: '#00000000' }}>
+					<Layout.Footer
+						style={{
+							background: '#00000000',
+							paddingLeft: isSmallScreenOrMobile ? 24 : 50,
+							paddingRight: isSmallScreenOrMobile ? 24 : 50,
+						}}
+					>
 						<div
 							style={{
 								width: '100%',

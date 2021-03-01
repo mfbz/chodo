@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ChodoLogoSVG from '../../../../assets/logo.svg';
 import { List, Typography, Layout } from 'antd';
 import { VaporButton } from '../../../../components/vapor-button';
-import { PlusOutlined } from '@ant-design/icons';
+import Icon, { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { Project } from '../../../../solana/project';
 import { useMediaQuery } from 'react-responsive';
+import { AppIcon } from '../app-icon';
 
 export const AppMenu = React.memo(function AppMenu({
 	selectedProject,
@@ -18,14 +19,33 @@ export const AppMenu = React.memo(function AppMenu({
 	onAdd: () => void;
 	onSelect: (project: Project) => void;
 }) {
-	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 992px)' });
+	const [isSiderOpen, setIsSiderOpen] = useState(false);
 
 	return (
 		<Layout.Sider
-			width={isSmallScreenOrMobile ? '80%' : 300}
-			style={{ height: '100vh' }}
+			trigger={isSiderOpen ? <CloseOutlined /> : <Icon style={{ fontSize: 24 }} component={AppIcon} />}
+			zeroWidthTriggerStyle={{
+				height: 48,
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+				borderRadius: '0px 24px 24px 0px',
+				paddingRight: 4,
+				top: 8,
+			}}
+			width={isSmallScreenOrMobile ? '88%' : 300}
+			style={{
+				height: '100vh',
+				position: isSmallScreenOrMobile ? 'fixed' : undefined,
+				left: isSmallScreenOrMobile ? 0 : undefined,
+				zIndex: 10,
+				border: '0px solid #000000',
+			}}
 			breakpoint="lg"
 			collapsedWidth="0"
+			onCollapse={(collapsed) => setIsSiderOpen(!collapsed)}
 		>
 			<div
 				style={{
@@ -37,7 +57,13 @@ export const AppMenu = React.memo(function AppMenu({
 				}}
 			>
 				<Layout style={{ background: '#00000000' }}>
-					<Layout.Header style={{ background: '#00000000' }}>
+					<Layout.Header
+						style={{
+							background: '#00000000',
+							paddingLeft: isSmallScreenOrMobile ? 24 : 50,
+							paddingRight: isSmallScreenOrMobile ? 24 : 50,
+						}}
+					>
 						<div
 							style={{
 								height: '100%',
@@ -52,7 +78,15 @@ export const AppMenu = React.memo(function AppMenu({
 						</div>
 					</Layout.Header>
 
-					<Layout.Content style={{ background: '#00000000', padding: 50 }}>
+					<Layout.Content
+						style={{
+							background: '#00000000',
+							paddingLeft: isSmallScreenOrMobile ? 24 : 50,
+							paddingRight: isSmallScreenOrMobile ? 24 : 50,
+							paddingTop: 16,
+							paddingBottom: 16,
+						}}
+					>
 						<div style={{ flex: 1, marginTop: 0 }}>
 							<List
 								header={<Typography.Text strong={true}>Projects</Typography.Text>}

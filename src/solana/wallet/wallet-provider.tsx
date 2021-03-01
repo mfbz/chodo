@@ -16,7 +16,7 @@ export const WalletProvider = ({
 	walletProviderUrl?: string;
 	children: React.ReactNode;
 }) => {
-	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 992px)' });
 
 	// Use connection context to get the endpoint for connection
 	const { endpoint } = useConnection();

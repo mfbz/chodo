@@ -13,7 +13,7 @@ import { AppMenu } from './components/app-menu';
 import { useMediaQuery } from 'react-responsive';
 
 export const App = React.memo(function App() {
-	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 992px)' });
 
 	// Current wallet data for connection purposes
 	const { connected: walletConnected, showDrawer: showWalletDrawer } = useWallet();
@@ -200,7 +200,7 @@ export const App = React.memo(function App() {
 							}}
 						>
 							<Layout style={{ background: '#00000000' }}>
-								<Layout.Header style={{ background: '#00000000' }}>
+								<Layout.Header style={{ background: '#00000000', paddingRight: isSmallScreenOrMobile ? 16 : 50 }}>
 									<div
 										style={{
 											width: '100%',
@@ -213,7 +213,7 @@ export const App = React.memo(function App() {
 									>
 										<div style={{ flex: 1 }}>
 											<div style={{}}>
-												<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
+												<Typography.Title level={isSmallScreenOrMobile ? 5 : 4} style={{ padding: 0, margin: 0 }}>
 													{selectedProject?.data.name || 'No project selected'}
 												</Typography.Title>
 											</div>
@@ -234,14 +234,24 @@ export const App = React.memo(function App() {
 												)}
 											</div>
 
-											<div style={{ marginLeft: isSmallScreenOrMobile ? 8 : 16 }}>
-												<Avatar size="large">{user.data.name[0] || '-'}</Avatar>
-											</div>
+											{!isSmallScreenOrMobile && (
+												<div style={{ marginLeft: 16 }}>
+													<Avatar size="large">{user.data.name[0] || '-'}</Avatar>
+												</div>
+											)}
 										</div>
 									</div>
 								</Layout.Header>
 
-								<Layout.Content style={{ background: '#00000000', padding: 50 }}>
+								<Layout.Content
+									style={{
+										background: '#00000000',
+										paddingLeft: isSmallScreenOrMobile ? 24 : 50,
+										paddingRight: isSmallScreenOrMobile ? 24 : 50,
+										paddingTop: 16,
+										paddingBottom: 16,
+									}}
+								>
 									<div
 										style={{
 											width: '100%',
