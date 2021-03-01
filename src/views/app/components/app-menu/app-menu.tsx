@@ -23,7 +23,7 @@ export const AppMenu = React.memo(function AppMenu({
 	return (
 		<Layout.Sider
 			width={isSmallScreenOrMobile ? '80%' : 300}
-			style={{ height: '100vh', position: 'fixed', left: 0, zIndex: 10 }}
+			style={{ height: '100vh' }}
 			breakpoint="lg"
 			collapsedWidth="0"
 		>
@@ -53,7 +53,7 @@ export const AppMenu = React.memo(function AppMenu({
 					</Layout.Header>
 
 					<Layout.Content style={{ background: '#00000000', padding: 50 }}>
-						<div style={{ flex: 1, marginTop: 24 }}>
+						<div style={{ flex: 1, marginTop: 0 }}>
 							<List
 								header={<Typography.Text strong={true}>Projects</Typography.Text>}
 								footer={

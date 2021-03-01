@@ -182,7 +182,7 @@ export const App = React.memo(function App() {
 	return user ? (
 		<>
 			<div style={{ width: '100%', height: '100%' }}>
-				<Layout style={{ background: '#00000000' }}>
+				<Layout hasSider={true} style={{ background: '#00000000' }}>
 					<AppMenu
 						selectedProject={selectedProject}
 						projects={projects}
