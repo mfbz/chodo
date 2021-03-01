@@ -6,6 +6,7 @@ import { WALLET_ENDPOINTS } from './constants/wallet-constants';
 import { WalletContext } from './context/wallet-context';
 import { WalletAdapter } from './interfaces/wallet-adapter';
 import { WalletEndpoint } from './interfaces/wallet-endpoint';
+import { useMediaQuery } from 'react-responsive';
 
 // NB It must stay within connection provider because it uses its hooks
 export const WalletProvider = ({
@@ -15,6 +16,8 @@ export const WalletProvider = ({
 	walletProviderUrl?: string;
 	children: React.ReactNode;
 }) => {
+	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+
 	// Use connection context to get the endpoint for connection
 	const { endpoint } = useConnection();
 
@@ -98,7 +101,13 @@ export const WalletProvider = ({
 			<>
 				{children}
 
-				<Drawer placement={'top'} closable={false} maskClosable={false} visible={drawerVisible} height={250}>
+				<Drawer
+					placement={'top'}
+					closable={false}
+					maskClosable={false}
+					visible={drawerVisible}
+					height={isSmallScreenOrMobile ? '90%' : '40%'}
+				>
 					<div
 						style={{
 							width: '100%',
@@ -107,10 +116,17 @@ export const WalletProvider = ({
 							flexDirection: 'column',
 							justifyContent: 'center',
 							alignItems: 'center',
-							padding: 24,
+							padding: isSmallScreenOrMobile ? 24 : 48,
 						}}
 					>
-						<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'row',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
 							<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
 								{'Connect a wallet to manage your projects on chodo'}
 							</Typography.Title>
@@ -118,10 +134,12 @@ export const WalletProvider = ({
 
 						<div
 							style={{
+								width: '100%',
 								display: 'flex',
 								flexDirection: 'row',
 								justifyContent: 'center',
 								alignItems: 'center',
+								flexWrap: 'wrap',
 								marginTop: 24,
 							}}
 						>
@@ -132,8 +150,6 @@ export const WalletProvider = ({
 									closeDrawer();
 								};
 
-								const isLast = WALLET_ENDPOINTS.length - 1 === index;
-
 								return (
 									<div
 										key={walletEndpoint.url}
@@ -142,8 +158,8 @@ export const WalletProvider = ({
 											flexDirection: 'column',
 											justifyContent: 'center',
 											alignItems: 'center',
-											padding: 16,
-											marginRight: isLast ? 0 : 16,
+											padding: isSmallScreenOrMobile ? 8 : 16,
+											margin: isSmallScreenOrMobile ? 8 : 16,
 											background: '#FFFFFF',
 											border: `2px solid ${providerUrl === walletEndpoint.url ? '#00FFB9' : '#EEECFD'}`,
 											borderRadius: 16,
@@ -154,7 +170,7 @@ export const WalletProvider = ({
 											<img alt={`${walletEndpoint.name}`} width={40} height={40} src={walletEndpoint.icon} />
 										</div>
 
-										<div style={{ marginTop: 16 }}>
+										<div style={{ marginTop: isSmallScreenOrMobile ? 8 : 16 }}>
 											<VaporButton
 												type={providerUrl === walletEndpoint.url ? 'primary' : 'ghost'}
 												onClick={onClickWalletEndpoint}

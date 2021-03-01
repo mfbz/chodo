@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Avatar, Checkbox, Form, Input, List, Modal, Switch, Typography } from 'antd';
+import { EyeInvisibleOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { Avatar, Checkbox, Form, Input, List, Modal, Switch, Typography, Layout } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { VaporButton } from '../../components/vapor-button';
@@ -10,8 +10,11 @@ import { Task, useTasks } from '../../solana/task';
 import { useUser } from '../../solana/user';
 import { useWallet } from '../../solana/wallet';
 import { AppMenu } from './components/app-menu';
+import { useMediaQuery } from 'react-responsive';
 
 export const App = React.memo(function App() {
+	const isSmallScreenOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+
 	// Current wallet data for connection purposes
 	const { connected: walletConnected, showDrawer: showWalletDrawer } = useWallet();
 	// If wallet is not connected open directly the drawer to allow the user to connect
@@ -178,127 +181,135 @@ export const App = React.memo(function App() {
 	// If no user show loading indicator until conected, otherwise show real app wrapper passing the user to be sure it's present
 	return user ? (
 		<>
-			<div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
-				<AppMenu
-					selectedProject={selectedProject}
-					projects={projects}
-					onAdd={onAddProject}
-					onSelect={onSelectProject}
-				/>
+			<div style={{ width: '100%', height: '100%' }}>
+				<Layout style={{ background: '#00000000' }}>
+					<AppMenu
+						selectedProject={selectedProject}
+						projects={projects}
+						onAdd={onAddProject}
+						onSelect={onSelectProject}
+					/>
 
-				<div style={{ flex: 1 }}>
-					<div
-						style={{
-							width: '100%',
-							height: '100%',
-							display: 'flex',
-							flexDirection: 'column',
-							paddingLeft: 24,
-							paddingRight: 48,
-						}}
-					>
+					<Layout.Content style={{ background: '#00000000', padding: 0 }}>
 						<div
 							style={{
-								height: 80,
+								width: '100%',
+								height: '100%',
 								display: 'flex',
-								flexDirection: 'row',
-								alignItems: 'center',
-								justifyContent: 'space-between',
+								flexDirection: 'column',
 							}}
 						>
-							<div style={{ flex: 1 }}>
-								<div style={{}}>
-									<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
-										{selectedProject?.data.name || 'No project selected'}
-									</Typography.Title>
-								</div>
-							</div>
-
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									alignItems: 'center',
-								}}
-							>
-								<div style={{}}>
-									{selectedProject && (
-										<VaporButton icon={<PlusOutlined />} danger={true} size={'large'} onClick={onCreateTask}>
-											Create task
-										</VaporButton>
-									)}
-								</div>
-
-								<div style={{ marginLeft: 16 }}>
-									<Avatar size="large">{user.data.name[0] || '-'}</Avatar>
-								</div>
-							</div>
-						</div>
-
-						<div style={{ flex: 1, marginTop: 24 }}>
-							<div
-								style={{
-									width: '100%',
-									display: 'flex',
-									flexDirection: 'row',
-									alignItems: 'center',
-									justifyContent: 'space-between',
-									paddingTop: 12,
-									paddingBottom: 8,
-									paddingLeft: 16,
-									paddingRight: 16,
-								}}
-							>
-								<div style={{}}>
-									<Typography.Text strong={true}>To do</Typography.Text>
-								</div>
-
-								<div style={{ display: 'flex', flexDirection: 'row' }}>
-									<Typography.Text type={'secondary'} style={{ marginRight: 12 }}>
-										Show completed
-									</Typography.Text>
-
-									<Switch checked={showCompletedTasks} onChange={onChangeShowCompletedTasks} />
-								</div>
-							</div>
-
-							<List
-								dataSource={tasksToShow}
-								locale={{ emptyText: <div></div> }}
-								renderItem={(item, index) => {
-									const isFirst = index === 0;
-
-									const onCheckedChangeTask = (event: CheckboxChangeEvent) => {
-										onSubmitCheckTask(item, event.target.checked);
-									};
-
-									return (
-										<List.Item style={{ cursor: 'pointer', padding: 0, marginTop: isFirst ? -2 : 0 }}>
-											<div
-												style={{
-													width: '100%',
-													display: 'flex',
-													flexDirection: 'row',
-													alignItems: 'center',
-													paddingTop: 14,
-													paddingBottom: 12,
-													paddingLeft: 16,
-													paddingRight: 16,
-												}}
-											>
-												<Checkbox checked={item.data.completed} onChange={onCheckedChangeTask} />
-
-												<div style={{ marginLeft: 16 }}>
-													<Typography.Text delete={item.data.completed}>{item.data.message}</Typography.Text>
-												</div>
+							<Layout style={{ background: '#00000000' }}>
+								<Layout.Header style={{ background: '#00000000' }}>
+									<div
+										style={{
+											width: '100%',
+											height: '100%',
+											display: 'flex',
+											flexDirection: 'row',
+											alignItems: 'center',
+											justifyContent: 'space-between',
+										}}
+									>
+										<div style={{ flex: 1 }}>
+											<div style={{}}>
+												<Typography.Title level={4} style={{ padding: 0, margin: 0 }}>
+													{selectedProject?.data.name || 'No project selected'}
+												</Typography.Title>
 											</div>
-										</List.Item>
-									);
-								}}
-							/>
+										</div>
+
+										<div
+											style={{
+												display: 'flex',
+												flexDirection: 'row',
+												alignItems: 'center',
+											}}
+										>
+											<div style={{}}>
+												{selectedProject && (
+													<VaporButton icon={<PlusOutlined />} danger={true} size={'large'} onClick={onCreateTask}>
+														{!isSmallScreenOrMobile && 'Create task'}
+													</VaporButton>
+												)}
+											</div>
+
+											<div style={{ marginLeft: isSmallScreenOrMobile ? 8 : 16 }}>
+												<Avatar size="large">{user.data.name[0] || '-'}</Avatar>
+											</div>
+										</div>
+									</div>
+								</Layout.Header>
+
+								<Layout.Content style={{ background: '#00000000', padding: 50 }}>
+									<div
+										style={{
+											width: '100%',
+											display: 'flex',
+											flexDirection: 'row',
+											alignItems: 'center',
+											justifyContent: 'space-between',
+											paddingTop: 12,
+											paddingBottom: 8,
+										}}
+									>
+										<div style={{}}>
+											<Typography.Text strong={true}>To do</Typography.Text>
+										</div>
+
+										<div style={{ display: 'flex', flexDirection: 'row' }}>
+											<Typography.Text type={'secondary'} style={{ marginRight: 12 }}>
+												{!isSmallScreenOrMobile && 'Show completed'}
+											</Typography.Text>
+
+											<Switch
+												checked={showCompletedTasks}
+												checkedChildren={<EyeOutlined />}
+												unCheckedChildren={<EyeInvisibleOutlined />}
+												onChange={onChangeShowCompletedTasks}
+											/>
+										</div>
+									</div>
+
+									<List
+										dataSource={tasksToShow}
+										locale={{ emptyText: <div></div> }}
+										renderItem={(item, index) => {
+											const isFirst = index === 0;
+
+											const onCheckedChangeTask = (event: CheckboxChangeEvent) => {
+												onSubmitCheckTask(item, event.target.checked);
+											};
+
+											return (
+												<List.Item style={{ cursor: 'pointer', padding: 0, marginTop: isFirst ? -2 : 0 }}>
+													<div
+														style={{
+															width: '100%',
+															display: 'flex',
+															flexDirection: 'row',
+															alignItems: 'center',
+															paddingTop: 14,
+															paddingBottom: 12,
+															paddingLeft: 16,
+															paddingRight: 16,
+														}}
+													>
+														<Checkbox checked={item.data.completed} onChange={onCheckedChangeTask} />
+
+														<div style={{ marginLeft: 16 }}>
+															<Typography.Text delete={item.data.completed}>{item.data.message}</Typography.Text>
+														</div>
+													</div>
+												</List.Item>
+											);
+										}}
+									/>
+								</Layout.Content>
+							</Layout>
 						</div>
-					</div>
-				</div>
+					</Layout.Content>
+				</Layout>
 			</div>
 
 			<Modal
